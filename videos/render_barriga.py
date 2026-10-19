@@ -25,6 +25,7 @@ f = [f"[0:v]delogo=x=770:y=1832:w=285:h=66,fps=30,tpad=stop_mode=clone:stop_dura
 n = 0
 for (t0, t1, lines, y) in caps:
     for i, (txt, size, col) in enumerate(lines):
+        size = int(size * 0.8)
         n += 1
         p = f"{TXT}/{n}.txt"; open(p, "w").write(txt)
         ts = round(t0 + i * 0.12, 2)
