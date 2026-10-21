@@ -26,15 +26,17 @@
   #clock .dot { position: absolute; left: 50%; top: 50%; width: 22px; height: 22px; margin: -11px 0 0 -11px; border-radius: 50%; background: var(--ink); }
 
   #text { position: absolute; left: 90px; right: 90px; top: 830px; font-weight: 800; font-size: 118px; line-height: 1.04; letter-spacing: -4px; }
-  .line { display: block; overflow: hidden; padding: 6px 0 14px; }
-  .word { display: inline-block; will-change: transform; }
-  .gap { display: inline-block; width: 28px; }
+  .line { display: block; overflow: hidden; padding: 6px 0 14px; height: 143px; }
+  .line.free { overflow: visible; }
+  .inner { display: inline-block; white-space: pre; }
+  .ch { display: inline-block; white-space: pre; transform-origin: 50% 80%; }
+  #cursor { display: inline-block; width: 10px; height: 104px; margin-left: 8px; vertical-align: -12px; background: var(--accent); border-radius: 3px; }
 
   #pill { position: relative; display: inline-block; }
-  #pill .bg { position: absolute; left: -22px; right: -22px; top: 4px; bottom: -4px; background: var(--accent); border-radius: 999px; transform-origin: 0 50%; }
-  #pill .word { position: relative; color: var(--accent-ink); }
+  #pill .bg { position: absolute; left: -22px; right: -22px; top: 4px; bottom: -4px; background: var(--accent); border-radius: 999px; }
+  #pill .inner { position: relative; }
 
-  #plane { position: absolute; left: 0; top: 0; width: 120px; height: 120px; }
+  #plane { position: absolute; left: 0; top: 0; width: 170px; height: 170px; }
   #trail { position: absolute; inset: 0; }
 </style>
 </head>
@@ -43,14 +45,7 @@
   <div class="blob" id="b1" style="width:700px;height:700px;left:-260px;top:-200px"></div>
   <div class="blob" id="b2" style="width:560px;height:560px;right:-220px;bottom:-160px"></div>
 
-  <svg id="trail" width="1080" height="1920" viewBox="0 0 1080 1920">
-    <path id="trailPath" d="M -80 1560 C 260 1500, 420 1720, 620 1540 S 980 1300, 1180 1360"
-          fill="none" stroke="#1B1B1F" stroke-width="6" stroke-linecap="round" stroke-dasharray="2 22" />
-  </svg>
-  <svg id="plane" viewBox="0 0 24 24">
-    <path d="M2 11.5 22 3l-6.5 18-3.8-7.2L2 11.5Z" fill="#FF5A36" stroke="#1B1B1F" stroke-width="1.2" stroke-linejoin="round"/>
-    <path d="M11.7 13.8 22 3" stroke="#1B1B1F" stroke-width="1.2" stroke-linecap="round"/>
-  </svg>
+  <svg id="trail" width="1080" height="1920" viewBox="0 0 1080 1920"></svg>
 
   <div id="clock">
     <div class="face"></div>
@@ -60,81 +55,168 @@
   </div>
 
   <div id="text">
-    <span class="line"><span class="word">Seu</span><span class="gap"></span><span class="word">horário</span></span>
-    <span class="line"><span class="word">de</span><span class="gap"></span><span class="word">almoço</span></span>
-    <span class="line"><span class="word">passa</span></span>
-    <span class="line" style="overflow:visible"><span id="pill"><span class="bg"></span><span class="word">voando?</span></span></span>
+    <span class="line"><span class="inner" data-text="Seu horário"></span></span>
+    <span class="line"><span class="inner" data-text="de almoço"></span></span>
+    <span class="line"><span class="inner" data-text="passa"></span></span>
+    <span class="line free"><span id="pill"><span class="bg"></span><span class="inner" data-text="voando?"></span></span></span>
   </div>
+
+  <svg id="plane" viewBox="0 0 24 24">
+    <path d="M2 11.5 22 3l-6.5 18-3.8-7.2L2 11.5Z" fill="#FF5A36" stroke="#1B1B1F" stroke-width="1.2" stroke-linejoin="round"/>
+    <path d="M11.7 13.8 22 3" stroke="#1B1B1F" stroke-width="1.2" stroke-linecap="round"/>
+  </svg>
 </div>
 
 <script>
-  const DURATION = 5;
+  const DURATION = 4;
   const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
   const prog = (t, s, d) => clamp((t - s) / d);
   const easeOutExpo = x => (x === 1 ? 1 : 1 - Math.pow(2, -10 * x));
-  const easeInOutCubic = x => (x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
+  const easeInCubic = x => x * x * x;
+  const easeInOutSine = x => -(Math.cos(Math.PI * x) - 1) / 2;
   const easeOutBack = x => { const c1 = 1.70158, c3 = c1 + 1; return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2); };
   const easeInBack = x => { const c1 = 1.70158, c3 = c1 + 1; return c3 * x * x * x - c1 * x * x; };
-
   const $ = s => document.querySelector(s);
-  const words = [...document.querySelectorAll('#text .line .word')];
-  const pathEl = $('#trailPath');
-  const pathLen = pathEl.getTotalLength();
+
+  // ---- Linha do tempo (segundos) ----
+  const T = {
+    typeStart: 0.3, perChar: 0.046, lineBreak: 0.07,
+    pillIn: 2.0,       // faixa laranja aparece
+    morph: 2.35,       // "voando?" vira avião
+    fly: 2.6,          // avião decola
+    flyDur: 0.95,
+    exit: 3.3,         // resto sai de cena
+    tickEnd: 3.5,
+  };
+
+  // Quebra o texto em letras e define o instante de cada tecla
+  const keys = [];
+  let tk = T.typeStart;
+  const lines = [...document.querySelectorAll('#text .inner')];
+  const chars = [];
+  lines.forEach((el, li) => {
+    if (li > 0) tk += T.lineBreak;
+    [...el.dataset.text].forEach(c => {
+      const s = document.createElement('span');
+      s.className = 'ch';
+      s.textContent = c;
+      el.appendChild(s);
+      chars.push({ el: s, t: tk, line: li });
+      keys.push({ t: tk, space: c === ' ' });
+      tk += T.perChar;
+    });
+  });
+  const cursor = document.createElement('span');
+  cursor.id = 'cursor';
+  const typeEnd = tk;
+
+  // Tique-taque acelerando junto com os ponteiros
+  const ticks = [];
+  for (let t = 0.15, i = 0; t < T.tickEnd; i++) {
+    ticks.push({ t, tock: i % 2 === 1 });
+    t += 0.3 - 0.17 * clamp(t / T.tickEnd);
+  }
+
+  // Eventos de áudio lidos pelo render.js
+  window.AUDIO_EVENTS = { keys, ticks, fold: T.morph + 0.08, whoosh: T.fly - 0.05, whooshDur: T.flyDur + 0.25 };
+
+  const bez = (p0, p1, p2, p3, u) => {
+    const v = 1 - u;
+    return {
+      x: v*v*v*p0.x + 3*v*v*u*p1.x + 3*v*u*u*p2.x + u*u*u*p3.x,
+      y: v*v*v*p0.y + 3*v*v*u*p1.y + 3*v*u*u*p2.y + u*u*u*p3.y,
+    };
+  };
+  const trail = $('#trail');
+  const pill = $('#pill');
+  const pillInner = $('#pill .inner');
+  const pillBg = $('#pill .bg');
+  const plane = $('#plane');
 
   window.render = function (t) {
-    // Saída final: tudo sobe e some (4.45s → 5s)
-    const out = easeInBack(prog(t, 4.45, 0.5));
+    const out = easeInBack(prog(t, T.exit, 0.45));
 
-    // Blobs respirando
-    $('#b1').style.transform = `translate(${Math.sin(t * 1.2) * 30}px, ${Math.cos(t) * 24}px) scale(${1 + 0.04 * Math.sin(t * 1.6)})`;
-    $('#b2').style.transform = `translate(${Math.cos(t * 1.1) * 26}px, ${Math.sin(t * 1.3) * 30}px)`;
+    $('#b1').style.transform = `translate(${Math.sin(t * 1.4) * 30}px, ${Math.cos(t * 1.2) * 24}px) scale(${1 + 0.04 * Math.sin(t * 1.8)})`;
+    $('#b2').style.transform = `translate(${Math.cos(t * 1.3) * 26}px, ${Math.sin(t * 1.5) * 30}px)`;
 
-    // Relógio: entra com pop, ponteiros giram cada vez mais rápido
-    const cIn = easeOutBack(prog(t, 0.0, 0.55));
-    const spin = Math.pow(prog(t, 0.2, 4.2), 1.8) * 360 * 9;
-    $('#clock').style.transform = `translateY(${-out * 260}px) scale(${cIn * (1 - out)}) rotate(${(1 - cIn) * -40}deg)`;
+    // Relógio: pop de entrada, ponteiros acelerando, ticks com micro-tremida
+    const cIn = easeOutBack(prog(t, 0.0, 0.45));
+    const spin = Math.pow(prog(t, 0.15, T.tickEnd - 0.15), 1.8) * 360 * 8;
+    const lastTick = ticks.filter(k => k.t <= t).pop();
+    const kick = lastTick ? Math.max(0, 1 - (t - lastTick.t) / 0.08) : 0;
+    $('#clock').style.transform = `translateY(${-out * 260}px) scale(${cIn * (1 - out) * (1 + 0.04 * kick)}) rotate(${(1 - cIn) * -40 + (lastTick && lastTick.tock ? -2 : 2) * kick}deg)`;
     $('#mh').style.transform = `rotate(${spin}deg)`;
     $('#hh').style.transform = `rotate(${60 + spin / 12}deg)`;
 
-    // Palavras: slide-up mascarado + blur, em cascata
-    const starts = [0.35, 0.5, 0.75, 0.9, 1.2, 1.55];
-    words.forEach((w, i) => {
-      if (i === 5) return; // "voando?" tratado no pill
-      const p = easeOutExpo(prog(t, starts[i], 0.7));
-      const blur = (1 - p) * 14;
-      w.style.transform = `translateY(${(1 - p) * 140 - out * 300}px)`;
-      w.style.filter = `blur(${blur}px)`;
-      w.style.opacity = (p > 0 ? 1 : 0) * (1 - out);
+    // Digitação: cada letra entra com um pop rápido; cursor segue a última letra
+    let last = null;
+    chars.forEach(c => {
+      const on = t >= c.t;
+      c.el.style.display = on ? 'inline-block' : 'none';
+      if (!on) return;
+      last = c;
+      const p = easeOutBack(prog(t, c.t, 0.09));
+      c.el.style.transform = `translateY(${(1 - p) * 18}px) scale(${0.7 + 0.3 * p})`;
+    });
+    const typing = t < typeEnd + 0.15;
+    if (last && typing) {
+      last.el.after(cursor);
+      cursor.style.opacity = 1;
+    } else if (!last) {
+      lines[0].appendChild(cursor);
+      cursor.style.opacity = Math.floor(t / 0.12) % 2 ? 1 : 0;
+    } else {
+      cursor.style.opacity = 0;
+    }
+
+    // Linhas de cima saem pela máscara
+    lines.slice(0, 3).forEach((el, i) => {
+      el.style.transform = `translateY(${-easeInBack(prog(t, T.exit + i * 0.04, 0.4)) * 170}px)`;
     });
 
-    // Pill "voando?": barra laranja expande, palavra entra com overshoot e flutua
-    const bgP = easeOutExpo(prog(t, 1.55, 0.6));
-    const vw = words[5];
-    const vP = easeOutBack(prog(t, 1.75, 0.55));
-    const floatY = Math.sin((t - 2.2) * 4) * 8 * prog(t, 2.2, 0.4);
-    $('#pill .bg').style.transform = `scaleX(${bgP})`;
-    $('#pill').style.transform = `translateY(${floatY - out * 320}px) rotate(${-3 * prog(t, 2.0, 0.5)}deg)`;
-    $('#pill').style.opacity = 1 - out;
-    vw.style.transform = `translateY(${(1 - vP) * 80}px) scale(${0.6 + 0.4 * vP})`;
-    vw.style.opacity = t >= 1.75 ? 1 : 0;
+    // Faixa laranja atrás de "voando?"
+    const bgP = easeOutExpo(prog(t, T.pillIn, 0.35));
+    const m = prog(t, T.morph, 0.25);           // 0 → 1: dobra em avião
+    const mE = easeInCubic(m);
+    pillBg.style.transform = `scaleX(${bgP * (1 - mE)}) scaleY(${1 - 0.6 * mE}) rotate(${-12 * mE}deg)`;
+    pillBg.style.opacity = 1 - m;
+    pillInner.style.color = t >= T.pillIn + 0.05 ? 'var(--accent-ink)' : 'var(--ink)';
+    pillInner.style.transform = `scale(${1 - 0.85 * mE}) rotate(${-10 * mE}deg)`;
+    pillInner.style.filter = `blur(${mE * 6}px)`;
+    pillInner.style.opacity = 1 - mE;
+    const wob = Math.sin((t - T.pillIn) * 18) * 3 * prog(t, T.pillIn, 0.1) * (1 - prog(t, T.pillIn + 0.3, 0.1));
+    pill.style.transform = `rotate(${wob}deg)`;
 
-    // Aviãozinho cruza a tela seguindo a trilha tracejada
-    const fp = easeInOutCubic(prog(t, 2.0, 2.3));
-    const len = fp * pathLen;
-    const pt = pathEl.getPointAtLength(len);
-    const pt2 = pathEl.getPointAtLength(Math.min(pathLen, len + 2));
-    const ang = Math.atan2(pt2.y - pt.y, pt2.x - pt.x) * 180 / Math.PI;
-    $('#plane').style.transform = `translate(${pt.x - 60}px, ${pt.y - 60}px) rotate(${ang + 22}deg)`;
-    $('#plane').style.opacity = fp > 0 && fp < 1 ? 1 : 0;
-    pathEl.style.strokeDashoffset = 0;
-    pathEl.setAttribute('stroke-dasharray', `2 22`);
-    // Revela a trilha só atrás do avião, depois apaga
-    const trailFade = 1 - prog(t, 4.0, 0.5);
-    $('#trail').style.clipPath = `inset(0 ${1080 - pt.x}px 0 0)`;
-    $('#trail').style.opacity = (fp > 0 ? 0.35 : 0) * trailFade;
+    // Avião: nasce no centro da palavra e voa em curva para fora da tela
+    const r = pill.getBoundingClientRect();
+    const p0 = { x: r.left + r.width / 2, y: r.top + r.height / 2 };
+    const p1 = { x: p0.x + 160, y: p0.y + 260 };
+    const p2 = { x: p0.x + 560, y: p0.y - 140 };
+    const p3 = { x: 1320, y: p0.y - 1050 };
+    const born = easeOutBack(prog(t, T.morph + 0.08, 0.25));
+    const f = easeInOutSine(prog(t, T.fly, T.flyDur));
+    const pos = bez(p0, p1, p2, p3, f);
+    const ahead = bez(p0, p1, p2, p3, Math.min(1, f + 0.01));
+    let ang = Math.atan2(ahead.y - pos.y, ahead.x - pos.x) * 180 / Math.PI;
+    if (f === 0) ang = -23 - 20 * (1 - born);
+    const size = 170 * born * (1 + 0.25 * Math.sin(Math.PI * f));
+    plane.style.transform = `translate(${pos.x - 85}px, ${pos.y - 85}px) rotate(${ang + 23}deg) scale(${size / 170})`;
+    plane.style.opacity = t >= T.morph + 0.08 && f < 1 ? 1 : 0;
+
+    // Trilha pontilhada atrás do avião
+    let dots = '';
+    const fade = 1 - prog(t, T.fly + T.flyDur, 0.35);
+    if (f > 0 && fade > 0) {
+      for (let u = 0; u < f - 0.03; u += 0.018) {
+        const q = bez(p0, p1, p2, p3, u);
+        dots += `<circle cx="${q.x.toFixed(1)}" cy="${q.y.toFixed(1)}" r="4" fill="#1B1B1F"/>`;
+      }
+    }
+    trail.innerHTML = dots;
+    trail.style.opacity = 0.35 * fade;
   };
 
-  // Preview no navegador: toca em loop
+  // Preview no navegador: toca em loop (sem som)
   if (!navigator.webdriver) {
     const t0 = performance.now();
     const loop = now => { render(((now - t0) / 1000) % DURATION); requestAnimationFrame(loop); };
