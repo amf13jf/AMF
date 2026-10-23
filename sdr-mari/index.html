@@ -1,0 +1,799 @@
+<title>Mari SDR Console</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: cabeçalho de console de laboratório (ficha técnica) → faixa do fluxo → código (esq.) e terminal (dir.), empilhados no celular.
+   Tema escuro único e proposital: é um console. Cada serviço tem sua cor neon, usada igual no fluxo, no código e no log. */
+:root {
+  color-scheme: dark;
+  --bg: #070b10;
+  --panel: #0c1219;
+  --panel-2: #091017;
+  --term-bg: #05080c;
+  --line: #1a2633;
+  --line-hi: #24384a;
+  --fg: #d6e2ee;
+  --muted: #7d90a6;
+  --dim: #4f6175;
+  --cyan: #4fe3f0;
+  --lead: #7fb3ff;
+  --claude: #ffa86b;
+  --gpt: #3fe0b0;
+  --eleven: #b49bff;
+  --wa: #5ff28c;
+  --str: #cfe08a;
+  --kw: #ff8ac2;
+  --fn: #84c6ff;
+  --num: #ffcd7a;
+  --font-display: "Chakra Petch", "Segoe UI", system-ui, sans-serif;
+  --font-body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+}
+* { box-sizing: border-box; }
+body {
+  background:
+    radial-gradient(1200px 500px at 85% -10%, color-mix(in srgb, var(--cyan) 7%, transparent), transparent 70%),
+    radial-gradient(900px 400px at -10% 110%, color-mix(in srgb, var(--eleven) 6%, transparent), transparent 70%),
+    var(--bg);
+  background-attachment: fixed;
+  color: var(--fg);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.55;
+  min-height: 100%;
+}
+body::after {
+  /* grade de laboratório bem discreta */
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--cyan) 4%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--cyan) 4%, transparent) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: linear-gradient(to bottom, #000 0%, transparent 60%);
+  z-index: 0;
+}
+.wrap {
+  position: relative;
+  z-index: 1;
+  max-width: 1320px;
+  margin: 0 auto;
+  padding-block: 28px 48px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: grid;
+  gap: 22px;
+}
+
+/* Cabeçalho */
+header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 18px 28px;
+  align-items: end;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--line);
+}
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.live {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--wa);
+  box-shadow: 0 0 8px var(--wa);
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse { 50% { opacity: .35; box-shadow: 0 0 2px var(--wa); } }
+h1 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(34px, 6vw, 58px);
+  line-height: 1;
+  letter-spacing: .02em;
+  margin: 10px 0 10px;
+  text-wrap: balance;
+}
+h1 .name {
+  color: var(--cyan);
+  text-shadow: 0 0 18px color-mix(in srgb, var(--cyan) 45%, transparent);
+}
+h1 .rest { color: var(--muted); font-weight: 500; }
+.lede { margin: 0; max-width: 70ch; color: var(--muted); }
+.lede b { font-weight: 500; }
+.c-claude { color: var(--claude); } .c-gpt { color: var(--gpt); } .c-eleven { color: var(--eleven); }
+.c-wa { color: var(--wa); } .c-lead { color: var(--lead); } .c-cyan { color: var(--cyan); }
+
+.spec {
+  margin: 0;
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: 5px 16px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  padding: 12px 14px;
+  border: 1px solid var(--line-hi);
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--panel) 80%, transparent);
+  min-width: 0;
+}
+.spec dt { color: var(--dim); text-transform: uppercase; letter-spacing: .08em; font-size: 11px; align-self: center; }
+.spec dd { margin: 0; color: var(--fg); overflow-wrap: anywhere; }
+.spec dd.eng { color: var(--cyan); font-weight: 600; }
+.spec dd.ok { color: var(--wa); }
+
+/* Fluxo */
+.pipe {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 14px;
+}
+.node {
+  --c: var(--muted);
+  position: relative;
+  border: 1px solid var(--line);
+  background: var(--panel-2);
+  border-radius: 6px;
+  padding: 11px 13px;
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+  transition: border-color .25s, background .25s, box-shadow .25s;
+}
+.node .k { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--c); opacity: .8; }
+.node .n { font-family: var(--font-display); font-weight: 600; font-size: 17px; letter-spacing: .02em; }
+.node .d { font-size: 12.5px; color: var(--muted); line-height: 1.35; }
+.node .led {
+  position: absolute; top: 11px; right: 12px;
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--line-hi);
+  transition: background .25s, box-shadow .25s;
+}
+.node + .node::before {
+  content: "";
+  position: absolute;
+  left: -14px; top: 50%;
+  width: 14px; height: 1px;
+  background: var(--line-hi);
+}
+.node[data-node="lead"] { --c: var(--lead); }
+.node[data-node="claude"] { --c: var(--claude); }
+.node[data-node="gpt"] { --c: var(--gpt); }
+.node[data-node="eleven"] { --c: var(--eleven); }
+.node[data-node="wa"] { --c: var(--wa); }
+.node.on {
+  border-color: var(--c);
+  background: color-mix(in srgb, var(--c) 9%, var(--panel-2));
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--c) 35%, transparent), 0 0 22px color-mix(in srgb, var(--c) 22%, transparent);
+}
+.node.on .k { opacity: 1; }
+.node.on .led { background: var(--c); box-shadow: 0 0 8px var(--c); }
+.node.on + .node::before, .node.on::after { background: var(--c); }
+
+/* Painéis */
+.grid { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 16px; }
+.panel {
+  border: 1px solid var(--line-hi);
+  background: var(--panel);
+  border-radius: 8px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--cyan) 4%, transparent), 0 20px 50px -30px color-mix(in srgb, var(--cyan) 25%, transparent);
+}
+.bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--line);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--muted);
+  flex-wrap: wrap;
+}
+.bar .grow { flex: 1; }
+.lights { display: inline-flex; gap: 6px; }
+.lights i { width: 9px; height: 9px; border-radius: 50%; background: var(--line-hi); }
+.lights i:first-child { background: color-mix(in srgb, var(--wa) 70%, var(--line-hi)); box-shadow: 0 0 6px color-mix(in srgb, var(--wa) 60%, transparent); }
+.tabs { display: flex; gap: 2px; overflow-x: auto; padding: 6px 8px 0; border-bottom: 1px solid var(--line); scrollbar-width: thin; }
+.tab {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  background: none;
+  border: 1px solid transparent;
+  border-bottom: none;
+  color: var(--muted);
+  padding: 7px 11px 8px;
+  border-radius: 6px 6px 0 0;
+  cursor: pointer;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+.tab .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--dot, var(--dim)); }
+.tab:hover { color: var(--fg); }
+.tab[aria-selected="true"] { color: var(--fg); background: var(--panel-2); border-color: var(--line-hi); margin-bottom: -1px; }
+.tab[aria-selected="true"] .dot { box-shadow: 0 0 6px var(--dot); }
+.tab:focus-visible, button:focus-visible, label:focus-within, pre:focus-visible, .term:focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; }
+.file-note { padding: 8px 14px; font-size: 13px; color: var(--muted); border-bottom: 1px solid var(--line); background: var(--panel-2); }
+pre.code {
+  margin: 0;
+  padding: 14px 0;
+  background: var(--panel-2);
+  font-family: var(--font-mono);
+  font-size: 12.8px;
+  line-height: 1.65;
+  overflow: auto;
+  height: 580px;
+  tab-size: 4;
+}
+pre.code .ln { display: block; padding: 0 16px 0 0; white-space: pre; }
+pre.code .ln::before {
+  content: attr(data-n);
+  display: inline-block;
+  width: 3.2em;
+  padding-right: 1.2em;
+  text-align: right;
+  color: var(--dim);
+  user-select: none;
+  font-variant-numeric: tabular-nums;
+}
+.t-com { color: var(--dim); font-style: italic; }
+.t-str { color: var(--str); }
+.t-kw { color: var(--kw); }
+.t-fn { color: var(--fn); }
+.t-num { color: var(--num); }
+.t-claude { color: var(--claude); font-weight: 600; }
+.t-gpt { color: var(--gpt); font-weight: 600; }
+.t-eleven { color: var(--eleven); font-weight: 600; }
+
+/* Terminal */
+.term {
+  position: relative;
+  margin: 0;
+  padding: 14px 16px;
+  background:
+    repeating-linear-gradient(to bottom, transparent 0 2px, color-mix(in srgb, var(--cyan) 2.5%, transparent) 2px 3px),
+    var(--term-bg);
+  font-family: var(--font-mono);
+  font-size: 12.8px;
+  line-height: 1.6;
+  height: 580px;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  color: var(--fg);
+}
+.term .row { display: block; min-height: 1.6em; }
+.term .ps { color: var(--cyan); text-shadow: 0 0 8px color-mix(in srgb, var(--cyan) 40%, transparent); }
+.term .dim { color: var(--dim); }
+.term .mut { color: var(--muted); }
+.term .ok { color: var(--wa); }
+.term .tag { display: inline-block; min-width: 9.5ch; }
+.term .say {
+  color: var(--fg);
+  display: block;
+  padding: 3px 0 3px 12px;
+  border-left: 2px solid var(--c, var(--line));
+  margin: 2px 0 2px 2ch;
+  white-space: normal;
+}
+.term .json { color: var(--muted); display: block; margin-left: 2ch; }
+.term .json .k { color: var(--claude); }
+.term .json .s { color: var(--str); }
+.term .json .v { color: var(--num); }
+.term .bigok {
+  display: inline-block;
+  margin: 4px 0;
+  padding: 4px 10px;
+  border: 1px solid var(--wa);
+  border-radius: 4px;
+  color: var(--wa);
+  box-shadow: 0 0 16px color-mix(in srgb, var(--wa) 25%, transparent);
+}
+.caret { display: inline-block; width: .6em; height: 1.1em; background: var(--cyan); vertical-align: -2px; box-shadow: 0 0 6px var(--cyan); animation: blink 1s steps(1) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+.spin::before { content: "⠋"; display: inline-block; width: 2ch; color: var(--cyan); animation: spin .8s steps(1) infinite; }
+@keyframes spin {
+  0% { content: "⠋"; } 12% { content: "⠙"; } 25% { content: "⠹"; } 37% { content: "⠸"; }
+  50% { content: "⠼"; } 62% { content: "⠴"; } 75% { content: "⠦"; } 87% { content: "⠧"; }
+}
+.wave { display: inline-flex; gap: 2px; align-items: center; height: 14px; vertical-align: -2px; margin: 0 6px; }
+.wave i { width: 3px; background: var(--eleven); border-radius: 1px; height: 30%; box-shadow: 0 0 4px color-mix(in srgb, var(--eleven) 60%, transparent); animation: wv .9s ease-in-out infinite; }
+.wave.still i { animation: none; }
+@keyframes wv { 0%,100% { transform: scaleY(.5); } 50% { transform: scaleY(1.5); } }
+
+.btn {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  border: 1px solid color-mix(in srgb, var(--cyan) 55%, var(--line));
+  background: color-mix(in srgb, var(--cyan) 8%, var(--panel-2));
+  color: var(--cyan);
+  border-radius: 5px;
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: box-shadow .2s, background .2s;
+}
+.btn:hover { background: color-mix(in srgb, var(--cyan) 16%, var(--panel-2)); box-shadow: 0 0 14px color-mix(in srgb, var(--cyan) 30%, transparent); }
+.follow { display: inline-flex; gap: 6px; align-items: center; cursor: pointer; border-radius: 4px; }
+.follow input { accent-color: var(--cyan); margin: 0; }
+.foot { font-size: 13px; color: var(--dim); margin: 0; max-width: 90ch; }
+.foot code { font-family: var(--font-mono); color: var(--muted); }
+
+@media (max-width: 960px) {
+  header { grid-template-columns: minmax(0, 1fr); }
+  .grid { grid-template-columns: minmax(0, 1fr); }
+  pre.code, .term { height: 460px; }
+}
+@media (max-width: 720px) {
+  .pipe { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+  .node + .node::before { left: 50%; top: -12px; width: 1px; height: 12px; }
+  .node .d { display: none; }
+  .node { grid-template-columns: 9ch 1fr; column-gap: 10px; align-items: baseline; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .caret, .spin::before, .wave i, .live { animation: none; }
+  .node, .node .led { transition: none; }
+}
+</style>
+
+<div class="wrap">
+  <header>
+    <div>
+      <div class="eyebrow"><span class="live" aria-hidden="true"></span>Console de laboratório · simulação visual, nenhuma API é chamada</div>
+      <h1><span class="name">MARI</span> <span class="rest">// SDR de vendas com IA</span></h1>
+      <p class="lede">Três modelos, um papel cada: <b class="c-claude">Claude</b> é o cérebro e decide a estratégia, <b class="c-gpt">ChatGPT</b> é a conversa e escreve a fala, <b class="c-eleven">ElevenLabs</b> é a voz da Mari. Tudo roda dentro de um container <b class="c-cyan">Docker</b>. À esquerda está o código; à direita, a execução.</p>
+    </div>
+    <dl class="spec" aria-label="Ficha técnica">
+      <dt>Engenheiro</dt><dd class="eng">Arthur Miranda</dd>
+      <dt>Projeto</dt><dd>mari-sdr</dd>
+      <dt>Build</dt><dd>v1.0.0 · python 3.12</dd>
+      <dt>Imagem</dt><dd>mari-sdr:latest</dd>
+      <dt>Status</dt><dd class="ok">● online</dd>
+    </dl>
+  </header>
+
+  <section class="pipe" aria-label="Fluxo da Mari">
+    <div class="node" data-node="lead"><span class="led"></span><span class="k">entrada</span><span class="n">Lead</span><span class="d">Mensagem chega pelo WhatsApp</span></div>
+    <div class="node" data-node="claude"><span class="led"></span><span class="k">cérebro</span><span class="n">Claude</span><span class="d">Analisa o lead e devolve score, estágio e próxima ação</span></div>
+    <div class="node" data-node="gpt"><span class="led"></span><span class="k">conversa</span><span class="n">ChatGPT</span><span class="d">Transforma a estratégia em fala curta e natural</span></div>
+    <div class="node" data-node="eleven"><span class="led"></span><span class="k">voz</span><span class="n">ElevenLabs</span><span class="d">Gera o áudio com a voz da Mari</span></div>
+    <div class="node" data-node="wa"><span class="led"></span><span class="k">saída</span><span class="n">WhatsApp</span><span class="d">Envia o áudio e marca a reunião</span></div>
+  </section>
+
+  <div class="grid">
+    <section class="panel" aria-label="Código">
+      <div class="bar"><span class="lights" aria-hidden="true"><i></i><i></i><i></i></span><span>~/mari-sdr</span><span class="grow"></span><span>python · docker</span></div>
+      <div class="tabs" role="tablist" id="tabs"></div>
+      <div class="file-note" id="note"></div>
+      <pre class="code" id="code" tabindex="0"></pre>
+    </section>
+
+    <section class="panel" aria-label="Terminal">
+      <div class="bar">
+        <span class="lights" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span>bash — ~/mari-sdr</span>
+        <span class="grow"></span>
+        <label class="follow"><input type="checkbox" id="follow" checked> acompanhar no código</label>
+        <button class="btn" id="replay" type="button">↻ rodar de novo</button>
+      </div>
+      <div class="term" id="term" tabindex="0" aria-live="polite"></div>
+    </section>
+  </div>
+
+  <p class="foot">Empresa, pessoas, telefones, números e tempos do terminal são fictícios. Para rodar de verdade são necessárias as três chaves de API no <code>.env</code> e uma integração real de WhatsApp e agenda no lugar de <code>canais.py</code>.</p>
+</div>
+
+<!-- ================= arquivos de código ================= -->
+<script type="text/plain" id="f-sdr">
+# sdr.py — orquestrador da Mari: junta cérebro, conversa e voz num só agente
+# engenheiro responsável: Arthur Miranda
+import os
+from dotenv import load_dotenv
+
+from cerebro import decidir          # Claude
+from conversa import responder       # ChatGPT
+from voz import falar                # ElevenLabs
+from canais import receber_mensagens, enviar_audio, agendar_reuniao
+
+load_dotenv()
+NOME = os.getenv("SDR_NOME", "Mari")
+
+
+class SDR:
+    def __init__(self, nome: str, lead: dict):
+        self.nome = nome
+        self.lead = lead
+        self.historico: list[dict] = []
+
+    def processar(self, mensagem: str) -> dict:
+        self.historico.append({"role": "user", "content": mensagem})
+
+        # 1. Claude pensa: analisa o lead e decide a estratégia (JSON)
+        estrategia = decidir(self.lead, self.historico)
+
+        # 2. ChatGPT conversa: transforma a estratégia em fala natural
+        texto = responder(self.nome, estrategia, self.historico)
+        self.historico.append({"role": "assistant", "content": texto})
+
+        # 3. ElevenLabs fala: gera o áudio com a voz da Mari
+        audio = falar(texto)
+        enviar_audio(self.lead["telefone"], audio)
+
+        if estrategia["proxima_acao"] == "agendar_reuniao":
+            agendar_reuniao(self.lead, estrategia["horario"])
+
+        return {"estrategia": estrategia, "texto": texto, "audio": audio}
+
+
+if __name__ == "__main__":
+    print(f"[boot] SDR {NOME} iniciada")
+    sessoes: dict[str, SDR] = {}
+    for lead, mensagem in receber_mensagens():
+        sdr = sessoes.setdefault(lead["telefone"], SDR(NOME, lead))
+        sdr.processar(mensagem)
+</script>
+
+<script type="text/plain" id="f-cerebro">
+# cerebro.py — Claude é o cérebro: decide a estratégia, nunca fala com o lead
+import json
+from anthropic import Anthropic
+
+claude = Anthropic()  # lê ANTHROPIC_API_KEY do ambiente
+
+SISTEMA = """Você é o cérebro estratégico de uma SDR B2B chamada Mari.
+Você NÃO conversa com o lead. Analise o perfil e o histórico
+e devolva SOMENTE um JSON válido com:
+  score         (0 a 100, chance de virar oportunidade)
+  estagio       (frio | interesse | qualificado | pronto)
+  intencao      (o que o lead quer agora)
+  objecao       (objeção detectada ou null)
+  proxima_acao  (qualificar | responder_duvida | agendar_reuniao | encerrar)
+  horario       (horário sugerido pelo lead ou null)
+  instrucoes    (lista curta do que a Mari deve dizer)"""
+
+
+def decidir(lead: dict, historico: list[dict]) -> dict:
+    entrada = json.dumps({"lead": lead, "historico": historico}, ensure_ascii=False)
+
+    resposta = claude.messages.create(
+        model="claude-opus-5-5",
+        max_tokens=1024,
+        system=SISTEMA,
+        messages=[{"role": "user", "content": entrada}],
+    )
+    return json.loads(resposta.content[0].text)
+</script>
+
+<script type="text/plain" id="f-conversa">
+# conversa.py — ChatGPT é a conversa: a estratégia vira uma fala curta
+import json
+from openai import OpenAI
+
+gpt = OpenAI()  # lê OPENAI_API_KEY do ambiente
+
+PERSONA = """Você é {nome}, SDR da Lumen Analytics.
+Fale como gente: frases curtas, tom leve, português do Brasil.
+A resposta vai virar ÁUDIO: nada de emojis, listas ou links.
+No máximo 3 frases. Termine sempre com uma pergunta."""
+
+
+def responder(nome: str, estrategia: dict, historico: list[dict]) -> str:
+    guia = "Siga esta estratégia definida pelo cérebro:\n" + json.dumps(
+        estrategia, ensure_ascii=False
+    )
+
+    resposta = gpt.chat.completions.create(
+        model="gpt-4o",
+        temperature=0.7,
+        messages=[
+            {"role": "system", "content": PERSONA.format(nome=nome)},
+            {"role": "system", "content": guia},
+            *historico,
+        ],
+    )
+    return resposta.choices[0].message.content.strip()
+</script>
+
+<script type="text/plain" id="f-voz">
+# voz.py — ElevenLabs é a voz: o texto vira o áudio da Mari
+import os
+import uuid
+from elevenlabs.client import ElevenLabs
+
+eleven = ElevenLabs(api_key=os.environ["ELEVENLABS_API_KEY"])
+VOZ_DA_MARI = os.environ["ELEVENLABS_VOICE_ID"]
+
+
+def falar(texto: str) -> str:
+    audio = eleven.text_to_speech.convert(
+        voice_id=VOZ_DA_MARI,
+        model_id="eleven_multilingual_v2",
+        text=texto,
+        output_format="mp3_44100_128",
+    )
+
+    caminho = f"/tmp/mari_{uuid.uuid4().hex[:8]}.mp3"
+    with open(caminho, "wb") as arquivo:
+        for pedaco in audio:          # o SDK devolve o áudio em pedaços
+            arquivo.write(pedaco)
+    return caminho
+</script>
+
+<script type="text/plain" id="f-docker">
+# Dockerfile — a Mari inteira num container só
+FROM python:3.12-slim
+
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY . .
+ENV PYTHONUNBUFFERED=1
+
+CMD ["python", "sdr.py"]
+</script>
+
+<script type="text/plain" id="f-req">
+# requirements.txt
+anthropic
+openai
+elevenlabs
+python-dotenv
+</script>
+
+<script type="text/plain" id="f-env">
+# .env.example — copie para .env e preencha (nunca suba o .env pro Git)
+ANTHROPIC_API_KEY=sk-ant-xxxxxxxxxxxxxxxx
+OPENAI_API_KEY=sk-xxxxxxxxxxxxxxxx
+ELEVENLABS_API_KEY=xxxxxxxxxxxxxxxx
+ELEVENLABS_VOICE_ID=xxxxxxxxxxxxxxxx
+SDR_NOME=Mari
+</script>
+
+<script>
+(function () {
+  "use strict";
+
+  var FILES = [
+    { id: "sdr", name: "sdr.py", src: "f-sdr", dot: "var(--cyan)", note: "Orquestrador. Recebe a mensagem do lead e chama os três serviços em ordem." },
+    { id: "cerebro", name: "cerebro.py", src: "f-cerebro", dot: "var(--claude)", note: "Claude decide o que dizer: devolve a estratégia em JSON (score, estágio, próxima ação)." },
+    { id: "conversa", name: "conversa.py", src: "f-conversa", dot: "var(--gpt)", note: "ChatGPT decide como dizer: escreve uma fala curta e natural a partir da estratégia." },
+    { id: "voz", name: "voz.py", src: "f-voz", dot: "var(--eleven)", note: "ElevenLabs converte o texto em MP3 com a voz da Mari." },
+    { id: "docker", name: "Dockerfile", src: "f-docker", dot: "var(--muted)", note: "Empacota tudo numa imagem. Um comando sobe a Mari inteira." },
+    { id: "req", name: "requirements.txt", src: "f-req", dot: "var(--muted)", note: "Os três SDKs oficiais e o leitor de .env." },
+    { id: "env", name: ".env.example", src: "f-env", dot: "var(--muted)", note: "As chaves ficam fora do código, em variáveis de ambiente." }
+  ];
+
+  var KW = /^(def|class|import|from|return|if|for|in|with|as|and|or|not|None|True|False|self|FROM|WORKDIR|COPY|RUN|ENV|CMD)$/;
+  var SERVICE = { claude: "t-claude", Anthropic: "t-claude", gpt: "t-gpt", OpenAI: "t-gpt", eleven: "t-eleven", ElevenLabs: "t-eleven" };
+  var TOKEN = /(#[^\n]*)|("""[\s\S]*?"""|f?"(?:[^"\\\n]|\\.)*"|'(?:[^'\\\n]|\\.)*')|\b(\d+(?:\.\d+)?)\b|\b([A-Za-z_]\w*)\b(\s*\()?/g;
+
+  function esc(s) { return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
+
+  function highlight(src) {
+    var out = "", last = 0, m;
+    TOKEN.lastIndex = 0;
+    while ((m = TOKEN.exec(src))) {
+      out += esc(src.slice(last, m.index));
+      if (m[1]) out += '<span class="t-com">' + esc(m[1]) + "</span>";
+      else if (m[2]) out += '<span class="t-str">' + esc(m[2]) + "</span>";
+      else if (m[3]) out += '<span class="t-num">' + m[3] + "</span>";
+      else {
+        var w = m[4], cls = SERVICE[w] || (KW.test(w) ? "t-kw" : (m[5] ? "t-fn" : ""));
+        out += (cls ? '<span class="' + cls + '">' + w + "</span>" : w) + (m[5] ? esc(m[5]) : "");
+      }
+      last = TOKEN.lastIndex;
+    }
+    out += esc(src.slice(last));
+    // quebra em linhas mantendo abertos os spans que atravessam linhas (docstrings)
+    var lines = [], open = "";
+    out.split("\n").forEach(function (ln, i) {
+      var html = open + ln, stack = [];
+      html.replace(/<span[^>]*>|<\/span>/g, function (t) { if (t[1] === "/") stack.pop(); else stack.push(t); return t; });
+      open = stack.join("");
+      lines.push('<span class="ln" data-n="' + (i + 1) + '">' + html + "</span>".repeat(stack.length) + "</span>");
+    });
+    return lines.join("");
+  }
+
+  var tabsEl = document.getElementById("tabs");
+  var codeEl = document.getElementById("code");
+  var noteEl = document.getElementById("note");
+  var cache = {};
+
+  function showFile(id) {
+    var f = FILES.filter(function (x) { return x.id === id; })[0];
+    if (!f) return;
+    if (!cache[id]) cache[id] = highlight(document.getElementById(f.src).textContent.replace(/^\n/, "").replace(/\s+$/, ""));
+    codeEl.innerHTML = cache[id];
+    codeEl.scrollTop = 0;
+    noteEl.textContent = f.note;
+    Array.prototype.forEach.call(tabsEl.children, function (b) { b.setAttribute("aria-selected", b.dataset.id === id ? "true" : "false"); });
+  }
+
+  FILES.forEach(function (f) {
+    var b = document.createElement("button");
+    b.className = "tab"; b.type = "button"; b.setAttribute("role", "tab"); b.dataset.id = f.id; b.id = "tab-" + f.id;
+    b.innerHTML = '<span class="dot" style="--dot:' + f.dot + '"></span>' + esc(f.name);
+    b.addEventListener("click", function () { showFile(f.id); });
+    tabsEl.appendChild(b);
+  });
+  showFile("sdr");
+
+  /* ================= terminal ================= */
+  var term = document.getElementById("term");
+  var follow = document.getElementById("follow");
+  var nodes = document.querySelectorAll(".node");
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  function tag(c, t) { return '<span class="tag" style="color:var(--' + c + ')">[' + t + "]</span> "; }
+  function say(c, t) { return '<span class="say" style="--c:var(--' + c + ')">' + t + "</span>"; }
+  function wave(n) {
+    var s = '<span class="wave" aria-hidden="true">';
+    for (var i = 0; i < n; i++) s += '<i style="height:' + (25 + Math.round(Math.abs(Math.sin(i * 1.7)) * 75)) + "%;animation-delay:" + (i * 45) + 'ms"></i>';
+    return s + "</span>";
+  }
+  function json(obj) {
+    var keys = Object.keys(obj), lines = ["{"];
+    keys.forEach(function (k, i) {
+      var v = obj[k], vs;
+      if (v === null) vs = '<span class="v">null</span>';
+      else if (typeof v === "number") vs = '<span class="v">' + v + "</span>";
+      else if (Array.isArray(v)) vs = "[" + v.map(function (x) { return '<span class="s">"' + esc(x) + '"</span>'; }).join(", ") + "]";
+      else vs = '<span class="s">"' + esc(v) + '"</span>';
+      lines.push('  <span class="k">"' + k + '"</span>: ' + vs + (i < keys.length - 1 ? "," : ""));
+    });
+    lines.push("}");
+    return '<span class="json">' + lines.join("\n") + "</span>";
+  }
+
+  var STEPS = [
+    { cmd: "docker build -t mari-sdr .", file: "docker" },
+    { out: '<span class="dim">[+] Building 19.4s (9/9) FINISHED</span>' },
+    { out: '<span class="dim"> => [1/5] FROM python:3.12-slim</span>', wait: 180 },
+    { out: '<span class="dim"> => [2/5] WORKDIR /app</span>', wait: 120 },
+    { out: '<span class="dim"> => [3/5] COPY requirements.txt .</span>', wait: 120, file: "req" },
+    { spin: " => [4/5] RUN pip install -r requirements.txt", ms: 1400, out: '<span class="dim"> => [4/5] RUN pip install -r requirements.txt</span>  <span class="ok">anthropic openai elevenlabs ✔</span>' },
+    { out: '<span class="dim"> => [5/5] COPY . .</span>', wait: 150, file: "docker" },
+    { out: '<span class="ok">✔ imagem mari-sdr:latest criada</span> <span class="dim">· 214 MB</span>', wait: 260 },
+    { blank: 1 },
+    { cmd: "docker run --env-file .env mari-sdr", file: "env" },
+    { out: tag("cyan", "boot") + "SDR <b>Mari</b> iniciada <span class=\"dim\">· engenheiro responsável: Arthur Miranda</span>", file: "sdr", wait: 350 },
+    { spin: "conectando serviços…", ms: 900, out: tag("cyan", "boot") + "serviços conectados:" },
+    { out: '           <span class="c-claude">✔ Anthropic</span>   <span class="dim">claude-opus-5-5 · cérebro</span>', wait: 160 },
+    { out: '           <span class="c-gpt">✔ OpenAI</span>      <span class="dim">gpt-4o · conversa</span>', wait: 160 },
+    { out: '           <span class="c-eleven">✔ ElevenLabs</span>  <span class="dim">eleven_multilingual_v2 · voz</span>', wait: 160 },
+    { out: tag("cyan", "boot") + '<span class="dim">ouvindo WhatsApp em +55 31 4000-0000…</span>', wait: 700 },
+    { blank: 1 },
+
+    { node: "lead", out: tag("lead", "lead") + 'novo lead · <b>Rafael Tavares</b> · Head de Vendas · Ótica Horizonte <span class="dim">(rede com 12 lojas)</span>', wait: 600 },
+    { node: "lead", out: tag("lead", "msg ←") + say("lead", "Boa tarde! Vi o post de vocês sobre atendimento automático. Funciona pra loja física também?"), wait: 800 },
+
+    { node: "claude", file: "cerebro", spin: '<span class="c-claude">[claude]</span>   analisando lead + histórico…', ms: 1700,
+      out: tag("claude", "claude") + 'estratégia definida <span class="dim">· 1.3s</span>' },
+    { node: "claude", out: json({ score: 58, estagio: "interesse", intencao: "entender se serve para varejo físico", objecao: "dúvida de encaixe", proxima_acao: "qualificar", horario: null, instrucoes: ["confirmar que funciona com lojas físicas", "perguntar volume de contatos/mês", "não falar de preço ainda"] }), wait: 1000 },
+
+    { node: "gpt", file: "conversa", spin: '<span class="c-gpt">[gpt]</span>      escrevendo a fala da Mari…', ms: 1300,
+      out: tag("gpt", "gpt") + 'resposta pronta <span class="dim">· 0.8s · 41 palavras</span>' },
+    { node: "gpt", out: say("gpt", "Oi, Rafael! Aqui é a Mari, da Lumen. Funciona sim, e na verdade é onde a gente mais ajuda: o cliente chama no WhatsApp e já sai com horário marcado na loja. Hoje vocês recebem quantos contatos por mês, mais ou menos?"), wait: 900 },
+
+    { node: "eleven", file: "voz", spin: '<span class="c-eleven">[eleven]</span>   sintetizando voz "Mari"…', ms: 1500,
+      out: tag("eleven", "eleven") + "áudio gerado" + wave(28) + '<span class="dim">12.6s · mari_4c9e1a07.mp3 · 202 KB</span>', still: true },
+
+    { node: "wa", file: "sdr", out: tag("wa", "whats →") + 'áudio enviado para +55 31 9••••-2087 <span class="ok">✓✓</span>', wait: 1100 },
+    { blank: 1 },
+
+    { node: "lead", out: tag("lead", "msg ←") + say("lead", "Somando as 12 lojas, uns 1.500 por mês. Hoje é tudo manual e a gente perde muito. Dá pra conversar melhor terça de manhã?"), wait: 900 },
+
+    { node: "claude", file: "cerebro", spin: '<span class="c-claude">[claude]</span>   reavaliando…', ms: 1400,
+      out: tag("claude", "claude") + 'score <span class="dim">58 →</span> <b class="c-claude">91</b> · lead qualificado' },
+    { node: "claude", out: json({ score: 91, estagio: "pronto", intencao: "reunião com o time", objecao: null, proxima_acao: "agendar_reuniao", horario: "ter 10:00", instrucoes: ["propor terça às 10h", "avisar que o convite vai por e-mail", "perguntar quem mais participa"] }), wait: 900 },
+
+    { node: "gpt", file: "conversa", spin: '<span class="c-gpt">[gpt]</span>      escrevendo…', ms: 1000,
+      out: tag("gpt", "gpt") + 'resposta pronta <span class="dim">· 0.7s</span>' },
+    { node: "gpt", out: say("gpt", "Com 1.500 contatos por mês tem muita venda ficando na mesa, dá pra recuperar boa parte. Deixei terça às 10h reservada pra você, o convite chega no seu e-mail agora. Quer incluir alguém do time de lojas?"), wait: 800 },
+
+    { node: "eleven", file: "voz", spin: '<span class="c-eleven">[eleven]</span>   sintetizando voz "Mari"…', ms: 1200,
+      out: tag("eleven", "eleven") + "áudio gerado" + wave(22) + '<span class="dim">10.9s · mari_b71f3d52.mp3 · 175 KB</span>', still: true },
+    { node: "wa", file: "sdr", out: tag("wa", "whats →") + 'áudio enviado <span class="ok">✓✓</span>', wait: 600 },
+    { node: "lead", out: tag("lead", "msg ←") + say("lead", "Fechado! Vou chamar a Bianca, que cuida das lojas."), wait: 700 },
+    { node: "wa", out: tag("wa", "agenda") + '<b>Demo Lumen × Ótica Horizonte</b> · ter 10:00–10:30 · Google Meet <span class="ok">✔ criado</span>', wait: 500 },
+    { node: "wa", out: tag("wa", "crm") + 'Rafael Tavares → etapa <b>"Reunião agendada"</b> · score 91', wait: 800 },
+    { blank: 1 },
+    { node: null, out: '<span class="bigok">✔ reunião agendada · 3 mensagens · 2 áudios · 41s de ponta a ponta</span>', wait: 400 },
+    { prompt: 1 }
+  ];
+
+  var timer = null, runId = 0;
+
+  function setNode(n) {
+    Array.prototype.forEach.call(nodes, function (el) { el.classList.toggle("on", el.dataset.node === n); });
+  }
+  function row(html) {
+    var r = document.createElement("span");
+    r.className = "row";
+    r.innerHTML = html;
+    term.appendChild(r);
+    term.scrollTop = term.scrollHeight;
+    return r;
+  }
+  function apply(s) {
+    if (s.node !== undefined) setNode(s.node);
+    if (s.file && follow.checked) showFile(s.file);
+  }
+  var PS = '<span class="ps">mari@lab:~/mari-sdr $</span> ';
+
+  function renderAll() {
+    clearTimeout(timer);
+    runId++;
+    term.innerHTML = "";
+    STEPS.forEach(function (s) {
+      if (s.blank) row("");
+      else if (s.cmd) row(PS + esc(s.cmd));
+      else if (s.prompt) row(PS + '<span class="caret"></span>');
+      else row(s.still ? s.out.replace('class="wave"', 'class="wave still"') : s.out);
+    });
+    setNode(null);
+  }
+
+  function run() {
+    var my = ++runId;
+    clearTimeout(timer);
+    term.innerHTML = "";
+    setNode(null);
+    showFile("sdr");
+    var i = 0;
+    function later(fn, ms) { timer = setTimeout(function () { if (my === runId) fn(); }, ms); }
+    function next() {
+      if (i >= STEPS.length) return;
+      var s = STEPS[i++];
+      apply(s);
+      if (s.blank) { row(""); later(next, 120); return; }
+      if (s.prompt) { row(PS + '<span class="caret"></span>'); setNode(null); return; }
+      if (s.cmd) {
+        var r = row(PS + '<span class="typed"></span><span class="caret"></span>');
+        var typed = r.querySelector(".typed"), k = 0;
+        (function type() {
+          typed.textContent = s.cmd.slice(0, ++k);
+          if (k < s.cmd.length) later(type, 38 + Math.random() * 40);
+          else later(function () { r.querySelector(".caret").remove(); next(); }, 380);
+        })();
+        return;
+      }
+      if (s.spin) {
+        var sr = row('<span class="spin"></span>' + s.spin);
+        later(function () {
+          sr.innerHTML = s.out;
+          term.scrollTop = term.scrollHeight;
+          if (s.still) later(function () {
+            var w = sr.querySelector(".wave"); if (w) w.classList.add("still");
+            next();
+          }, 900);
+          else later(next, s.wait || 350);
+        }, s.ms);
+        return;
+      }
+      row(s.out);
+      later(next, s.wait || 300);
+    }
+    next();
+  }
+
+  document.getElementById("replay").addEventListener("click", function () { reduce ? renderAll() : run(); });
+  if (reduce) renderAll(); else run();
+})();
+</script>
