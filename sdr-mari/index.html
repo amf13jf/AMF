@@ -331,7 +331,7 @@ pre.code .ln::before {
     <div>
       <div class="eyebrow"><span class="live" aria-hidden="true"></span>Console de laboratório · simulação visual, nenhuma API é chamada</div>
       <h1><span class="name">MARI</span> <span class="rest">// SDR de vendas com IA</span></h1>
-      <p class="lede">A Mari é a SDR do <b class="c-cyan">Grupo Trifgest</b>, marketing e vendas para o setor alimentício. Três modelos, um papel cada: <b class="c-claude">Claude</b> é o cérebro e decide a estratégia, <b class="c-gpt">ChatGPT</b> é a conversa e escreve a fala, <b class="c-eleven">ElevenLabs</b> é a voz da Mari. Tudo roda dentro de um container <b class="c-cyan">Docker</b>. Neste teste o lead também é uma IA: o <b class="c-lead">Arthur</b>. As duas conversam por WhatsApp durante 3 meses, como numa negociação de verdade. À esquerda está o código; à direita, a execução.</p>
+      <p class="lede">A Mari é a SDR do <b class="c-cyan">Grupo Trifgest</b>, marketing e vendas para o setor alimentício. Três modelos, um papel cada: <b class="c-claude">Claude</b> é o cérebro e decide a estratégia, <b class="c-gpt">ChatGPT</b> é a conversa e escreve a fala, <b class="c-eleven">ElevenLabs</b> é a voz. Tudo roda dentro de um container <b class="c-cyan">Docker</b>. Neste teste o lead também é uma IA: o <b class="c-lead">Arthur</b>. As duas conversam por WhatsApp durante um tempo determinado, como numa negociação de verdade, e o ElevenLabs dá voz às duas sempre que a mensagem vai em áudio. À esquerda está o código; à direita, a execução.</p>
     </div>
     <dl class="spec" aria-label="Ficha técnica">
       <dt>Engenheiro</dt><dd class="eng">Arthur Miranda</dd>
@@ -348,7 +348,7 @@ pre.code .ln::before {
     <div class="node" data-node="lead"><span class="led"></span><span class="k">lead · IA</span><span class="n">Arthur</span><span class="d">Lead simulado por IA que conversa com a Mari</span></div>
     <div class="node" data-node="claude"><span class="led"></span><span class="k">cérebro</span><span class="n">Claude</span><span class="d">Analisa o lead e devolve score, estágio e próxima ação</span></div>
     <div class="node" data-node="gpt"><span class="led"></span><span class="k">conversa</span><span class="n">ChatGPT</span><span class="d">Transforma a estratégia em fala curta e natural</span></div>
-    <div class="node" data-node="eleven"><span class="led"></span><span class="k">voz</span><span class="n">ElevenLabs</span><span class="d">Gera o áudio com a voz da Mari</span></div>
+    <div class="node" data-node="eleven"><span class="led"></span><span class="k">voz</span><span class="n">ElevenLabs</span><span class="d">Gera o áudio da Mari e do Arthur, quando for áudio</span></div>
     <div class="node" data-node="wa"><span class="led"></span><span class="k">saída</span><span class="n">WhatsApp</span><span class="d">Envia o áudio e marca a reunião</span></div>
   </section>
 
@@ -496,24 +496,27 @@ def responder(nome: str, estrategia: dict, historico: list[dict]) -> str:
 </script>
 
 <script type="text/plain" id="f-voz">
-# voz.py — ElevenLabs é a voz: o texto vira o áudio da Mari
+# voz.py — ElevenLabs é a voz: o texto vira áudio da Mari ou do Arthur
 import os
 import uuid
 from elevenlabs.client import ElevenLabs
 
 eleven = ElevenLabs(api_key=os.environ["ELEVENLABS_API_KEY"])
-VOZ_DA_MARI = os.environ["ELEVENLABS_VOICE_ID"]
+VOZES = {
+    "mari": os.environ["ELEVENLABS_VOICE_ID_MARI"],      # SDR
+    "arthur": os.environ["ELEVENLABS_VOICE_ID_ARTHUR"],  # lead de teste
+}
 
 
-def falar(texto: str) -> str:
+def falar(texto: str, quem: str = "mari") -> str:
     audio = eleven.text_to_speech.convert(
-        voice_id=VOZ_DA_MARI,
+        voice_id=VOZES[quem],
         model_id="eleven_multilingual_v2",
         text=texto,
         output_format="mp3_44100_128",
     )
 
-    caminho = f"/tmp/mari_{uuid.uuid4().hex[:8]}.mp3"
+    caminho = f"/tmp/{quem}_{uuid.uuid4().hex[:8]}.mp3"
     with open(caminho, "wb") as arquivo:
         for pedaco in audio:          # o SDK devolve o áudio em pedaços
             arquivo.write(pedaco)
@@ -547,7 +550,8 @@ python-dotenv
 ANTHROPIC_API_KEY=sk-ant-xxxxxxxxxxxxxxxx
 OPENAI_API_KEY=sk-xxxxxxxxxxxxxxxx
 ELEVENLABS_API_KEY=xxxxxxxxxxxxxxxx
-ELEVENLABS_VOICE_ID=xxxxxxxxxxxxxxxx
+ELEVENLABS_VOICE_ID_MARI=xxxxxxxxxxxxxxxx
+ELEVENLABS_VOICE_ID_ARTHUR=xxxxxxxxxxxxxxxx
 SDR_NOME=Mari
 </script>
 
@@ -559,7 +563,7 @@ SDR_NOME=Mari
     { id: "sdr", name: "sdr.py", src: "f-sdr", dot: "var(--cyan)", note: "Orquestrador. Recebe a mensagem do lead e chama os três serviços em ordem." },
     { id: "cerebro", name: "cerebro.py", src: "f-cerebro", dot: "var(--claude)", note: "Claude decide o que dizer: devolve a estratégia em JSON (score, estágio, próxima ação)." },
     { id: "conversa", name: "conversa.py", src: "f-conversa", dot: "var(--gpt)", note: "ChatGPT decide como dizer: escreve uma fala curta e natural a partir da estratégia." },
-    { id: "voz", name: "voz.py", src: "f-voz", dot: "var(--eleven)", note: "ElevenLabs converte o texto em MP3 com a voz da Mari." },
+    { id: "voz", name: "voz.py", src: "f-voz", dot: "var(--eleven)", note: "ElevenLabs converte o texto em MP3. Cada IA tem a sua voz: Mari e Arthur." },
     { id: "docker", name: "Dockerfile", src: "f-docker", dot: "var(--muted)", note: "Empacota tudo numa imagem. Um comando sobe a Mari inteira." },
     { id: "req", name: "requirements.txt", src: "f-req", dot: "var(--muted)", note: "Os três SDKs oficiais e o leitor de .env." },
     { id: "env", name: ".env.example", src: "f-env", dot: "var(--muted)", note: "As chaves ficam fora do código, em variáveis de ambiente." }
@@ -629,9 +633,15 @@ SDR_NOME=Mari
 
   function tag(c, t) { return '<span class="tag" style="color:var(--' + c + ')">[' + t + "]</span> "; }
 
-  /* Histórico de 3 meses: só o registro de cada mensagem, sem conteúdo.
+  /* Histórico de 08/06 a 08/10/2026: só o registro de cada mensagem, sem conteúdo.
      data hora | quem (L = lead, M = Mari) | tipo (t = texto, a = áudio) */
   var HISTORICO = [
+    "08/06 09:12 L t", "08/06 09:13 M a", "08/06 09:20 L t", "08/06 09:21 M t", "08/06 09:34 L a", "08/06 09:36 M a",
+    "10/06 10:05 M t", "10/06 15:40 L t", "10/06 15:42 M a",
+    "15/06 08:50 M a", "16/06 11:20 L a", "16/06 11:22 M t", "16/06 11:35 L t", "16/06 11:36 M a",
+    "22/06 09:30 M t", "23/06 18:05 L t", "23/06 18:07 M t",
+    "29/06 09:10 M a", "30/06 13:44 L a", "30/06 13:46 M a", "30/06 14:01 L t", "30/06 14:02 M t",
+    "06/07 08:58 M t", "07/07 16:30 L t", "07/07 16:32 M a",
     "09/07 09:12 L t", "09/07 09:13 M a", "09/07 09:20 L t", "09/07 09:21 M t", "09/07 09:34 L a", "09/07 09:36 M a",
     "10/07 10:05 M t", "10/07 14:48 L t", "10/07 14:50 M a",
     "12/07 08:31 M t", "12/07 11:02 L a", "12/07 11:04 M a", "12/07 11:15 L t", "12/07 11:16 M t",
@@ -663,7 +673,12 @@ SDR_NOME=Mari
       var texto = audio ? "áudio enviado" : "mensagem enviada";
       var linhaHtml = '<span class="dim">' + hora + "</span>  " + (lead ? tag("lead", "arthur") : tag("cyan", "mari")) + texto;
       if (lead) {
-        steps.push({ node: "lead", out: linhaHtml, wait: 420 });
+        if (audio) {
+          steps.push({ node: "lead", silent: 1, wait: 200 });
+          steps.push({ node: "eleven", file: "voz", out: linhaHtml, wait: 420 });
+        } else {
+          steps.push({ node: "lead", out: linhaHtml, wait: 420 });
+        }
       } else {
         steps.push({ node: "claude", file: "cerebro", silent: 1, wait: 170 });
         steps.push({ node: "gpt", file: "conversa", silent: 1, wait: 170 });
