@@ -283,27 +283,7 @@ pre.code .ln::before {
 .term .mut { color: var(--muted); }
 .term .ok { color: var(--wa); }
 .term .tag { display: inline-block; min-width: 9.5ch; }
-.term .say {
-  color: var(--fg);
-  display: block;
-  padding: 3px 0 3px 12px;
-  border-left: 2px solid var(--c, var(--line));
-  margin: 2px 0 2px 2ch;
-  white-space: normal;
-}
-.term .json { color: var(--muted); display: block; margin-left: 2ch; }
-.term .json .k { color: var(--claude); }
-.term .json .s { color: var(--str); }
-.term .json .v { color: var(--num); }
-.term .bigok {
-  display: inline-block;
-  margin: 4px 0;
-  padding: 4px 10px;
-  border: 1px solid var(--wa);
-  border-radius: 4px;
-  color: var(--wa);
-  box-shadow: 0 0 16px color-mix(in srgb, var(--wa) 25%, transparent);
-}
+.term .day { display: block; margin-top: 6px; color: var(--muted); letter-spacing: .04em; }
 .caret { display: inline-block; width: .6em; height: 1.1em; background: var(--cyan); vertical-align: -2px; box-shadow: 0 0 6px var(--cyan); animation: blink 1s steps(1) infinite; }
 @keyframes blink { 50% { opacity: 0; } }
 .spin::before { content: "⠋"; display: inline-block; width: 2ch; color: var(--cyan); animation: spin .8s steps(1) infinite; }
@@ -311,10 +291,6 @@ pre.code .ln::before {
   0% { content: "⠋"; } 12% { content: "⠙"; } 25% { content: "⠹"; } 37% { content: "⠸"; }
   50% { content: "⠼"; } 62% { content: "⠴"; } 75% { content: "⠦"; } 87% { content: "⠧"; }
 }
-.wave { display: inline-flex; gap: 2px; align-items: center; height: 14px; vertical-align: -2px; margin: 0 6px; }
-.wave i { width: 3px; background: var(--eleven); border-radius: 1px; height: 30%; box-shadow: 0 0 4px color-mix(in srgb, var(--eleven) 60%, transparent); animation: wv .9s ease-in-out infinite; }
-.wave.still i { animation: none; }
-@keyframes wv { 0%,100% { transform: scaleY(.5); } 50% { transform: scaleY(1.5); } }
 
 .btn {
   font-family: var(--font-mono);
@@ -345,7 +321,7 @@ pre.code .ln::before {
   .node { grid-template-columns: 9ch 1fr; column-gap: 10px; align-items: baseline; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .caret, .spin::before, .wave i, .live { animation: none; }
+  .caret, .spin::before, .live { animation: none; }
   .node, .node .led { transition: none; }
 }
 </style>
@@ -651,24 +627,50 @@ SDR_NOME=Mari
   var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   function tag(c, t) { return '<span class="tag" style="color:var(--' + c + ')">[' + t + "]</span> "; }
-  function say(c, t) { return '<span class="say" style="--c:var(--' + c + ')">' + t + "</span>"; }
-  function wave(n) {
-    var s = '<span class="wave" aria-hidden="true">';
-    for (var i = 0; i < n; i++) s += '<i style="height:' + (25 + Math.round(Math.abs(Math.sin(i * 1.7)) * 75)) + "%;animation-delay:" + (i * 45) + 'ms"></i>';
-    return s + "</span>";
-  }
-  function json(obj) {
-    var keys = Object.keys(obj), lines = ["{"];
-    keys.forEach(function (k, i) {
-      var v = obj[k], vs;
-      if (v === null) vs = '<span class="v">null</span>';
-      else if (typeof v === "number") vs = '<span class="v">' + v + "</span>";
-      else if (Array.isArray(v)) vs = "[" + v.map(function (x) { return '<span class="s">"' + esc(x) + '"</span>'; }).join(", ") + "]";
-      else vs = '<span class="s">"' + esc(v) + '"</span>';
-      lines.push('  <span class="k">"' + k + '"</span>: ' + vs + (i < keys.length - 1 ? "," : ""));
+
+  /* Histórico de 3 meses: só o registro de cada mensagem, sem conteúdo.
+     data hora | quem (L = lead, M = Mari) | tipo (t = texto, a = áudio) */
+  var HISTORICO = [
+    "21/07 09:12 L t", "21/07 09:13 M a", "21/07 09:20 L t", "21/07 09:21 M t", "21/07 09:34 L a", "21/07 09:36 M a",
+    "22/07 10:05 M t", "22/07 14:48 L t", "22/07 14:50 M a",
+    "24/07 08:31 M t", "24/07 11:02 L a", "24/07 11:04 M a", "24/07 11:15 L t", "24/07 11:16 M t",
+    "29/07 09:40 M a", "30/07 18:22 L t", "30/07 18:23 M t",
+    "04/08 08:57 M t", "04/08 13:10 L t", "04/08 13:12 M a", "04/08 13:30 L a", "04/08 13:31 M t",
+    "11/08 09:05 M a", "12/08 16:44 L t", "12/08 16:45 M a", "12/08 17:02 L t", "12/08 17:03 M t",
+    "19/08 10:20 L a", "19/08 10:22 M a", "19/08 10:40 L t", "19/08 10:41 M t",
+    "26/08 09:15 M t", "28/08 15:30 L t", "28/08 15:32 M a",
+    "02/09 08:48 M a", "02/09 12:05 L a", "02/09 12:07 M t", "02/09 12:18 L t", "02/09 12:19 M a",
+    "09/09 09:30 M t", "10/09 19:12 L t", "10/09 19:14 M t",
+    "16/09 10:02 L a", "16/09 10:04 M a", "16/09 10:20 L t", "16/09 10:21 M t",
+    "23/09 09:10 M a", "24/09 11:45 L t", "24/09 11:47 M a", "24/09 12:03 L a", "24/09 12:05 M t",
+    "30/09 08:55 M t", "01/10 14:20 L t", "01/10 14:22 M a",
+    "07/10 09:00 M a", "07/10 17:36 L a", "07/10 17:38 M t", "07/10 17:50 L t", "07/10 17:51 M a",
+    "14/10 10:12 L t", "14/10 10:14 M a", "14/10 10:30 L t", "14/10 10:31 M t",
+    "20/10 09:05 M t", "20/10 11:48 L a", "20/10 11:50 M a", "20/10 12:02 L t", "20/10 12:03 M t"
+  ];
+  var DIAS = ["dom", "seg", "ter", "qua", "qui", "sex", "sáb"];
+
+  function conversa() {
+    var steps = [], dia = "";
+    HISTORICO.forEach(function (linha) {
+      var p = linha.split(" "), data = p[0], hora = p[1], lead = p[2] === "L", audio = p[3] === "a";
+      if (data !== dia) {
+        dia = data;
+        var d = new Date(2026, +data.slice(3, 5) - 1, +data.slice(0, 2));
+        steps.push({ node: null, out: '<span class="day">── ' + DIAS[d.getDay()] + ", " + data + "/2026 ──</span>", wait: 220 });
+      }
+      var texto = audio ? "áudio enviado" : "mensagem enviada";
+      var linhaHtml = '<span class="dim">' + hora + "</span>  " + (lead ? tag("lead", "lead") : tag("cyan", "mari")) + texto;
+      if (lead) {
+        steps.push({ node: "lead", out: linhaHtml, wait: 420 });
+      } else {
+        steps.push({ node: "claude", file: "cerebro", silent: 1, wait: 170 });
+        steps.push({ node: "gpt", file: "conversa", silent: 1, wait: 170 });
+        if (audio) steps.push({ node: "eleven", file: "voz", silent: 1, wait: 170 });
+        steps.push({ node: "wa", file: "sdr", out: linhaHtml, wait: 420 });
+      }
     });
-    lines.push("}");
-    return '<span class="json">' + lines.join("\n") + "</span>";
+    return steps;
   }
 
   var STEPS = [
@@ -687,61 +689,9 @@ SDR_NOME=Mari
     { out: '           <span class="c-claude">✔ Anthropic</span>   <span class="dim">claude-opus-5-5 · cérebro</span>', wait: 160 },
     { out: '           <span class="c-gpt">✔ OpenAI</span>      <span class="dim">gpt-4o · conversa</span>', wait: 160 },
     { out: '           <span class="c-eleven">✔ ElevenLabs</span>  <span class="dim">eleven_multilingual_v2 · voz</span>', wait: 160 },
-    { out: tag("cyan", "boot") + '<span class="dim">ouvindo WhatsApp em +55 31 4000-0000…</span>', wait: 700 },
-    { blank: 1 },
-
-    { node: "lead", out: tag("lead", "lead") + 'novo lead · <b>Patrícia Moura</b> · dona · Confeitaria Doce Ofício <span class="dim">(2 lojas + encomendas)</span>', wait: 600 },
-    { node: "lead", out: tag("lead", "msg ←") + say("lead", "Oi! Vi o vídeo de vocês no Instagram. Vcs fazem anúncio pra confeitaria? Já impulsionei post e não vendeu nada 😅"), wait: 800 },
-
-    { node: "claude", file: "cerebro", spin: '<span class="c-claude">[claude]</span>   analisando lead + histórico…', ms: 1700,
-      out: tag("claude", "claude") + 'estratégia definida <span class="dim">· 1.3s</span>' },
-    { node: "claude", out: json({ score: 57, estagio: "interesse", intencao: "anúncio para confeitaria", objecao: "impulsionou e não teve retorno", proxima_acao: "qualificar", horario: null, instrucoes: ["validar a frustração com o impulsionamento", "anúncio sem oferta e sem funil não vende", "perguntar por onde chegam os pedidos hoje"] }), wait: 1000 },
-
-    { node: "gpt", file: "conversa", spin: '<span class="c-gpt">[gpt]</span>      escrevendo a fala da Mari…', ms: 1300,
-      out: tag("gpt", "gpt") + 'resposta pronta <span class="dim">· 0.8s · 52 palavras</span>' },
-    { node: "gpt", out: say("gpt", "Oii, Patrícia! Aqui é a Mari, do Grupo Trifgest. Fazemos sim, confeitaria é bem a nossa praia. Impulsionar post sem uma oferta clara e sem um caminho pra pessoa comprar quase nunca vende mesmo, não é culpa sua. Hoje seus pedidos chegam mais pelo balcão ou pelo WhatsApp?"), wait: 900 },
-
-    { node: "eleven", file: "voz", spin: '<span class="c-eleven">[eleven]</span>   sintetizando voz "Mari"…', ms: 1500,
-      out: tag("eleven", "eleven") + "áudio gerado" + wave(28) + '<span class="dim">15.1s · mari_4c9e1a07.mp3 · 242 KB</span>', still: true },
-
-    { node: "wa", file: "sdr", out: tag("wa", "whats →") + 'áudio enviado para +55 •• 9••••-2087 <span class="ok">✓✓</span>', wait: 1100 },
-    { blank: 1 },
-
-    { node: "lead", out: tag("lead", "msg ←") + say("lead", "Mais no balcão. No WhatsApp é tudo bagunçado, respondo quando dá. Queria vender mais encomenda de Natal esse ano"), wait: 900 },
-
-    { node: "claude", file: "cerebro", spin: '<span class="c-claude">[claude]</span>   reavaliando…', ms: 1400,
-      out: tag("claude", "claude") + 'score <span class="dim">57 →</span> <b class="c-claude">84</b> · lead qualificado' },
-    { node: "claude", out: json({ score: 84, estagio: "qualificado", intencao: "vender encomendas de Natal", objecao: null, proxima_acao: "agendar_reuniao", horario: null, instrucoes: ["dá tempo de estruturar oferta + WhatsApp antes do Natal", "propor diagnóstico de 30 min", "oferecer qui 10h ou sex 15h"] }), wait: 900 },
-
-    { node: "gpt", file: "conversa", spin: '<span class="c-gpt">[gpt]</span>      escrevendo…', ms: 1000,
-      out: tag("gpt", "gpt") + 'resposta pronta <span class="dim">· 0.7s</span>' },
-    { node: "gpt", out: say("gpt", "Perfeito, então dá tempo de organizar isso bem antes do Natal. A ideia é montar uma oferta de encomenda clara e um caminho no WhatsApp pra ninguém ficar sem resposta: menos improviso e mais venda previsível. Consigo um diagnóstico de 30 minutos com você quinta às 10h ou sexta às 15h, qual fica melhor?"), wait: 800 },
-
-    { node: "eleven", file: "voz", spin: '<span class="c-eleven">[eleven]</span>   sintetizando voz "Mari"…', ms: 1200,
-      out: tag("eleven", "eleven") + "áudio gerado" + wave(24) + '<span class="dim">14.3s · mari_b71f3d52.mp3 · 229 KB</span>', still: true },
-    { node: "wa", file: "sdr", out: tag("wa", "whats →") + 'áudio enviado <span class="ok">✓✓</span>', wait: 1000 },
-    { blank: 1 },
-
-    { node: "lead", out: tag("lead", "msg ←") + say("lead", "Sexta às 15h fica ótimo!"), wait: 700 },
-
-    { node: "claude", file: "cerebro", spin: '<span class="c-claude">[claude]</span>   reavaliando…', ms: 1100,
-      out: tag("claude", "claude") + 'score <span class="dim">84 →</span> <b class="c-claude">92</b> · pronto para reunião' },
-    { node: "claude", out: json({ estagio: "pronto", proxima_acao: "agendar_reuniao", horario: "sex 15:00", instrucoes: ["confirmar horário", "pedir o volume de encomendas do Natal passado"] }), wait: 800 },
-
-    { node: "gpt", file: "conversa", spin: '<span class="c-gpt">[gpt]</span>      escrevendo…', ms: 900,
-      out: tag("gpt", "gpt") + 'resposta pronta <span class="dim">· 0.6s</span>' },
-    { node: "gpt", out: say("gpt", "Simm, fechado! Sexta às 15h tá reservado pra você, te mando o link por aqui mesmo. Se der, separa quanto você vendeu de encomenda no Natal passado, que aí a gente já chega com número na mesa, combinado?"), wait: 800 },
-
-    { node: "eleven", file: "voz", spin: '<span class="c-eleven">[eleven]</span>   sintetizando voz "Mari"…', ms: 1100,
-      out: tag("eleven", "eleven") + "áudio gerado" + wave(20) + '<span class="dim">11.4s · mari_e93a6b10.mp3 · 182 KB</span>', still: true },
-    { node: "wa", file: "sdr", out: tag("wa", "whats →") + 'áudio enviado <span class="ok">✓✓</span>', wait: 600 },
-    { node: "lead", out: tag("lead", "msg ←") + say("lead", "Combinado, obrigada Mari!"), wait: 700 },
-    { node: "wa", out: tag("wa", "agenda") + '<b>Diagnóstico Trifgest × Doce Ofício</b> · sex 15:00–15:30 · Google Meet <span class="ok">✔ criado</span>', wait: 500 },
-    { node: "wa", out: tag("wa", "crm") + 'Patrícia Moura → etapa <b>"Diagnóstico agendado"</b> · score 92', wait: 800 },
-    { blank: 1 },
-    { node: null, out: '<span class="bigok">✔ diagnóstico agendado · 4 mensagens · 3 áudios · 58s de ponta a ponta</span>', wait: 400 },
-    { prompt: 1 }
-  ];
+    { out: tag("cyan", "boot") + '<span class="dim">ouvindo WhatsApp…</span>', wait: 600 },
+    { blank: 1 }
+  ].concat(conversa(), [{ blank: 1 }, { prompt: 1 }]);
 
   var timer = null, runId = 0;
 
@@ -770,7 +720,7 @@ SDR_NOME=Mari
       if (s.blank) row("");
       else if (s.cmd) row(PS + esc(s.cmd));
       else if (s.prompt) row(PS + '<span class="caret"></span>');
-      else row(s.still ? s.out.replace('class="wave"', 'class="wave still"') : s.out);
+      else if (!s.silent) row(s.out);
     });
     setNode(null);
   }
@@ -804,15 +754,11 @@ SDR_NOME=Mari
         later(function () {
           sr.innerHTML = s.out;
           term.scrollTop = term.scrollHeight;
-          if (s.still) later(function () {
-            var w = sr.querySelector(".wave"); if (w) w.classList.add("still");
-            next();
-          }, 900);
-          else later(next, s.wait || 350);
+          later(next, s.wait || 350);
         }, s.ms);
         return;
       }
-      row(s.out);
+      if (!s.silent) row(s.out);
       later(next, s.wait || 300);
     }
     next();
