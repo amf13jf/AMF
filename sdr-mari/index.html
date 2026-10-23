@@ -355,10 +355,11 @@ pre.code .ln::before {
     <div>
       <div class="eyebrow"><span class="live" aria-hidden="true"></span>Console de laboratório · simulação visual, nenhuma API é chamada</div>
       <h1><span class="name">MARI</span> <span class="rest">// SDR de vendas com IA</span></h1>
-      <p class="lede">Três modelos, um papel cada: <b class="c-claude">Claude</b> é o cérebro e decide a estratégia, <b class="c-gpt">ChatGPT</b> é a conversa e escreve a fala, <b class="c-eleven">ElevenLabs</b> é a voz da Mari. Tudo roda dentro de um container <b class="c-cyan">Docker</b>. À esquerda está o código; à direita, a execução.</p>
+      <p class="lede">A Mari é a SDR do <b class="c-cyan">Grupo Trifgest</b>, marketing e vendas para o setor alimentício. Três modelos, um papel cada: <b class="c-claude">Claude</b> é o cérebro e decide a estratégia, <b class="c-gpt">ChatGPT</b> é a conversa e escreve a fala, <b class="c-eleven">ElevenLabs</b> é a voz da Mari. Tudo roda dentro de um container <b class="c-cyan">Docker</b>. À esquerda está o código; à direita, a execução.</p>
     </div>
     <dl class="spec" aria-label="Ficha técnica">
       <dt>Engenheiro</dt><dd class="eng">Arthur Miranda</dd>
+      <dt>Operação</dt><dd>Grupo Trifgest</dd>
       <dt>Projeto</dt><dd>mari-sdr</dd>
       <dt>Build</dt><dd>v1.0.0 · python 3.12</dd>
       <dt>Imagem</dt><dd>mari-sdr:latest</dd>
@@ -454,9 +455,14 @@ from anthropic import Anthropic
 
 claude = Anthropic()  # lê ANTHROPIC_API_KEY do ambiente
 
-SISTEMA = """Você é o cérebro estratégico de uma SDR B2B chamada Mari.
-Você NÃO conversa com o lead. Analise o perfil e o histórico
-e devolva SOMENTE um JSON válido com:
+SISTEMA = """Você é o cérebro estratégico da Mari, SDR do Grupo Trifgest
+(marketing e vendas para o setor alimentício: açougues, supermercados,
+padarias, confeitarias e indústrias de alimentos).
+Você NÃO conversa com o lead. Analise o perfil e o histórico.
+Qualifique por: segmento, canais de venda hoje (balcão, WhatsApp,
+Instagram), dor principal e data forte que vem pela frente.
+O objetivo é marcar um diagnóstico de 30 minutos.
+Devolva SOMENTE um JSON válido com:
   score         (0 a 100, chance de virar oportunidade)
   estagio       (frio | interesse | qualificado | pronto)
   intencao      (o que o lead quer agora)
@@ -485,9 +491,13 @@ from openai import OpenAI
 
 gpt = OpenAI()  # lê OPENAI_API_KEY do ambiente
 
-PERSONA = """Você é {nome}, SDR da Lumen Analytics.
-Fale como gente: frases curtas, tom leve, português do Brasil.
-A resposta vai virar ÁUDIO: nada de emojis, listas ou links.
+PERSONA = """Você é {nome}, SDR do Grupo Trifgest.
+Jeito da Mari: calorosa, direta e prática, sotaque mineiro leve.
+Cumprimenta alongando a vogal ("Oii", "Bom diaa"), confirma com
+"Simm", "Perfeito" ou "Fechado", e às vezes solta um "uai".
+Fala de negócio com número e com o pé no chão:
+"menos improviso e mais venda previsível".
+A resposta vai virar ÁUDIO: nada de emojis, "kkk", listas ou links.
 No máximo 3 frases. Termine sempre com uma pergunta."""
 
 
@@ -680,41 +690,56 @@ SDR_NOME=Mari
     { out: tag("cyan", "boot") + '<span class="dim">ouvindo WhatsApp em +55 31 4000-0000…</span>', wait: 700 },
     { blank: 1 },
 
-    { node: "lead", out: tag("lead", "lead") + 'novo lead · <b>Rafael Tavares</b> · Head de Vendas · Ótica Horizonte <span class="dim">(rede com 12 lojas)</span>', wait: 600 },
-    { node: "lead", out: tag("lead", "msg ←") + say("lead", "Boa tarde! Vi o post de vocês sobre atendimento automático. Funciona pra loja física também?"), wait: 800 },
+    { node: "lead", out: tag("lead", "lead") + 'novo lead · <b>Patrícia Moura</b> · dona · Confeitaria Doce Ofício <span class="dim">(2 lojas + encomendas)</span>', wait: 600 },
+    { node: "lead", out: tag("lead", "msg ←") + say("lead", "Oi! Vi o vídeo de vocês no Instagram. Vcs fazem anúncio pra confeitaria? Já impulsionei post e não vendeu nada 😅"), wait: 800 },
 
     { node: "claude", file: "cerebro", spin: '<span class="c-claude">[claude]</span>   analisando lead + histórico…', ms: 1700,
       out: tag("claude", "claude") + 'estratégia definida <span class="dim">· 1.3s</span>' },
-    { node: "claude", out: json({ score: 58, estagio: "interesse", intencao: "entender se serve para varejo físico", objecao: "dúvida de encaixe", proxima_acao: "qualificar", horario: null, instrucoes: ["confirmar que funciona com lojas físicas", "perguntar volume de contatos/mês", "não falar de preço ainda"] }), wait: 1000 },
+    { node: "claude", out: json({ score: 57, estagio: "interesse", intencao: "anúncio para confeitaria", objecao: "impulsionou e não teve retorno", proxima_acao: "qualificar", horario: null, instrucoes: ["validar a frustração com o impulsionamento", "anúncio sem oferta e sem funil não vende", "perguntar por onde chegam os pedidos hoje"] }), wait: 1000 },
 
     { node: "gpt", file: "conversa", spin: '<span class="c-gpt">[gpt]</span>      escrevendo a fala da Mari…', ms: 1300,
-      out: tag("gpt", "gpt") + 'resposta pronta <span class="dim">· 0.8s · 41 palavras</span>' },
-    { node: "gpt", out: say("gpt", "Oi, Rafael! Aqui é a Mari, da Lumen. Funciona sim, e na verdade é onde a gente mais ajuda: o cliente chama no WhatsApp e já sai com horário marcado na loja. Hoje vocês recebem quantos contatos por mês, mais ou menos?"), wait: 900 },
+      out: tag("gpt", "gpt") + 'resposta pronta <span class="dim">· 0.8s · 52 palavras</span>' },
+    { node: "gpt", out: say("gpt", "Oii, Patrícia! Aqui é a Mari, do Grupo Trifgest. Fazemos sim, confeitaria é bem a nossa praia. Impulsionar post sem uma oferta clara e sem um caminho pra pessoa comprar quase nunca vende mesmo, não é culpa sua. Hoje seus pedidos chegam mais pelo balcão ou pelo WhatsApp?"), wait: 900 },
 
     { node: "eleven", file: "voz", spin: '<span class="c-eleven">[eleven]</span>   sintetizando voz "Mari"…', ms: 1500,
-      out: tag("eleven", "eleven") + "áudio gerado" + wave(28) + '<span class="dim">12.6s · mari_4c9e1a07.mp3 · 202 KB</span>', still: true },
+      out: tag("eleven", "eleven") + "áudio gerado" + wave(28) + '<span class="dim">15.1s · mari_4c9e1a07.mp3 · 242 KB</span>', still: true },
 
-    { node: "wa", file: "sdr", out: tag("wa", "whats →") + 'áudio enviado para +55 31 9••••-2087 <span class="ok">✓✓</span>', wait: 1100 },
+    { node: "wa", file: "sdr", out: tag("wa", "whats →") + 'áudio enviado para +55 •• 9••••-2087 <span class="ok">✓✓</span>', wait: 1100 },
     { blank: 1 },
 
-    { node: "lead", out: tag("lead", "msg ←") + say("lead", "Somando as 12 lojas, uns 1.500 por mês. Hoje é tudo manual e a gente perde muito. Dá pra conversar melhor terça de manhã?"), wait: 900 },
+    { node: "lead", out: tag("lead", "msg ←") + say("lead", "Mais no balcão. No WhatsApp é tudo bagunçado, respondo quando dá. Queria vender mais encomenda de Natal esse ano"), wait: 900 },
 
     { node: "claude", file: "cerebro", spin: '<span class="c-claude">[claude]</span>   reavaliando…', ms: 1400,
-      out: tag("claude", "claude") + 'score <span class="dim">58 →</span> <b class="c-claude">91</b> · lead qualificado' },
-    { node: "claude", out: json({ score: 91, estagio: "pronto", intencao: "reunião com o time", objecao: null, proxima_acao: "agendar_reuniao", horario: "ter 10:00", instrucoes: ["propor terça às 10h", "avisar que o convite vai por e-mail", "perguntar quem mais participa"] }), wait: 900 },
+      out: tag("claude", "claude") + 'score <span class="dim">57 →</span> <b class="c-claude">84</b> · lead qualificado' },
+    { node: "claude", out: json({ score: 84, estagio: "qualificado", intencao: "vender encomendas de Natal", objecao: null, proxima_acao: "agendar_reuniao", horario: null, instrucoes: ["dá tempo de estruturar oferta + WhatsApp antes do Natal", "propor diagnóstico de 30 min", "oferecer qui 10h ou sex 15h"] }), wait: 900 },
 
     { node: "gpt", file: "conversa", spin: '<span class="c-gpt">[gpt]</span>      escrevendo…', ms: 1000,
       out: tag("gpt", "gpt") + 'resposta pronta <span class="dim">· 0.7s</span>' },
-    { node: "gpt", out: say("gpt", "Com 1.500 contatos por mês tem muita venda ficando na mesa, dá pra recuperar boa parte. Deixei terça às 10h reservada pra você, o convite chega no seu e-mail agora. Quer incluir alguém do time de lojas?"), wait: 800 },
+    { node: "gpt", out: say("gpt", "Perfeito, então dá tempo de organizar isso bem antes do Natal. A ideia é montar uma oferta de encomenda clara e um caminho no WhatsApp pra ninguém ficar sem resposta: menos improviso e mais venda previsível. Consigo um diagnóstico de 30 minutos com você quinta às 10h ou sexta às 15h, qual fica melhor?"), wait: 800 },
 
     { node: "eleven", file: "voz", spin: '<span class="c-eleven">[eleven]</span>   sintetizando voz "Mari"…', ms: 1200,
-      out: tag("eleven", "eleven") + "áudio gerado" + wave(22) + '<span class="dim">10.9s · mari_b71f3d52.mp3 · 175 KB</span>', still: true },
-    { node: "wa", file: "sdr", out: tag("wa", "whats →") + 'áudio enviado <span class="ok">✓✓</span>', wait: 600 },
-    { node: "lead", out: tag("lead", "msg ←") + say("lead", "Fechado! Vou chamar a Bianca, que cuida das lojas."), wait: 700 },
-    { node: "wa", out: tag("wa", "agenda") + '<b>Demo Lumen × Ótica Horizonte</b> · ter 10:00–10:30 · Google Meet <span class="ok">✔ criado</span>', wait: 500 },
-    { node: "wa", out: tag("wa", "crm") + 'Rafael Tavares → etapa <b>"Reunião agendada"</b> · score 91', wait: 800 },
+      out: tag("eleven", "eleven") + "áudio gerado" + wave(24) + '<span class="dim">14.3s · mari_b71f3d52.mp3 · 229 KB</span>', still: true },
+    { node: "wa", file: "sdr", out: tag("wa", "whats →") + 'áudio enviado <span class="ok">✓✓</span>', wait: 1000 },
     { blank: 1 },
-    { node: null, out: '<span class="bigok">✔ reunião agendada · 3 mensagens · 2 áudios · 41s de ponta a ponta</span>', wait: 400 },
+
+    { node: "lead", out: tag("lead", "msg ←") + say("lead", "Sexta às 15h fica ótimo!"), wait: 700 },
+
+    { node: "claude", file: "cerebro", spin: '<span class="c-claude">[claude]</span>   reavaliando…', ms: 1100,
+      out: tag("claude", "claude") + 'score <span class="dim">84 →</span> <b class="c-claude">92</b> · pronto para reunião' },
+    { node: "claude", out: json({ estagio: "pronto", proxima_acao: "agendar_reuniao", horario: "sex 15:00", instrucoes: ["confirmar horário", "pedir o volume de encomendas do Natal passado"] }), wait: 800 },
+
+    { node: "gpt", file: "conversa", spin: '<span class="c-gpt">[gpt]</span>      escrevendo…', ms: 900,
+      out: tag("gpt", "gpt") + 'resposta pronta <span class="dim">· 0.6s</span>' },
+    { node: "gpt", out: say("gpt", "Simm, fechado! Sexta às 15h tá reservado pra você, te mando o link por aqui mesmo. Se der, separa quanto você vendeu de encomenda no Natal passado, que aí a gente já chega com número na mesa, combinado?"), wait: 800 },
+
+    { node: "eleven", file: "voz", spin: '<span class="c-eleven">[eleven]</span>   sintetizando voz "Mari"…', ms: 1100,
+      out: tag("eleven", "eleven") + "áudio gerado" + wave(20) + '<span class="dim">11.4s · mari_e93a6b10.mp3 · 182 KB</span>', still: true },
+    { node: "wa", file: "sdr", out: tag("wa", "whats →") + 'áudio enviado <span class="ok">✓✓</span>', wait: 600 },
+    { node: "lead", out: tag("lead", "msg ←") + say("lead", "Combinado, obrigada Mari!"), wait: 700 },
+    { node: "wa", out: tag("wa", "agenda") + '<b>Diagnóstico Trifgest × Doce Ofício</b> · sex 15:00–15:30 · Google Meet <span class="ok">✔ criado</span>', wait: 500 },
+    { node: "wa", out: tag("wa", "crm") + 'Patrícia Moura → etapa <b>"Diagnóstico agendado"</b> · score 92', wait: 800 },
+    { blank: 1 },
+    { node: null, out: '<span class="bigok">✔ diagnóstico agendado · 4 mensagens · 3 áudios · 58s de ponta a ponta</span>', wait: 400 },
     { prompt: 1 }
   ];
 
