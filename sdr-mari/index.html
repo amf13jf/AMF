@@ -331,7 +331,7 @@ pre.code .ln::before {
     <div>
       <div class="eyebrow"><span class="live" aria-hidden="true"></span>Console de laboratório · simulação visual, nenhuma API é chamada</div>
       <h1><span class="name">MARI</span> <span class="rest">// SDR de vendas com IA</span></h1>
-      <p class="lede">A Mari é a SDR do <b class="c-cyan">Grupo Trifgest</b>, marketing e vendas para o setor alimentício. Três modelos, um papel cada: <b class="c-claude">Claude</b> é o cérebro e decide a estratégia, <b class="c-gpt">ChatGPT</b> é a conversa e escreve a fala, <b class="c-eleven">ElevenLabs</b> é a voz da Mari. Tudo roda dentro de um container <b class="c-cyan">Docker</b>. À esquerda está o código; à direita, a execução.</p>
+      <p class="lede">A Mari é a SDR do <b class="c-cyan">Grupo Trifgest</b>, marketing e vendas para o setor alimentício. Três modelos, um papel cada: <b class="c-claude">Claude</b> é o cérebro e decide a estratégia, <b class="c-gpt">ChatGPT</b> é a conversa e escreve a fala, <b class="c-eleven">ElevenLabs</b> é a voz da Mari. Tudo roda dentro de um container <b class="c-cyan">Docker</b>. Neste teste o lead também é uma IA: o <b class="c-lead">Arthur</b>. As duas conversam por WhatsApp durante 3 meses, como numa negociação de verdade. À esquerda está o código; à direita, a execução.</p>
     </div>
     <dl class="spec" aria-label="Ficha técnica">
       <dt>Engenheiro</dt><dd class="eng">Arthur Miranda</dd>
@@ -339,12 +339,13 @@ pre.code .ln::before {
       <dt>Projeto</dt><dd>mari-sdr</dd>
       <dt>Build</dt><dd>v1.0.0 · python 3.12</dd>
       <dt>Imagem</dt><dd>mari-sdr:latest</dd>
+      <dt>Teste</dt><dd>Mari × Arthur (lead IA)</dd>
       <dt>Status</dt><dd class="ok">● online</dd>
     </dl>
   </header>
 
   <section class="pipe" aria-label="Fluxo da Mari">
-    <div class="node" data-node="lead"><span class="led"></span><span class="k">entrada</span><span class="n">Lead</span><span class="d">Mensagem chega pelo WhatsApp</span></div>
+    <div class="node" data-node="lead"><span class="led"></span><span class="k">lead · IA</span><span class="n">Arthur</span><span class="d">Lead simulado por IA que conversa com a Mari</span></div>
     <div class="node" data-node="claude"><span class="led"></span><span class="k">cérebro</span><span class="n">Claude</span><span class="d">Analisa o lead e devolve score, estágio e próxima ação</span></div>
     <div class="node" data-node="gpt"><span class="led"></span><span class="k">conversa</span><span class="n">ChatGPT</span><span class="d">Transforma a estratégia em fala curta e natural</span></div>
     <div class="node" data-node="eleven"><span class="led"></span><span class="k">voz</span><span class="n">ElevenLabs</span><span class="d">Gera o áudio com a voz da Mari</span></div>
@@ -660,7 +661,7 @@ SDR_NOME=Mari
         steps.push({ node: null, out: '<span class="day">── ' + DIAS[d.getDay()] + ", " + data + "/2026 ──</span>", wait: 220 });
       }
       var texto = audio ? "áudio enviado" : "mensagem enviada";
-      var linhaHtml = '<span class="dim">' + hora + "</span>  " + (lead ? tag("lead", "lead") : tag("cyan", "mari")) + texto;
+      var linhaHtml = '<span class="dim">' + hora + "</span>  " + (lead ? tag("lead", "arthur") : tag("cyan", "mari")) + texto;
       if (lead) {
         steps.push({ node: "lead", out: linhaHtml, wait: 420 });
       } else {
@@ -689,6 +690,7 @@ SDR_NOME=Mari
     { out: '           <span class="c-claude">✔ Anthropic</span>   <span class="dim">claude-opus-5-5 · cérebro</span>', wait: 160 },
     { out: '           <span class="c-gpt">✔ OpenAI</span>      <span class="dim">gpt-4o · conversa</span>', wait: 160 },
     { out: '           <span class="c-eleven">✔ ElevenLabs</span>  <span class="dim">eleven_multilingual_v2 · voz</span>', wait: 160 },
+    { out: tag("lead", "teste") + 'lead <b>Arthur</b> conectado <span class="dim">· IA simulando um lead</span>', wait: 300 },
     { out: tag("cyan", "boot") + '<span class="dim">ouvindo WhatsApp…</span>', wait: 600 },
     { blank: 1 }
   ].concat(conversa(), [{ blank: 1 }, { prompt: 1 }]);
