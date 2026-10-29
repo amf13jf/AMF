@@ -62,3 +62,16 @@ painel da Meta, pois envolve login, permissões e (para publicar em nome de
 terceiros) revisão do app pela Meta. Depois de ter o token, dá para eu
 integrar essa parte diretamente aqui na ferramenta (publicação agendada,
 puxar métricas para orientar o calendário de conteúdo, etc.).
+
+## Legendas de vídeo (Reels)
+
+`video_captions/` queima no vídeo a legenda normal, a legenda dinâmica e o
+motion vinho (requer `ffmpeg` e `Pillow`):
+
+```bash
+python -m video_captions.render entrada.mp4 saida.mp4
+```
+
+No macOS ele usa Helvetica Neue e Bodoni 72 automaticamente; fora dele cai
+para Inter e Bodoni Moda. O roteiro com os tempos fica em
+`video_captions/aura_reels4.py`.
