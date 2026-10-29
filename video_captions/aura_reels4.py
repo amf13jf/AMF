@@ -9,10 +9,13 @@ SCENE_CUT = 17.033
 
 # Legenda normal da cena com as duas pessoas: (início, fim, texto)
 STATIC_SUBS = [
-    (0.00, 1.92, "Menina, você acredita que eu escovei meus dentes"),
-    (1.92, 4.48, "e quando cuspi na pia saiu sangue?"),
+    (0.00, 0.94, "Menina, você acredita"),
+    (0.94, 1.92, "que eu escovei meus dentes"),
+    (1.92, 2.98, "e quando cuspi na pia"),
+    (2.98, 4.48, "saiu sangue?"),
     (4.54, 5.80, "Ah, não deve ser nada demais!"),
-    (5.98, 8.10, "E pior, tomei um copo de água gelada,"),
+    (5.98, 7.54, "E pior, tomei um copo"),
+    (7.54, 8.10, "de água gelada,"),
     (8.14, 9.70, "senti uma dor aqui atrás."),
     (10.18, 11.70, "Que bobagem, logo passa."),
     (12.10, 13.12, "Será que é cárie?"),
