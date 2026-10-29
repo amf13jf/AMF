@@ -24,9 +24,9 @@ STATIC_SUBS = [
     (16.24, SCENE_CUT, "Será?"),
 ]
 
-# Legenda dinâmica (estilo Outfit + script): cada bloco é uma lista de linhas
+# Legenda dinâmica (Outfit Bold): cada bloco é uma lista de linhas
 # (papel, alinhamento, [(início, palavra), ...]). Papéis: "n" normal,
-# "s" pequena, "b" grande, "x" cursiva vinho grande (fica por trás).
+# "s" pequena, "b" grande.
 # Alinhamento dentro do bloco: "l", "c" ou "r".
 DYNAMIC_CHUNKS = [
     [("n", "c", [(17.08, "Você"), (17.26, "também")])],
@@ -34,7 +34,7 @@ DYNAMIC_CHUNKS = [
     [("b", "c", [(18.38, "Cuidado,")])],
     [("n", "c", [(19.04, "esses"), (19.22, "sinais")])],
     [("s", "l", [(19.54, "não"), (19.68, "podem"), (19.94, "ser")]),
-     ("x", "c", [(20.12, "ignorados.")])],
+     ("b", "l", [(20.12, "ignorados.")])],
     # 20,75s - 25,15s: motion (ver MOTION abaixo)
     [("s", "l", [(25.16, "E"), (25.26, "uma")]),
      ("b", "l", [(25.38, "avaliação")])],
@@ -44,16 +44,16 @@ DYNAMIC_CHUNKS = [
     [("n", "c", [(27.84, "antes"), (28.26, "que"), (28.40, "o")])],
     [("n", "c", [(28.48, "problema")])],
     [("s", "l", [(28.66, "se")]),
-     ("x", "c", [(28.84, "agrave.")])],
+     ("b", "l", [(28.84, "agrave.")])],
     [("n", "c", [(29.14, "Não"), (29.48, "espere")])],
     [("s", "l", [(29.94, "um"), (30.10, "pequeno")]),
-     ("x", "c", [(30.54, "incômodo")])],
+     ("b", "l", [(30.54, "incômodo")])],
     [("s", "l", [(31.00, "virar"), (31.26, "um")]),
      ("b", "l", [(31.36, "problemão.")])],
     [("n", "c", [(32.32, "Clique"), (32.82, "no"), (32.90, "link")])],
     [("n", "c", [(33.08, "e"), (33.24, "agende")])],
     [("s", "l", [(33.60, "sua")]),
-     ("x", "c", [(33.72, "consulta.")])],
+     ("b", "l", [(33.72, "consulta.")])],
     [("n", "c", [(34.26, "Quanto"), (34.46, "antes")])],
     [("n", "c", [(34.74, "você"), (34.98, "cuidar,")])],
     [("s", "l", [(35.60, "menos"), (35.88, "você")]),

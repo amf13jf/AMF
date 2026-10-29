@@ -52,7 +52,6 @@ FONT_CANDIDATES = {
         (os.path.join(FONT_DIR, "bodoni-moda-latin-400-italic.woff"), None),
     ],
     "cap_sans": [(os.path.join(FONT_DIR, "Outfit-Bold.woff"), None)],
-    "cap_script": [(os.path.join(FONT_DIR, "GreatVibes-Regular.woff"), None)],
     "serif_bold": [
         (os.path.join(FONT_DIR, "Bodoni-Bold.ttf"), None),
         ("/System/Library/Fonts/Supplemental/Bodoni 72.ttc", "bold"),
@@ -193,17 +192,14 @@ def draw_static(canvas, t):
 # ---------------------------------------------------------------- legenda dinâmica
 #
 # Estilo da referência: Outfit Bold branca, letras juntas, 1-3 palavras por vez
-# em corte seco; frases de impacto viram blocos empilhados com tamanhos
-# diferentes e uma palavra cursiva grande em vinho por trás.
+# em corte seco; frases de impacto viram blocos empilhados (pequena + grande).
 
 DYN_CENTER_Y = 1450
 DYN_ROLES = {  # papel: (fonte, tamanho, tracking)
     "n": ("cap_sans", 72, -2.5),
     "s": ("cap_sans", 56, -2.0),
     "b": ("cap_sans", 128, -5.0),
-    "x": ("cap_script", 230, 0.0),
 }
-SCRIPT_COLOR = (158, 30, 64)
 
 
 def tracked_length(text, fnt, track):
@@ -227,7 +223,7 @@ def chunk_layout(ci):
     for role, align, words in lines:
         kind, size, track = DYN_ROLES[role]
         fnt = font(kind, size)
-        space = fnt.getlength(" ") * (0.8 if role != "x" else 1.0)
+        space = fnt.getlength(" ") * 0.8
         xs, x = [], 0
         for _, w in words:
             xs.append(x)
@@ -237,16 +233,11 @@ def chunk_layout(ci):
     block_w = max(widths)
     left = (W - block_w) / 2
 
-    # baselines: linhas empilhadas; a cursiva sobrepõe as vizinhas
     bases, y = [], 0
     for i, (role, _, _) in enumerate(lines):
         size = DYN_ROLES[role][1]
         if i:
-            prev = DYN_ROLES[lines[i - 1][0]][1]
-            if role == "x" or lines[i - 1][0] == "x":
-                y += size * 0.56 if role == "x" else size * 0.55
-            else:
-                y += size * 0.78 + prev * 0.12
+            y += size * 0.78 + DYN_ROLES[lines[i - 1][0]][1] * 0.12
         bases.append(y)
     first_cap = DYN_ROLES[lines[0][0]][1] * 0.72
     shift = DYN_CENTER_Y - (bases[-1] - first_cap) / 2 - bases[0]
@@ -277,13 +268,11 @@ def draw_dynamic(canvas, t):
         layer = Image.new("RGBA", (W, H), (0, 0, 0, 0))
         d = ImageDraw.Draw(layer)
         placed = chunk_layout(ci)
-        # cursiva primeiro (fica por trás)
-        for role, ws, word, x, base in sorted(placed, key=lambda p: p[0] != "x"):
+        for role, ws, word, x, base in placed:
             if t < ws - 0.03:
                 continue
             kind, size, track = DYN_ROLES[role]
-            fill = SCRIPT_COLOR + (255,) if role == "x" else WHITE + (255,)
-            draw_tracked(d, x, base, word, font(kind, size), track, fill)
+            draw_tracked(d, x, base, word, font(kind, size), track, WHITE + (255,))
         # sombra suave só onde há texto
         bbox = layer.getbbox()
         if not bbox:
