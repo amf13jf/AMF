@@ -51,6 +51,8 @@ FONT_CANDIDATES = {
         ("/System/Library/Fonts/Supplemental/Bodoni 72.ttc", "book italic"),
         (os.path.join(FONT_DIR, "bodoni-moda-latin-400-italic.woff"), None),
     ],
+    "cap_sans": [(os.path.join(FONT_DIR, "Outfit-Bold.woff"), None)],
+    "cap_script": [(os.path.join(FONT_DIR, "GreatVibes-Regular.woff"), None)],
     "serif_bold": [
         (os.path.join(FONT_DIR, "Bodoni-Bold.ttf"), None),
         ("/System/Library/Fonts/Supplemental/Bodoni 72.ttc", "bold"),
@@ -189,107 +191,112 @@ def draw_static(canvas, t):
 
 
 # ---------------------------------------------------------------- legenda dinâmica
+#
+# Estilo da referência: Outfit Bold branca, letras juntas, 1-3 palavras por vez
+# em corte seco; frases de impacto viram blocos empilhados com tamanhos
+# diferentes e uma palavra cursiva grande em vinho por trás.
 
-DYN_SIZE = 62
-DYN_KEY_SIZE = 84
-DYN_BASELINE = 1470
-DYN_MAX_W = 1000
-KEY_GAP = 18  # folga para o fundo vinho do destaque
+DYN_CENTER_Y = 1450
+DYN_ROLES = {  # papel: (fonte, tamanho, tracking)
+    "n": ("cap_sans", 72, -2.5),
+    "s": ("cap_sans", 56, -2.0),
+    "b": ("cap_sans", 128, -5.0),
+    "x": ("cap_script", 230, 0.0),
+}
+SCRIPT_COLOR = (158, 30, 64)
+
+
+def tracked_length(text, fnt, track):
+    return sum(fnt.getlength(c) for c in text) + track * (len(text) - 1)
+
+
+def draw_tracked(d, x, base, text, fnt, track, fill):
+    if not track:
+        d.text((x, base), text, font=fnt, anchor="ls", fill=fill)
+        return
+    for c in text:
+        d.text((x, base), c, font=fnt, anchor="ls", fill=fill)
+        x += fnt.getlength(c) + track
 
 
 @lru_cache(maxsize=None)
-def word_sprite(word):
-    if word.startswith("*"):
-        return shadowed_text(word[1:], font("serif_italic", DYN_KEY_SIZE), fill=WHITE,
-                             shadow=0.35, blur=6, offset=2)
-    return shadowed_text(word, font("sans_med", DYN_SIZE), shadow=0.7, blur=7, offset=3)
+def chunk_layout(ci):
+    """Posição de cada palavra do bloco: lista de (linha, tempo, palavra, x, baseline)."""
+    lines = script.DYNAMIC_CHUNKS[ci]
+    widths, words_x = [], []
+    for role, align, words in lines:
+        kind, size, track = DYN_ROLES[role]
+        fnt = font(kind, size)
+        space = fnt.getlength(" ") * (0.8 if role != "x" else 1.0)
+        xs, x = [], 0
+        for _, w in words:
+            xs.append(x)
+            x += tracked_length(w, fnt, track) + space
+        widths.append(x - space)
+        words_x.append(xs)
+    block_w = max(widths)
+    left = (W - block_w) / 2
 
+    # baselines: linhas empilhadas; a cursiva sobrepõe as vizinhas
+    bases, y = [], 0
+    for i, (role, _, _) in enumerate(lines):
+        size = DYN_ROLES[role][1]
+        if i:
+            prev = DYN_ROLES[lines[i - 1][0]][1]
+            if role == "x" or lines[i - 1][0] == "x":
+                y += size * 0.56 if role == "x" else size * 0.55
+            else:
+                y += size * 0.78 + prev * 0.12
+        bases.append(y)
+    first_cap = DYN_ROLES[lines[0][0]][1] * 0.72
+    shift = DYN_CENTER_Y - (bases[-1] - first_cap) / 2 - bases[0]
 
-@lru_cache(maxsize=None)
-def pill(word):
-    """Fundo vinho arredondado do destaque (desenhado em 4x para antialias)."""
-    fnt = font("serif_italic", DYN_KEY_SIZE)
-    l, t, r, b = fnt.getbbox(word[1:], anchor="ls")
-    px, py = 18, 10
-    w, h = int(r - l + 2 * px), int(b - t + 2 * py)
-    ss = 4
-    big = Image.new("RGBA", (w * ss, h * ss), (0, 0, 0, 0))
-    d = ImageDraw.Draw(big)
-    for i in range(h * ss):  # degradê vertical vinho
-        k = i / (h * ss)
-        c = tuple(int(WINE[j] * (1 - k) + WINE_DEEP[j] * k) for j in range(3))
-        d.line([(0, i), (w * ss, i)], fill=c + (235,))
-    mask = Image.new("L", big.size, 0)
-    ImageDraw.Draw(mask).rounded_rectangle([0, 0, w * ss - 1, h * ss - 1], radius=16 * ss,
-                                           fill=255)
-    big.putalpha(Image.composite(big.getchannel("A"), mask, mask))
-    return big.resize((w, h), Image.LANCZOS), l - px, t - py
-
-
-def layout_chunk(chunk):
-    """Posições (x, linha) de cada palavra, centralizadas, com quebra de linha."""
-    space = font("sans_med", DYN_SIZE).getlength(" ") * 1.1
-    lines, cur, cur_w = [], [], 0
-    for item in chunk:
-        adv = word_sprite(item[2])[3]
-        if item[2].startswith("*"):
-            adv += 2 * KEY_GAP
-        extra = adv + (space if cur else 0)
-        if cur and cur_w + extra > DYN_MAX_W:
-            lines.append((cur, cur_w))
-            cur, cur_w = [], 0
-            extra = adv
-        cur.append((item, adv))
-        cur_w += extra
-    lines.append((cur, cur_w))
     out = []
-    for li, (items, lw) in enumerate(lines):
-        x = (W - lw) / 2
-        for item, adv in items:
-            gap = KEY_GAP if item[2].startswith("*") else 0
-            out.append((item, x + gap, li))
-            x += adv + space
-    return out, len(lines)
+    for li, (role, align, words) in enumerate(lines):
+        if align == "l":
+            x0 = left
+        elif align == "r":
+            x0 = left + block_w - widths[li]
+        else:
+            x0 = (W - widths[li]) / 2
+        for (t, w), wx in zip(words, words_x[li]):
+            out.append((role, t, w, x0 + wx, bases[li] + shift))
+    return out
 
 
 def draw_dynamic(canvas, t):
     chunks = script.DYNAMIC_CHUNKS
     m = script.MOTION
     for ci, chunk in enumerate(chunks):
-        start = chunk[0][0] - 0.04
-        nxt = chunks[ci + 1][0][0] - 0.04 if ci + 1 < len(chunks) else 1e9
-        end = min(nxt, chunk[-1][1] + 0.45)
-        if start < m["start"] < end:  # some antes do motion entrar
-            end = m["start"] + 0.04
-        if not (start <= t < end):
+        start = chunk[0][2][0][0] - 0.03
+        nxt = chunks[ci + 1][0][2][0][0] - 0.03 if ci + 1 < len(chunks) else 1e9
+        if start < m["start"] < nxt:  # some antes do motion entrar
+            nxt = m["start"] + 0.04
+        if not (start <= t < nxt):
             continue
-        out_a = clamp((end - t) / 0.08) if end < nxt else 1.0
-        placed, n_lines = layout_chunk(chunk)
-        line_h = int(DYN_KEY_SIZE * 1.1)
-        top_shift = (n_lines - 1) * line_h / 2
-        for (ws, we, word), x, li in placed:
-            k = (t - ws + 0.04) / 0.16
-            if k <= 0:
+        layer = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+        d = ImageDraw.Draw(layer)
+        placed = chunk_layout(ci)
+        # cursiva primeiro (fica por trás)
+        for role, ws, word, x, base in sorted(placed, key=lambda p: p[0] != "x"):
+            if t < ws - 0.03:
                 continue
-            p = ease_out_back(k)
-            a = clamp(k * 1.6) * out_a
-            img, ox, base, adv = word_sprite(word)
-            by = DYN_BASELINE + li * line_h - top_shift
-            scale = 0.82 + 0.18 * p
-            if word.startswith("*"):
-                pimg, pl, pt = pill(word)
-                wipe = ease_out_cubic((t - ws + 0.04) / 0.22)
-                cw = max(1, int(pimg.width * wipe))
-                paste(canvas, with_alpha(pimg.crop((0, 0, cw, pimg.height)), out_a),
-                      x + pl, by + pt)
-            if scale < 0.999:
-                img2 = scaled(img, scale)
-                cx, cy = x + adv / 2, by - DYN_SIZE * 0.35
-                dx = cx - (ox + adv / 2) * scale
-                dy = cy - (base - DYN_SIZE * 0.35) * scale
-                paste(canvas, with_alpha(img2, a), dx, dy)
-            else:
-                paste(canvas, with_alpha(img, a), x - ox, by - base)
+            kind, size, track = DYN_ROLES[role]
+            fill = SCRIPT_COLOR + (255,) if role == "x" else WHITE + (255,)
+            draw_tracked(d, x, base, word, font(kind, size), track, fill)
+        # sombra suave só onde há texto
+        bbox = layer.getbbox()
+        if not bbox:
+            return
+        pad = 30
+        box = (max(0, bbox[0] - pad), max(0, bbox[1] - pad), min(W, bbox[2] + pad),
+               min(H, bbox[3] + pad))
+        crop = layer.crop(box)
+        sh = Image.new("RGBA", crop.size, (0, 0, 0, 0))
+        sh.putalpha(crop.getchannel("A").filter(ImageFilter.GaussianBlur(9)).point(
+            lambda v: int(v * 0.55)))
+        paste(canvas, sh, box[0], box[1] + 3)
+        paste(canvas, crop, box[0], box[1])
         return
 
 

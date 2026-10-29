@@ -24,33 +24,40 @@ STATIC_SUBS = [
     (16.24, SCENE_CUT, "Será?"),
 ]
 
-# Legenda dinâmica: cada bloco é uma lista de (início, fim, palavra).
-# Palavra com "*" na frente vira destaque em Bodoni itálico com fundo vinho.
+# Legenda dinâmica (estilo Outfit + script): cada bloco é uma lista de linhas
+# (papel, alinhamento, [(início, palavra), ...]). Papéis: "n" normal,
+# "s" pequena, "b" grande, "x" cursiva vinho grande (fica por trás).
+# Alinhamento dentro do bloco: "l", "c" ou "r".
 DYNAMIC_CHUNKS = [
-    [(17.08, 17.26, "Você"), (17.26, 17.56, "também")],
-    [(17.56, 17.82, "pensa"), (17.82, 18.20, "*assim?")],
-    [(18.38, 18.90, "*Cuidado,")],
-    [(19.04, 19.22, "esses"), (19.22, 19.54, "sinais")],
-    [(19.54, 19.68, "não"), (19.68, 19.94, "podem"), (19.94, 20.12, "ser")],
-    [(20.12, 20.70, "*ignorados.")],
-    # 20,8s - 25,1s: motion (ver MOTION abaixo)
-    [(25.16, 25.26, "E"), (25.26, 25.38, "uma"), (25.38, 25.94, "*avaliação")],
-    [(25.94, 26.20, "pode"), (26.20, 26.82, "identificar")],
-    [(26.82, 27.12, "o"), (27.12, 27.20, "que"), (27.20, 27.38, "está"),
-     (27.38, 27.84, "acontecendo")],
-    [(27.84, 28.26, "antes"), (28.26, 28.40, "que"), (28.40, 28.48, "o"),
-     (28.48, 28.66, "problema")],
-    [(28.66, 28.84, "se"), (28.84, 29.14, "*agrave.")],
-    [(29.14, 29.48, "Não"), (29.48, 29.94, "espere")],
-    [(29.94, 30.10, "um"), (30.10, 30.54, "pequeno"), (30.54, 31.00, "*incômodo")],
-    [(31.00, 31.26, "virar"), (31.26, 31.36, "um"), (31.36, 31.98, "*problemão.")],
-    [(32.32, 32.82, "Clique"), (32.82, 32.90, "no"), (32.90, 33.08, "*link")],
-    [(33.08, 33.24, "e"), (33.24, 33.60, "agende")],
-    [(33.60, 33.72, "sua"), (33.72, 34.18, "*consulta.")],
-    [(34.26, 34.46, "Quanto"), (34.46, 34.74, "antes")],
-    [(34.74, 34.98, "você"), (34.98, 35.56, "*cuidar,")],
-    [(35.60, 35.88, "menos"), (35.88, 36.22, "você")],
-    [(36.22, 37.03, "*gasta.")],
+    [("n", "c", [(17.08, "Você"), (17.26, "também")])],
+    [("n", "c", [(17.56, "pensa"), (17.82, "assim?")])],
+    [("b", "c", [(18.38, "Cuidado,")])],
+    [("n", "c", [(19.04, "esses"), (19.22, "sinais")])],
+    [("s", "l", [(19.54, "não"), (19.68, "podem"), (19.94, "ser")]),
+     ("x", "c", [(20.12, "ignorados.")])],
+    # 20,75s - 25,15s: motion (ver MOTION abaixo)
+    [("s", "l", [(25.16, "E"), (25.26, "uma")]),
+     ("b", "l", [(25.38, "avaliação")])],
+    [("n", "c", [(25.94, "pode"), (26.20, "identificar")])],
+    [("n", "c", [(26.82, "o"), (27.12, "que"), (27.20, "está")])],
+    [("n", "c", [(27.38, "acontecendo")])],
+    [("n", "c", [(27.84, "antes"), (28.26, "que"), (28.40, "o")])],
+    [("n", "c", [(28.48, "problema")])],
+    [("s", "l", [(28.66, "se")]),
+     ("x", "c", [(28.84, "agrave.")])],
+    [("n", "c", [(29.14, "Não"), (29.48, "espere")])],
+    [("s", "l", [(29.94, "um"), (30.10, "pequeno")]),
+     ("x", "c", [(30.54, "incômodo")])],
+    [("s", "l", [(31.00, "virar"), (31.26, "um")]),
+     ("b", "l", [(31.36, "problemão.")])],
+    [("n", "c", [(32.32, "Clique"), (32.82, "no"), (32.90, "link")])],
+    [("n", "c", [(33.08, "e"), (33.24, "agende")])],
+    [("s", "l", [(33.60, "sua")]),
+     ("x", "c", [(33.72, "consulta.")])],
+    [("n", "c", [(34.26, "Quanto"), (34.46, "antes")])],
+    [("n", "c", [(34.74, "você"), (34.98, "cuidar,")])],
+    [("s", "l", [(35.60, "menos"), (35.88, "você")]),
+     ("b", "l", [(36.22, "gasta.")])],
 ]
 
 # Motion "Uma cárie pode começar sem dor ... até o sangramento de gengiva
