@@ -595,6 +595,26 @@ def probe_frames(path):
     return int(out.strip())
 
 
+def cut_filter(duration):
+    """Overlay das legendas + remoção dos trechos em script.CUTS (vídeo e áudio)."""
+    keep, pos = [], 0.0
+    for c0, c1 in sorted(getattr(script, "CUTS", [])):
+        keep.append((pos, c0))
+        pos = c1
+    keep.append((pos, duration))
+    n = len(keep)
+    parts = ["[0:v][1:v]overlay=0:0:format=auto,format=yuv420p,"
+             f"split={n}" + "".join(f"[vs{i}]" for i in range(n)),
+             f"[0:a]asplit={n}" + "".join(f"[as{i}]" for i in range(n))]
+    for i, (k0, k1) in enumerate(keep):
+        fade = 0.012  # evita estalo nas emendas do áudio
+        parts.append(f"[vs{i}]trim={k0}:{k1},setpts=PTS-STARTPTS[v{i}]")
+        parts.append(f"[as{i}]atrim={k0}:{k1},asetpts=PTS-STARTPTS,"
+                     f"afade=t=in:d={fade},afade=t=out:st={k1 - k0 - fade}:d={fade}[a{i}]")
+    parts.append("".join(f"[v{i}][a{i}]" for i in range(n)) + f"concat=n={n}:v=1:a=1[v][a]")
+    return ";".join(parts)
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -625,9 +645,9 @@ def main():
     cmd = [
         "ffmpeg", "-v", "error", "-y", "-i", args.input,
         "-f", "rawvideo", "-pix_fmt", "rgba", "-s", f"{W}x{H}", "-r", str(FPS), "-i", "-",
-        "-filter_complex", "[0:v][1:v]overlay=0:0:format=auto,format=yuv420p[v]",
-        "-map", "[v]", "-map", "0:a?", "-c:v", "libx264", "-crf", "17", "-preset", "medium",
-        "-c:a", "copy", "-movflags", "+faststart", args.output,
+        "-filter_complex", cut_filter(n / FPS),
+        "-map", "[v]", "-map", "[a]", "-c:v", "libx264", "-crf", "17", "-preset", "medium",
+        "-c:a", "aac", "-b:a", "192k", "-movflags", "+faststart", args.output,
     ]
     proc = subprocess.Popen(cmd, stdin=subprocess.PIPE)
     for i in range(n):

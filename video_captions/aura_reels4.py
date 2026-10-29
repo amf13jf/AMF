@@ -50,15 +50,15 @@ DYNAMIC_CHUNKS = [
      ("b", "l", [(30.54, "incômodo")])],
     [("s", "l", [(31.00, "virar"), (31.26, "um")]),
      ("b", "l", [(31.36, "problemão.")])],
-    [("n", "c", [(32.32, "Clique"), (32.82, "no"), (32.90, "link")])],
-    [("n", "c", [(33.08, "e"), (33.24, "agende")])],
-    [("s", "l", [(33.60, "sua")]),
-     ("b", "l", [(33.72, "consulta.")])],
+    # 32,15s - 34,20s: "Clique no link e agende sua consulta." (removido, ver CUTS)
     [("n", "c", [(34.26, "Quanto"), (34.46, "antes")])],
     [("n", "c", [(34.74, "você"), (34.98, "cuidar,")])],
     [("s", "l", [(35.60, "menos"), (35.88, "você")]),
      ("b", "l", [(36.22, "gasta.")])],
 ]
+
+# Trechos removidos do vídeo final: (início, fim)
+CUTS = [(32.15, 34.20)]
 
 # Motion "Uma cárie pode começar sem dor ... até o sangramento de gengiva
 # não deve ser ignorado."
