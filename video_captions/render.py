@@ -10,6 +10,7 @@ Moda (incluída).
 """
 
 import argparse
+import importlib
 import math
 import os
 import shutil
@@ -256,13 +257,15 @@ def chunk_layout(ci):
 
 
 def draw_dynamic(canvas, t):
+    if any(m["start"] <= t < m["end"] for m in motions()):
+        return  # nada de legenda por baixo do motion (nem no fade de saída)
     chunks = script.DYNAMIC_CHUNKS
-    m = script.MOTION
     for ci, chunk in enumerate(chunks):
         start = chunk[0][2][0][0] - 0.03
         nxt = chunks[ci + 1][0][2][0][0] - 0.03 if ci + 1 < len(chunks) else 1e9
-        if start < m["start"] < nxt:  # some antes do motion entrar
-            nxt = m["start"] + 0.04
+        for m in motions():
+            if start < m["start"] < nxt:  # some antes do motion entrar
+                nxt = m["start"] + 0.04
         if not (start <= t < nxt):
             continue
         layer = Image.new("RGBA", (W, H), (0, 0, 0, 0))
@@ -533,46 +536,144 @@ def draw_label(canvas, text, t, t0, alpha):
     paste(canvas, layer, 0, CIRCLE_C[1] - CIRCLE_R - 110)
 
 
-def draw_motion(canvas, t):
-    m = script.MOTION
-    t0, t1, sw = m["start"], m["end"], m["switch"]
-    if not (t0 <= t < t1):
-        return
-    layer = motion_background().copy()
+def motions():
+    return getattr(script, "MOTIONS", [])
 
-    # círculo e objeto
-    draw_dashed_circle(layer, t, ease_in_out((t - t0 - 0.15) / 0.7), 1.0)
-    tooth_out = ease_in_out((t - sw) / 0.25)
-    tooth_s = ease_out_back((t - t0 - 0.2) / 0.5) * (1 - 0.4 * tooth_out)
-    draw_object(layer, tooth_sprite(), t, tooth_s, 1 - tooth_out)
+
+@lru_cache(maxsize=None)
+def implant_sprite():
+    """Implante: coroa (parte de cima do dente) sobre um parafuso metálico."""
+    size, pad = 380, 60
+    crown = [(x, y) for x, y in TOOTH if y <= 0.56]
+    screw = [(0.36, 0.50), (0.64, 0.50), (0.61, 0.93), (0.50, 1.02), (0.39, 0.93)]
+    img = _object_sprite(screw, size, (232, 232, 236), (136, 138, 148), (104, 106, 116),
+                         (0.40, 0.55, 0.47, 0.90))
+    img.alpha_composite(_object_sprite(crown, size, (255, 253, 250), (236, 226, 220),
+                                       (205, 188, 184), (0.22, 0.12, 0.45, 0.32)))
+    d = ImageDraw.Draw(img)
+    for i in range(7):  # roscas
+        y = 0.60 + i * 0.055
+        half = 0.14 - (y - 0.55) * 0.12
+        d.line([(pad + (0.5 - half) * size, pad + y * size),
+                (pad + (0.5 + half) * size, pad + (y + 0.02) * size)],
+               fill=(96, 98, 108, 200), width=4)
+    return img
+
+
+@lru_cache(maxsize=None)
+def tooth_outline():
+    """Contorno tracejado do dente (para o “dente perdido”)."""
+    size, pad, ss = 380, 60, 2
+    n = (size + 2 * pad) * ss
+    img = Image.new("RGBA", (n, n), (0, 0, 0, 0))
+    d = ImageDraw.Draw(img)
+    pts = [((pad + x * size) * ss, (pad + y * size) * ss) for x, y in TOOTH]
+    for i in range(0, len(pts) - 1):
+        if (i // 6) % 2 == 0:
+            d.line([pts[i], pts[i + 1]], fill=WINE_DEEP + (220,), width=4 * ss)
+    return img.resize((n // ss, n // ss), Image.LANCZOS)
+
+
+def draw_icon(layer, phase, t, t_in, t_out):
+    """Ícone da fase: entra com “pop” em t_in e sai em t_out."""
+    out = ease_in_out((t - t_out) / 0.25) if t_out else 0.0
+    s = ease_out_back((t - t_in) / 0.5) * (1 - 0.4 * out)
+    a = clamp((t - t_in) / 0.2) * (1 - out)
+    icon = phase.get("icon", "tooth")
+    if icon == "lost":  # dente que some e vira só o contorno tracejado
+        k = ease_in_out((t - phase["lose"]) / 0.45)
+        draw_object(layer, tooth_outline(), t, s, a * k)
+        draw_object(layer, tooth_sprite(), t, s, a * (1 - 0.85 * k))
+    else:
+        sprite = {"tooth": tooth_sprite, "drop": drop_sprite, "implant": implant_sprite}[icon]
+        draw_object(layer, sprite(), t, s, a)
+    if "spot" in phase:
+        draw_caries_spot(layer, t, phase["spot"], s, a)
+
+
+def draw_signals(layer, m, t):
+    """Duas fases (ícone + linha + palavra grande com brilho)."""
+    t0, sw = m["start"], m["switch"]
     p1, p2 = m["phase1"], m["phase2"]
-    draw_caries_spot(layer, t, p1["line"][1][0], tooth_s, 1 - tooth_out)
-    drop_s = ease_out_back((t - sw - 0.1) / 0.5)
-    draw_object(layer, drop_sprite(), t, drop_s, clamp((t - sw - 0.1) / 0.2))
-
-    # textos
-    a1 = 1 - ease_in_out((t - sw) / 0.2)
-    if a1 > 0:
-        draw_label(layer, p1["label"], t, t0 + 0.3, a1)
-        draw_word_line(layer, p1["line"], t, TEXT_LINE_Y, a1)
-        draw_glow_word(layer, p1["big"][0], p1["big"][1], t, TEXT_LINE_Y + 230, a1)
+    draw_icon(layer, p1, t, t0 + 0.2, sw)
     if t >= sw:
-        a2 = clamp((t - sw) / 0.2)
-        draw_label(layer, p2["label"], t, sw + 0.1, a2)
-        draw_word_line(layer, p2["line"], t, TEXT_LINE_Y, a2)
-        draw_word_line(layer, p2["line2"], t, TEXT_LINE_Y + 78, a2)
-        draw_glow_word(layer, p2["big"][0], p2["big"][1], t, TEXT_LINE_Y + 300, a2)
+        draw_icon(layer, p2, t, sw + 0.1, None)
+    for phase, t_in, a in ((p1, t0 + 0.3, 1 - ease_in_out((t - sw) / 0.2)),
+                           (p2, sw + 0.1, clamp((t - sw) / 0.2) if t >= sw else 0.0)):
+        if a <= 0:
+            continue
+        draw_label(layer, phase["label"], t, t_in, a)
+        draw_word_line(layer, phase["line"], t, TEXT_LINE_Y, a)
+        big_y = TEXT_LINE_Y + 230
+        if "line2" in phase:
+            draw_word_line(layer, phase["line2"], t, TEXT_LINE_Y + 78, a)
+            big_y = TEXT_LINE_Y + 300
+        draw_glow_word(layer, phase["big"][0], phase["big"][1], t, big_y, a)
 
-    # entrada: revela em círculo a partir do centro; saída: fade
-    k_in = ease_in_out((t - t0) / 0.4)
-    if k_in < 1:
-        mask = Image.new("L", (W, H), 0)
-        r = k_in * math.hypot(W, H)
-        cx, cy = CIRCLE_C
-        ImageDraw.Draw(mask).ellipse([cx - r, cy - r, cx + r, cy + r], fill=255)
-        layer.putalpha(ImageChops.multiply(layer.getchannel("A"), mask))
-    a_out = 1 - ease_in_out((t - (t1 - 0.3)) / 0.3)
-    canvas.alpha_composite(with_alpha(layer, a_out))
+
+def draw_glow_text(canvas, parts, base, alpha):
+    """Texto centralizado em vinho com brilho. parts: [(texto, fonte), ...]."""
+    total = sum(f.getlength(txt) for txt, f in parts)
+    lh = 420
+    by = 300
+    layer = Image.new("RGBA", (W, lh), (0, 0, 0, 0))
+    d = ImageDraw.Draw(layer)
+    x = (W - total) / 2
+    for txt, f in parts:
+        d.text((x, by), txt, font=f, anchor="ls", fill=WINE + (int(255 * alpha),))
+        x += f.getlength(txt)
+    glow = layer.getchannel("A").filter(ImageFilter.GaussianBlur(26)).point(
+        lambda v: int(min(255, v * 1.4)))
+    halo = Image.new("RGBA", layer.size, WINE_LIGHT + (0,))
+    halo.putalpha(glow.point(lambda v: int(v * 0.55)))
+    paste(canvas, halo, 0, base - by)
+    paste(canvas, layer, 0, base - by)
+
+
+def draw_counter(layer, m, t):
+    """Número que conta até o valor (estilo da referência) + linhas de texto."""
+    t0 = m["start"]
+    draw_icon(layer, {"icon": m.get("icon", "tooth")}, t, t0 + 0.2, None)
+    draw_label(layer, m["label"], t, m.get("label_at", t0 + 0.2), 1.0)
+    nt, value = m["number"]
+    k = clamp((t - nt + 0.05) / 0.7)
+    if k > 0:
+        n = round(value * ease_out_cubic(k))
+        parts = [(str(n), font("serif_bold", 300))]
+        ut, unit = m["unit"]
+        ku = clamp((t - ut + 0.05) / 0.25)
+        if ku > 0:
+            parts.append((" " + unit, font("serif_italic", 130)))
+        rise = (1 - ease_out_cubic(k * 2)) * 40
+        draw_glow_text(layer, parts, TEXT_LINE_Y + 60 + rise, clamp(k * 3))
+    draw_word_line(layer, m["line"], t, TEXT_LINE_Y + 200, 1.0)
+    if "line2" in m:
+        draw_word_line(layer, m["line2"], t, TEXT_LINE_Y + 278, 1.0)
+
+
+def draw_motion(canvas, t):
+    for m in motions():
+        t0, t1 = m["start"], m["end"]
+        if not (t0 <= t < t1):
+            continue
+        layer = motion_background().copy()
+        draw_dashed_circle(layer, t, ease_in_out((t - t0 - 0.15) / 0.7), 1.0)
+        if m.get("kind", "signals") == "counter":
+            draw_counter(layer, m, t)
+        else:
+            draw_signals(layer, m, t)
+
+        # entrada: revela em círculo a partir do centro; saída: fade
+        k_in = ease_in_out((t - t0) / 0.4)
+        if k_in < 1:
+            mask = Image.new("L", (W, H), 0)
+            r = k_in * math.hypot(W, H)
+            cx, cy = CIRCLE_C
+            ImageDraw.Draw(mask).ellipse([cx - r, cy - r, cx + r, cy + r], fill=255)
+            layer.putalpha(ImageChops.multiply(layer.getchannel("A"), mask))
+        a_out = 1 - ease_in_out((t - (t1 - 0.3)) / 0.3)
+        canvas.alpha_composite(with_alpha(layer, a_out))
+        return
 
 
 # ---------------------------------------------------------------- render
@@ -580,7 +681,7 @@ def draw_motion(canvas, t):
 
 def render_frame(t):
     canvas = Image.new("RGBA", (W, H), (0, 0, 0, 0))
-    if t < script.SCENE_CUT:
+    if t < getattr(script, "SCENE_CUT", 0):
         draw_static(canvas, t)
     else:
         draw_dynamic(canvas, t)
@@ -620,9 +721,14 @@ def main():
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("input")
     ap.add_argument("output")
+    ap.add_argument("--script", default="aura_reels4",
+                    help="roteiro em video_captions/ (ex.: aura_implante)")
     ap.add_argument("--preview", type=float, nargs="*",
                     help="só salva JPGs desses instantes (segundos) ao lado da saída")
     args = ap.parse_args()
+
+    global script
+    script = importlib.import_module(f"{__package__}.{args.script}")
 
     for kind in FONT_CANDIDATES:
         FONTS[kind] = resolve_font(kind)

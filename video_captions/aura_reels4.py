@@ -62,20 +62,24 @@ CUTS = [(32.15, 34.20)]
 
 # Motion "Uma cárie pode começar sem dor ... até o sangramento de gengiva
 # não deve ser ignorado."
-MOTION = {
+MOTIONS = [{
+    "kind": "signals",
     "start": 20.75,
     "end": 25.15,
     "switch": 22.50,  # troca do sinal 01 (cárie) para o sinal 02 (gengiva)
     "phase1": {
         "label": "SINAL 01",
+        "icon": "tooth",
+        "spot": 21.02,  # ponto da cárie aparece com a palavra "cárie"
         "line": [(20.86, "Uma"), (21.02, "*cárie"), (21.32, "pode"), (21.46, "começar")],
         "big": (21.74, "sem dor."),
     },
     "phase2": {
         "label": "SINAL 02",
+        "icon": "drop",
         "line": [(22.66, "Até"), (22.82, "o"), (22.88, "sangramento"), (23.18, "de"),
                  (23.52, "*gengiva")],
         "line2": [(23.90, "não"), (24.12, "deve"), (24.26, "ser")],
         "big": (24.44, "ignorado."),
     },
-}
+}]
