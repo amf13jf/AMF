@@ -75,3 +75,10 @@ python -m video_captions.render entrada.mp4 saida.mp4
 No macOS ele usa Helvetica Neue e Bodoni 72 automaticamente; fora dele cai
 para Inter e Bodoni Moda. O roteiro com os tempos fica em
 `video_captions/aura_reels4.py`.
+
+Para tirar a música de fundo (mantém só a voz), use o HTDemucs em ONNX
+(`htdemucs.onnx`, o mesmo do pacote npm `demucs`) — requer `onnxruntime`:
+
+```bash
+python -m video_captions.remove_music entrada.mp4 voz.wav --model htdemucs.onnx
+```
