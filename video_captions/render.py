@@ -203,6 +203,13 @@ DYN_ROLES = {  # papel: (fonte, tamanho, tracking)
 }
 
 
+def role(name):
+    """(fonte, tamanho, tracking) do papel, com os tamanhos do roteiro se houver."""
+    kind, size, track = DYN_ROLES[name]
+    new = getattr(script, "DYN_ROLE_SIZES", {}).get(name, size)
+    return kind, new, track * new / size
+
+
 def tracked_length(text, fnt, track):
     return sum(fnt.getlength(c) for c in text) + track * (len(text) - 1)
 
@@ -221,8 +228,8 @@ def chunk_layout(ci):
     """Posição de cada palavra do bloco: lista de (linha, tempo, palavra, x, baseline)."""
     lines = script.DYNAMIC_CHUNKS[ci]
     widths, words_x = [], []
-    for role, align, words in lines:
-        kind, size, track = DYN_ROLES[role]
+    for role_name, align, words in lines:
+        kind, size, track = role(role_name)
         fnt = font(kind, size)
         space = fnt.getlength(" ") * 0.8
         xs, x = [], 0
@@ -235,16 +242,16 @@ def chunk_layout(ci):
     left = (W - block_w) / 2
 
     bases, y = [], 0
-    for i, (role, _, _) in enumerate(lines):
-        size = DYN_ROLES[role][1]
+    for i, (name, _, _) in enumerate(lines):
+        size = role(name)[1]
         if i:
-            y += size * 0.78 + DYN_ROLES[lines[i - 1][0]][1] * 0.12
+            y += size * 0.78 + role(lines[i - 1][0])[1] * 0.12
         bases.append(y)
-    first_cap = DYN_ROLES[lines[0][0]][1] * 0.72
+    first_cap = role(lines[0][0])[1] * 0.72
     shift = DYN_CENTER_Y - (bases[-1] - first_cap) / 2 - bases[0]
 
     out = []
-    for li, (role, align, words) in enumerate(lines):
+    for li, (name, align, words) in enumerate(lines):
         if align == "l":
             x0 = left
         elif align == "r":
@@ -252,7 +259,7 @@ def chunk_layout(ci):
         else:
             x0 = (W - widths[li]) / 2
         for (t, w), wx in zip(words, words_x[li]):
-            out.append((role, t, w, x0 + wx, bases[li] + shift))
+            out.append((name, t, w, x0 + wx, bases[li] + shift))
     return out
 
 
@@ -271,10 +278,10 @@ def draw_dynamic(canvas, t):
         layer = Image.new("RGBA", (W, H), (0, 0, 0, 0))
         d = ImageDraw.Draw(layer)
         placed = chunk_layout(ci)
-        for role, ws, word, x, base in placed:
+        for name, ws, word, x, base in placed:
             if t < ws - 0.03:
                 continue
-            kind, size, track = DYN_ROLES[role]
+            kind, size, track = role(name)
             draw_tracked(d, x, base, word, font(kind, size), track, WHITE + (255,))
         # sombra suave só onde há texto
         bbox = layer.getbbox()
@@ -676,6 +683,37 @@ def draw_motion(canvas, t):
         return
 
 
+# ---------------------------------------------------------------- câmera
+#
+# Zoom lento dentro de cada trecho, "punch-in" seco (outro ângulo) nas trocas
+# de frase e, nos cortes de cena, uma entrada leve com zoom e desfoque.
+
+
+def camera(frame, t):
+    cam = getattr(script, "CAMERA", None)
+    if not cam:
+        return frame
+    cuts, punches = cam["cuts"], cam["punch_ins"]
+    marks = sorted([0.0] + cuts + punches + [1e9])
+    a = max(m for m in marks if m <= t)
+    b = min(m for m in marks if m > t)
+    zoom = cam["punch_zoom"] if a in punches else 1.0
+    if b < 1e8:
+        zoom *= 1 + cam["drift"] * (t - a) / (b - a)
+    blur = 0.0
+    if a in cuts and t - a < 0.3:
+        k = ease_out_cubic((t - a) / 0.3)
+        zoom *= 1 + 0.09 * (1 - k)
+        blur = 7 * (1 - k)
+    ax, ay = [p for t0, p in cam["anchor"] if t0 <= t][-1]
+    cw, ch = W / zoom, H / zoom
+    x0, y0 = ax * (W - cw), ay * (H - ch)
+    out = frame.resize((W, H), Image.BICUBIC, box=(x0, y0, x0 + cw, y0 + ch))
+    if blur > 0.4:
+        out = out.filter(ImageFilter.GaussianBlur(blur))
+    return out
+
+
 # ---------------------------------------------------------------- render
 
 
@@ -716,6 +754,35 @@ def cut_filter(duration):
     return ";".join(parts)
 
 
+def render_with_camera(src, dst, n):
+    """Quadros do vídeo passam pela câmera em Python antes de receber a legenda."""
+    if getattr(script, "CUTS", None):
+        sys.exit("CUTS com CAMERA ainda não é suportado")
+    dec = subprocess.Popen(["ffmpeg", "-v", "error", "-i", src, "-f", "rawvideo",
+                            "-pix_fmt", "rgba", "-"], stdout=subprocess.PIPE)
+    enc = subprocess.Popen([
+        "ffmpeg", "-v", "error", "-y",
+        "-f", "rawvideo", "-pix_fmt", "rgba", "-s", f"{W}x{H}", "-r", str(FPS), "-i", "-",
+        "-i", src, "-map", "0:v", "-map", "1:a?", "-c:v", "libx264", "-crf", "17",
+        "-preset", "medium", "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "192k",
+        "-shortest", "-movflags", "+faststart", dst], stdin=subprocess.PIPE)
+    size = W * H * 4
+    for i in range(n):
+        buf = dec.stdout.read(size)
+        if len(buf) < size:
+            break
+        t = i / FPS
+        frame = camera(Image.frombytes("RGBA", (W, H), buf), t)
+        frame.alpha_composite(render_frame(t))
+        enc.stdin.write(frame.tobytes())
+        if i % 60 == 0:
+            print(f"\r{i}/{n}", end="", flush=True)
+    enc.stdin.close()
+    enc.wait()
+    dec.wait()
+    print(f"\rpronto: {dst}")
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -740,7 +807,7 @@ def main():
             frame = subprocess.check_output([
                 "ffmpeg", "-v", "error", "-ss", str(t), "-i", args.input, "-frames:v", "1",
                 "-f", "rawvideo", "-pix_fmt", "rgba", "-"])
-            bg = Image.frombytes("RGBA", (W, H), frame)
+            bg = camera(Image.frombytes("RGBA", (W, H), frame), t)
             bg.alpha_composite(render_frame(t))
             bg.convert("RGB").save(f"{base}_{t:05.2f}.jpg", quality=90)
         return
@@ -748,6 +815,9 @@ def main():
     if not shutil.which("ffmpeg"):
         sys.exit("ffmpeg não encontrado")
     n = probe_frames(args.input)
+    if getattr(script, "CAMERA", None):
+        render_with_camera(args.input, args.output, n)
+        return
     cmd = [
         "ffmpeg", "-v", "error", "-y", "-i", args.input,
         "-f", "rawvideo", "-pix_fmt", "rgba", "-s", f"{W}x{H}", "-r", str(FPS), "-i", "-",
