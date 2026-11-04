@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><title>Placa Top Quality A4</title>
+<style>
+@page { size: A4; margin: 0; }
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:210mm;height:297mm;background:#14185a}
+body{font-family:"Inter","Inter Display",sans-serif;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.page{position:relative;width:210mm;height:297mm;overflow:hidden;color:#fff;
+  background:radial-gradient(120% 70% at 50% 42%,#3a3fb8 0%,#272c96 38%,#181c66 78%,#10134a 100%)}
+/* subtle diagonal texture */
+.page::before{content:"";position:absolute;inset:0;
+  background:repeating-linear-gradient(135deg,rgba(255,255,255,.025) 0 2mm,transparent 2mm 6mm)}
+/* orange corner accents */
+.corner{position:absolute;width:70mm;height:70mm;border:2.2mm solid #f7941d;opacity:.9}
+.corner.tl{top:-35mm;left:-35mm;border-radius:50%}
+.corner.br{bottom:-62mm;right:-52mm;width:95mm;height:95mm;border-radius:50%;border-width:1.4mm;opacity:.45}
+.top{position:absolute;top:22mm;left:0;right:0;text-align:center}
+.kicker{display:inline-flex;align-items:center;gap:4mm;font-weight:600;font-size:4.2mm;letter-spacing:1.6mm;color:#ffb35c;text-transform:uppercase}
+.kicker i{display:block;width:14mm;height:.6mm;background:#f7941d;border-radius:1mm}
+h1{margin-top:5mm;font-family:"Inter Display","Inter";font-weight:900;font-size:17mm;line-height:.98;letter-spacing:-.3mm;text-transform:uppercase}
+h1 span{color:#f7941d}
+.stage{position:absolute;top:78mm;left:50%;transform:translateX(-50%);width:140mm;height:140mm}
+.glow{position:absolute;inset:-12mm;border-radius:50%;background:radial-gradient(circle,rgba(247,148,29,.28),rgba(247,148,29,0) 65%)}
+.ring{position:absolute;inset:0;border-radius:50%;border:4.5mm solid #f7941d;
+  box-shadow:0 0 0 1.6mm rgba(255,255,255,.12),0 6mm 16mm rgba(0,0,0,.35),inset 0 0 18mm rgba(0,0,0,.25)}
+.ring2{position:absolute;inset:9mm;border-radius:50%;border:.5mm dashed rgba(255,255,255,.35)}
+.logo{position:absolute;left:50%;top:50%;transform:translate(-50%,-55%);width:118mm}
+.badge{display:flex;height:27mm;border-radius:5mm;overflow:hidden;border:1.2mm solid #fff;box-shadow:0 4mm 10mm rgba(0,0,0,.4)}
+.badge .l{flex:0 0 40%;background:#fff;color:#20257f;display:flex;align-items:center;justify-content:flex-end;padding-right:2mm;font-weight:500;font-size:15.5mm;letter-spacing:-1mm}
+.badge .r{flex:1;background:linear-gradient(180deg,#ffa63a,#f28a12);color:#fff;display:flex;align-items:center;padding-left:2mm;font-weight:800;font-size:15.5mm;letter-spacing:-.6mm}
+.tag{margin-top:4mm;text-align:center;font-weight:700;font-size:4.6mm;letter-spacing:1.25mm;color:#fff}
+.seal{position:absolute;left:50%;bottom:16mm;transform:translateX(-50%);display:flex;gap:2.2mm}
+.seal svg{width:6mm;height:6mm}
+.bottom{position:absolute;left:14mm;right:14mm;bottom:13mm;display:flex;gap:6mm;align-items:stretch}
+.contacts{flex:1;display:flex;flex-direction:column;gap:4mm;justify-content:center}
+.qr{flex:0 0 44mm;background:#fff;border-radius:5mm;padding:3.5mm;display:flex;flex-direction:column;align-items:center;gap:2mm;position:relative;z-index:2;border:1.2mm solid #f7941d}
+.qrbox img{display:block;width:34mm;height:34mm}
+.qrtxt{color:#14185a;text-align:center;font-size:3mm;line-height:1.25;font-weight:500}
+.qrtxt b{font-weight:800;color:#e07f0c;text-transform:uppercase;letter-spacing:.3mm}
+.card{display:flex;align-items:center;gap:4mm;background:#232874;border:.4mm solid rgba(255,255,255,.18);position:relative;z-index:2;border-radius:5mm;padding:5mm 5mm}
+.ic{flex:0 0 13mm;height:13mm;border-radius:50%;background:#f7941d;display:flex;align-items:center;justify-content:center}
+.ic svg{width:7.5mm;height:7.5mm}
+.lbl{font-size:3.2mm;font-weight:600;letter-spacing:.8mm;text-transform:uppercase;color:#ffb35c}
+.val{font-weight:800;font-size:7mm;letter-spacing:-.2mm;white-space:nowrap}
+.val small{font-size:4.6mm;font-weight:700;margin-right:1mm;opacity:.85}
+.val.ig{font-size:6mm}
+.strip{position:absolute;left:0;right:0;bottom:0;height:5mm;background:linear-gradient(90deg,#f7941d,#ffb35c,#f7941d)}
+</style></head><body>
+<div class="page">
+  <div class="corner tl"></div><div class="corner br"></div>
+  <div class="top">
+    <div class="kicker"><i></i>Consultoria<i></i></div>
+    <h1>Aqui tem<br><span>qualidade!</span></h1>
+  </div>
+  <div class="stage">
+    <div class="glow"></div><div class="ring"></div><div class="ring2"></div>
+    <div class="logo">
+      <div class="badge"><div class="l">TOP</div><div class="r">Quality</div></div>
+      <div class="tag">EFICIÊNCIA COM QUALIDADE</div>
+    </div>
+    <div class="seal">
+      <svg viewBox="0 0 24 24"><path fill="#f7941d" d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7L12 17.3 5.8 21l1.6-7L2 9.2l7.1-.6z"/></svg>
+      <svg viewBox="0 0 24 24"><path fill="#f7941d" d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7L12 17.3 5.8 21l1.6-7L2 9.2l7.1-.6z"/></svg>
+      <svg viewBox="0 0 24 24"><path fill="#f7941d" d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7L12 17.3 5.8 21l1.6-7L2 9.2l7.1-.6z"/></svg>
+      <svg viewBox="0 0 24 24"><path fill="#f7941d" d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7L12 17.3 5.8 21l1.6-7L2 9.2l7.1-.6z"/></svg>
+      <svg viewBox="0 0 24 24"><path fill="#f7941d" d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7L12 17.3 5.8 21l1.6-7L2 9.2l7.1-.6z"/></svg>
+    </div>
+  </div>
+  <div class="bottom">
+    <div class="contacts">
+      <div class="card">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 20.5l1.3-4.1A8.5 8.5 0 1 1 8 19.4z"/><path d="M9 8.5c0 3.3 3.2 6.5 6.5 6.5l1-1.6-2-1-1 .8c-1-.4-2.2-1.6-2.6-2.6l.8-1-1-2z" fill="#fff" stroke-width="1"/></svg></div>
+        <div><div class="lbl">WhatsApp</div><div class="val"><small>(32)</small>98439-1843</div></div>
+      </div>
+      <div class="card">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r="1" fill="#fff" stroke="none"/></svg></div>
+        <div><div class="lbl">Instagram</div><div class="val ig">@topqualityconsultoria</div></div>
+      </div>
+    </div>
+    <div class="qr">
+      <div class="qrbox"><img src="qr-whatsapp.svg" alt="QR Code WhatsApp"></div>
+      <div class="qrtxt">Aponte a câmera<br><b>e fale conosco</b></div>
+    </div>
+  </div>
+  <div class="strip"></div>
+</div>
+</body></html>
