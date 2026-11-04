@@ -13,13 +13,14 @@ body{font-family:"Inter","Inter Display",sans-serif;-webkit-print-color-adjust:e
 .corner.tr{bottom:-60mm;right:-45mm;width:110mm;height:110mm;border-width:1.2mm;opacity:.4}
 .strip{position:absolute;left:0;right:0;bottom:0;height:4.5mm;background:linear-gradient(90deg,#f7941d,#ffb35c,#f7941d)}
 /* left: logo seal */
-.stage{position:absolute;left:18mm;top:50%;transform:translateY(-52%);width:140mm;height:140mm}
+.stage{position:absolute;left:20mm;top:50%;transform:translateY(-50%);width:140mm;height:140mm}
+.seal{position:absolute;inset:0;width:100%;height:100%;border-radius:50%;box-shadow:0 0 0 2mm rgba(255,255,255,.1),0 8mm 18mm rgba(0,0,0,.4)}
 .glow{position:absolute;inset:-12mm;border-radius:50%;background:radial-gradient(circle,rgba(247,148,29,.28),rgba(247,148,29,0) 65%)}
 .ring{position:absolute;inset:0;border-radius:50%;background:#2e3192;border:4.5mm solid #f7941d;
   box-shadow:0 0 0 1.6mm rgba(255,255,255,.12),0 6mm 16mm rgba(0,0,0,.35)}
 .ring2{position:absolute;inset:9mm;border-radius:50%;border:.5mm dashed rgba(255,255,255,.35)}
 .logo{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:108mm;display:block}
-.stars{position:absolute;left:50%;bottom:20mm;transform:translateX(-50%);display:flex;gap:2.2mm}
+.stars{position:absolute;left:50%;bottom:-13mm;transform:translateX(-50%);display:flex;gap:2.2mm}
 .stars svg{width:6mm;height:6mm}
 /* right column */
 .right{position:absolute;left:172mm;right:16mm;top:0;bottom:4.5mm;display:flex;flex-direction:column;justify-content:center}
@@ -46,8 +47,8 @@ h1 span{color:#f7941d}
 <div class="page">
   <div class="corner tl"></div><div class="corner tr"></div>
   <div class="stage">
-    <div class="glow"></div><div class="ring"></div><div class="ring2"></div>
-    <img class="logo" src="logo-original.png" alt="Top Quality">
+    <div class="glow"></div>
+    <img class="seal" src="logo-redondo.png" alt="Top Quality">
     <div class="stars">
       <svg viewBox="0 0 24 24"><path fill="#f7941d" d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7L12 17.3 5.8 21l1.6-7L2 9.2l7.1-.6z"/></svg>
       <svg viewBox="0 0 24 24"><path fill="#f7941d" d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7L12 17.3 5.8 21l1.6-7L2 9.2l7.1-.6z"/></svg>
