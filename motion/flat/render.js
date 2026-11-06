@@ -15,7 +15,7 @@ const path = require('path');
       await page.screenshot({ path: `${process.argv[5]}/p_${t}.png` });
     }
   } else {
-    const FPS = 30, N = Math.round(6.4 * FPS);
+    const FPS = 30, N = Math.round(7.0 * FPS);
     const ff = spawn('ffmpeg', ['-v', 'error', '-y', '-f', 'image2pipe', '-framerate', String(FPS), '-c:v', 'png', '-i', '-',
       '-c:v', 'libx264', '-preset', 'medium', '-crf', '16', '-pix_fmt', 'yuv420p', target], { stdio: ['pipe', 'inherit', 'inherit'] });
     for (let f = 0; f < N; f++) {
