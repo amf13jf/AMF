@@ -273,6 +273,9 @@ def draw_dynamic(canvas, t):
         for m in motions():
             if start < m["start"] < nxt:  # some antes do motion entrar
                 nxt = m["start"] + 0.04
+        for cut in getattr(script, "CAMERA", {}).get("cuts", []):
+            if start < cut < nxt:  # não atravessa o corte para o próximo plano
+                nxt = cut
         if not (start <= t < nxt):
             continue
         layer = Image.new("RGBA", (W, H), (0, 0, 0, 0))
@@ -703,8 +706,8 @@ def camera(frame, t):
     blur = 0.0
     if a in cuts and t - a < 0.3:
         k = ease_out_cubic((t - a) / 0.3)
-        zoom *= 1 + 0.09 * (1 - k)
-        blur = 7 * (1 - k)
+        zoom *= 1 + cam.get("cut_zoom", 0.09) * (1 - k)
+        blur = cam.get("cut_blur", 7) * (1 - k)
     ax, ay = [p for t0, p in cam["anchor"] if t0 <= t][-1]
     cw, ch = W / zoom, H / zoom
     x0, y0 = ax * (W - cw), ay * (H - ch)
