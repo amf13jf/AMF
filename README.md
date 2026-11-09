@@ -82,3 +82,10 @@ Para tirar a música de fundo (mantém só a voz), use o HTDemucs em ONNX
 ```bash
 python -m video_captions.remove_music entrada.mp4 voz.wav --model htdemucs.onnx
 ```
+
+Som (whoosh nas transições + trilha calma sintetizada, sem direitos autorais),
+com a trilha abaixando sozinha quando há voz:
+
+```bash
+python -m video_captions.sound video_legendado.mp4 saida.mp4 --script aura_1109
+```
