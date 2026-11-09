@@ -248,7 +248,8 @@ def chunk_layout(ci):
             y += size * 0.78 + role(lines[i - 1][0])[1] * 0.12
         bases.append(y)
     first_cap = role(lines[0][0])[1] * 0.72
-    shift = DYN_CENTER_Y - (bases[-1] - first_cap) / 2 - bases[0]
+    center = getattr(script, "DYN_CENTER_Y", DYN_CENTER_Y)
+    shift = center - (bases[-1] - first_cap) / 2 - bases[0]
 
     out = []
     for li, (name, align, words) in enumerate(lines):
@@ -757,6 +758,12 @@ def cut_filter(duration):
     return ";".join(parts)
 
 
+def out_scale():
+    """Escala final opcional (ex.: 1080x1920, o 9:16 exato do Reels)."""
+    size = getattr(script, "OUTPUT_SIZE", None)
+    return ["-vf", f"scale={size[0]}:{size[1]}:flags=lanczos,setsar=1"] if size else []
+
+
 def render_with_camera(src, dst, n):
     """Quadros do vídeo passam pela câmera em Python antes de receber a legenda."""
     if getattr(script, "CUTS", None):
@@ -766,7 +773,7 @@ def render_with_camera(src, dst, n):
     enc = subprocess.Popen([
         "ffmpeg", "-v", "error", "-y",
         "-f", "rawvideo", "-pix_fmt", "rgba", "-s", f"{W}x{H}", "-r", str(FPS), "-i", "-",
-        "-i", src, "-map", "0:v", "-map", "1:a?", "-c:v", "libx264", "-crf", "17",
+        "-i", src, "-map", "0:v", "-map", "1:a?", *out_scale(), "-c:v", "libx264", "-crf", "17",
         "-preset", "medium", "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "192k",
         "-shortest", "-movflags", "+faststart", dst], stdin=subprocess.PIPE)
     size = W * H * 4
