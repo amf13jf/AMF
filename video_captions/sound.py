@@ -174,7 +174,8 @@ def main():
 
     sfx = np.zeros(int((duration + 1) * SR))
     for t, length, gain in ([(c, 0.6, 1.0) for c in cam.get("cuts", [])]
-                            + [(p, 0.4, 0.45) for p in cam.get("punch_ins", [])]):
+                            + [(p[0] if isinstance(p, tuple) else p, 0.4, 0.45)
+                               for p in cam.get("punch_ins", [])]):
         w = whoosh(length, gain=gain)
         i = int((t - 0.62 * length) * SR)  # o pico cai em cima do corte
         sfx[max(0, i):i + len(w)] += w[max(0, -i):]

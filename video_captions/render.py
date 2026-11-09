@@ -697,11 +697,14 @@ def camera(frame, t):
     cam = getattr(script, "CAMERA", None)
     if not cam:
         return frame
-    cuts, punches = cam["cuts"], cam["punch_ins"]
-    marks = sorted([0.0] + cuts + punches + [1e9])
+    cuts = cam["cuts"]
+    # punch-in: tempo (usa punch_zoom) ou (tempo, zoom) — zoom 1.0 volta ao plano aberto
+    punches = dict(p if isinstance(p, tuple) else (p, cam.get("punch_zoom", 1.14))
+                   for p in cam["punch_ins"])
+    marks = sorted([0.0] + cuts + list(punches) + [1e9])
     a = max(m for m in marks if m <= t)
     b = min(m for m in marks if m > t)
-    zoom = cam["punch_zoom"] if a in punches else 1.0
+    zoom = punches.get(a, 1.0)
     if b < 1e8:
         zoom *= 1 + cam["drift"] * (t - a) / (b - a)
     blur = 0.0
