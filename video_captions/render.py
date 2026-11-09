@@ -718,6 +718,44 @@ def camera(frame, t):
     out = frame.resize((W, H), Image.BICUBIC, box=(x0, y0, x0 + cw, y0 + ch))
     if blur > 0.4:
         out = out.filter(ImageFilter.GaussianBlur(blur))
+    for leak in cam.get("leaks", []):
+        k = light_leak_strength(t - leak)
+        if k > 0.01:
+            out = apply_light_leak(out, k, leak)
+    return out
+
+
+def light_leak_strength(dt):
+    """Sobe rápido até o corte e some devagar depois (como um vazamento de luz)."""
+    if -0.28 <= dt < 0:
+        return ease_in_out((dt + 0.28) / 0.28)
+    if 0 <= dt < 0.55:
+        return 1 - ease_in_out(dt / 0.55)
+    return 0.0
+
+
+@lru_cache(maxsize=None)
+def light_leak_layer(seed):
+    """Manchas quentes (laranja/creme) vindo das bordas, em baixa resolução."""
+    w, h = W // 8, H // 8
+    img = Image.new("RGB", (w, h), (0, 0, 0))
+    d = ImageDraw.Draw(img)
+    side = seed % 2
+    cx = w * (0.95 if side else 0.05)
+    d.ellipse([cx - w * 0.7, -h * 0.15, cx + w * 0.7, h * 0.75], fill=(255, 150, 70))
+    d.ellipse([w * (0.1 if side else 0.5), h * 0.45, w * (0.6 if side else 1.0), h * 1.1],
+              fill=(255, 205, 150))
+    img = img.filter(ImageFilter.GaussianBlur(w * 0.18))
+    return img.resize((W, H), Image.BICUBIC)
+
+
+def apply_light_leak(frame, k, leak):
+    rgb = frame.convert("RGB")
+    glow = light_leak_layer(int(leak * 10)).point(lambda v: int(v * k))
+    out = ImageChops.screen(rgb, glow)
+    if k > 0.6:  # breve estouro de luz no pico
+        out = Image.blend(out, Image.new("RGB", out.size, (255, 236, 214)), (k - 0.6) * 0.7)
+    out = out.convert("RGBA")
     return out
 
 
