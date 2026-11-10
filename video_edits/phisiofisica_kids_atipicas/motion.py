@@ -251,9 +251,9 @@ PH = (660, 830)
 c1 = load_clip(U + "6e4e29cc-IMG_2718.MOV", 0, 5.66, PH, (0.02, 0.12, 0.96, 0.60))
 c2 = load_clip(U + "d4a5c0db-IMG_2721.MOV", 0.5, 7.0, PH, (0.0, 0.18, 1.0, 0.70))
 c3 = load_clip(U + "392eadeb-IMG_2720.MOV", 0, 3.94, PH, (0.0, 0.12, 1.0, 0.70))
-mom = still(MAIN, 41.0, (380, 440), (0.18, 0.12, 0.64, 0.42))
+mom = still(U + "6e4e29cc-IMG_2718.MOV", 4.5, (380, 440), (0.20, 0.20, 0.55, 0.36))
 kid = still(U + "d4a5c0db-IMG_2721.MOV", 9.5, (380, 440), (0.25, 0.30, 0.6, 0.45))
-teacher = still(MAIN, 6.0, (380, 440), (0.15, 0.08, 0.70, 0.45))
+teacher = still(U + "d4a5c0db-IMG_2721.MOV", 2.0, (380, 440), (0.35, 0.40, 0.60, 0.40))
 
 def small_polaroid(img):
     outer, off = sticker_photo(img.size, border=16)

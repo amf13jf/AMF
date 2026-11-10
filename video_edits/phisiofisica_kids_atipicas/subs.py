@@ -3,9 +3,9 @@ import json, re
 from fontTools.ttLib import TTFont
 
 W, H = 1080, 1920
-EM = 74; FS = round(EM * 1.562)
-MAX_W = 900
-Y = 1640
+EM = 70; FS = round(EM * 1.562)
+MAX_W = 940
+Y = 1160
 HL = "&H3FD2FF&"   # highlight colour (BGR) = #FFD23F
 
 fixes = [
@@ -35,7 +35,7 @@ def chunks(words):
     i = 0
     while i < len(words):
         w = words[i]
-        if cur and (width(" ".join(cur + [w])) > MAX_W or len(cur) >= 3):
+        if cur and (width(" ".join(cur + [w])) > MAX_W or len(cur) >= 4):
             carry = []
             while len(cur) > 1 and cur[-1].lower().strip(",.?!") in STOP:
                 carry.insert(0, cur.pop())
@@ -76,7 +76,8 @@ for s in segs:
 lines = ["[Script Info]", "ScriptType: v4.00+", f"PlayResX: {W}", f"PlayResY: {H}", "WrapStyle: 2", "ScaledBorderAndShadow: yes", "",
          "[V4+ Styles]",
          "Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding",
-         f"Style: Cap,Montserrat ExtraBold,{FS},&H00FFFFFF,&H00FFFFFF,&H00000000,&H80000000,0,0,0,0,100,100,0,0,1,6,4,5,40,40,0,1",
+         f"Style: Main,Montserrat ExtraBold,{FS},&H00FFFFFF,&H00FFFFFF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,0,0,5,40,40,0,1",
+         f"Style: Shadow,Montserrat ExtraBold,{FS},&H59000000,&H59000000,&H59000000,&H00000000,0,0,0,0,100,100,0,0,1,0,0,5,40,40,0,1",
          "", "[Events]", "Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text"]
 events = []
 for sw in timed:
@@ -90,15 +91,9 @@ for i, ws in enumerate(events):
     if nxt - end < 0.4: end = nxt
     end = min(end, nxt)
     assert width(" ".join(w[0] for w in ws)) <= MAX_W
-    for j, w in enumerate(ws):
-        a = start if j == 0 else w[1]
-        b = ws[j + 1][1] if j + 1 < len(ws) else end
-        if b <= a: continue
-        txt = ""
-        for m, x in enumerate(ws):
-            if m == j: txt += f"{{\\c{HL}\\fscx110\\fscy110}}{x[0]}{{\\c&HFFFFFF&\\fscx100\\fscy100}} "
-            else: txt += x[0] + " "
-        pop = r"\fscx80\fscy80\t(0,120,\fscx100\fscy100)" if j == 0 else ""
-        lines.append(f"Dialogue: 0,{ts(a)},{ts(b)},Cap,,0,0,0,,{{\\pos({W//2},{Y}){pop}}}{txt.strip()}")
+    txt = " ".join(w[0] for w in ws)
+    anim = r"\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)"
+    lines.append(f"Dialogue: 0,{ts(start)},{ts(end)},Shadow,,0,0,0,,{{\\pos({W//2+4},{Y+5})\\blur4{anim}}}{txt}")
+    lines.append(f"Dialogue: 1,{ts(start)},{ts(end)},Main,,0,0,0,,{{\\pos({W//2},{Y}){anim}}}{txt}")
 open("subs.ass", "w").write("\n".join(lines) + "\n")
 for ws in events: print(f"{ws[0][1]:6.2f} {' '.join(w[0] for w in ws)}")

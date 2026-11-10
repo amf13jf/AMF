@@ -7,260 +7,190 @@ ScaledBorderAndShadow: yes
 
 [V4+ Styles]
 Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
-Style: Cap,Montserrat ExtraBold,116,&H00FFFFFF,&H00FFFFFF,&H00000000,&H80000000,0,0,0,0,100,100,0,0,1,6,4,5,40,40,0,1
+Style: Main,Montserrat ExtraBold,109,&H00FFFFFF,&H00FFFFFF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,0,0,5,40,40,0,1
+Style: Shadow,Montserrat ExtraBold,109,&H59000000,&H59000000,&H59000000,&H00000000,0,0,0,0,100,100,0,0,1,0,0,5,40,40,0,1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
-Dialogue: 0,0:00:00.00,0:00:00.20,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}E{\c&HFFFFFF&\fscx100\fscy100} aqui encontrei,
-Dialogue: 0,0:00:00.20,0:00:00.65,Cap,,0,0,0,,{\pos(540,1640)}E {\c&H3FD2FF&\fscx110\fscy110}aqui{\c&HFFFFFF&\fscx100\fscy100} encontrei,
-Dialogue: 0,0:00:00.65,0:00:01.43,Cap,,0,0,0,,{\pos(540,1640)}E aqui {\c&H3FD2FF&\fscx110\fscy110}encontrei,{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:00:01.43,0:00:02.15,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}assim,{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:00:02.15,0:00:02.34,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}uma{\c&HFFFFFF&\fscx100\fscy100} família.
-Dialogue: 0,0:00:02.34,0:00:02.98,Cap,,0,0,0,,{\pos(540,1640)}uma {\c&H3FD2FF&\fscx110\fscy110}família.{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:00:02.98,0:00:03.20,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}Aqui{\c&HFFFFFF&\fscx100\fscy100} na Phisiofisica
-Dialogue: 0,0:00:03.20,0:00:03.32,Cap,,0,0,0,,{\pos(540,1640)}Aqui {\c&H3FD2FF&\fscx110\fscy110}na{\c&HFFFFFF&\fscx100\fscy100} Phisiofisica
-Dialogue: 0,0:00:03.32,0:00:04.38,Cap,,0,0,0,,{\pos(540,1640)}Aqui na {\c&H3FD2FF&\fscx110\fscy110}Phisiofisica{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:00:04.38,0:00:04.54,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}é{\c&HFFFFFF&\fscx100\fscy100} um lugar
-Dialogue: 0,0:00:04.54,0:00:04.66,Cap,,0,0,0,,{\pos(540,1640)}é {\c&H3FD2FF&\fscx110\fscy110}um{\c&HFFFFFF&\fscx100\fscy100} lugar
-Dialogue: 0,0:00:04.66,0:00:04.90,Cap,,0,0,0,,{\pos(540,1640)}é um {\c&H3FD2FF&\fscx110\fscy110}lugar{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:00:04.90,0:00:05.10,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}para{\c&HFFFFFF&\fscx100\fscy100} todo mundo.
-Dialogue: 0,0:00:05.10,0:00:05.31,Cap,,0,0,0,,{\pos(540,1640)}para {\c&H3FD2FF&\fscx110\fscy110}todo{\c&HFFFFFF&\fscx100\fscy100} mundo.
-Dialogue: 0,0:00:05.31,0:00:06.04,Cap,,0,0,0,,{\pos(540,1640)}para todo {\c&H3FD2FF&\fscx110\fscy110}mundo.{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:00:06.04,0:00:06.16,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}E{\c&HFFFFFF&\fscx100\fscy100} uma coisa
-Dialogue: 0,0:00:06.16,0:00:06.31,Cap,,0,0,0,,{\pos(540,1640)}E {\c&H3FD2FF&\fscx110\fscy110}uma{\c&HFFFFFF&\fscx100\fscy100} coisa
-Dialogue: 0,0:00:06.31,0:00:06.59,Cap,,0,0,0,,{\pos(540,1640)}E uma {\c&H3FD2FF&\fscx110\fscy110}coisa{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:00:06.59,0:00:06.75,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}que{\c&HFFFFFF&\fscx100\fscy100} temos muito
-Dialogue: 0,0:00:06.75,0:00:06.97,Cap,,0,0,0,,{\pos(540,1640)}que {\c&H3FD2FF&\fscx110\fscy110}temos{\c&HFFFFFF&\fscx100\fscy100} muito
-Dialogue: 0,0:00:06.97,0:00:07.34,Cap,,0,0,0,,{\pos(540,1640)}que temos {\c&H3FD2FF&\fscx110\fscy110}muito{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:00:07.34,0:00:07.67,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}orgulho{\c&HFFFFFF&\fscx100\fscy100} em dizer
-Dialogue: 0,0:00:07.67,0:00:07.87,Cap,,0,0,0,,{\pos(540,1640)}orgulho {\c&H3FD2FF&\fscx110\fscy110}em{\c&HFFFFFF&\fscx100\fscy100} dizer
-Dialogue: 0,0:00:07.87,0:00:08.14,Cap,,0,0,0,,{\pos(540,1640)}orgulho em {\c&H3FD2FF&\fscx110\fscy110}dizer{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:00:08.14,0:00:08.56,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}é{\c&HFFFFFF&\fscx100\fscy100} que recebemos
-Dialogue: 0,0:00:08.56,0:00:08.67,Cap,,0,0,0,,{\pos(540,1640)}é {\c&H3FD2FF&\fscx110\fscy110}que{\c&HFFFFFF&\fscx100\fscy100} recebemos
-Dialogue: 0,0:00:08.67,0:00:09.18,Cap,,0,0,0,,{\pos(540,1640)}é que {\c&H3FD2FF&\fscx110\fscy110}recebemos{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:00:09.18,0:00:09.98,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}frequentemente{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:00:09.98,0:00:10.54,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}crianças{\c&HFFFFFF&\fscx100\fscy100} atípicas
-Dialogue: 0,0:00:10.54,0:00:11.28,Cap,,0,0,0,,{\pos(540,1640)}crianças {\c&H3FD2FF&\fscx110\fscy110}atípicas{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:00:11.28,0:00:11.64,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}e{\c&HFFFFFF&\fscx100\fscy100} com toda
-Dialogue: 0,0:00:11.64,0:00:11.83,Cap,,0,0,0,,{\pos(540,1640)}e {\c&H3FD2FF&\fscx110\fscy110}com{\c&HFFFFFF&\fscx100\fscy100} toda
-Dialogue: 0,0:00:11.83,0:00:12.04,Cap,,0,0,0,,{\pos(540,1640)}e com {\c&H3FD2FF&\fscx110\fscy110}toda{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:00:12.04,0:00:12.66,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}confiança{\c&HFFFFFF&\fscx100\fscy100} dos pais.
-Dialogue: 0,0:00:12.66,0:00:12.89,Cap,,0,0,0,,{\pos(540,1640)}confiança {\c&H3FD2FF&\fscx110\fscy110}dos{\c&HFFFFFF&\fscx100\fscy100} pais.
-Dialogue: 0,0:00:12.89,0:00:13.64,Cap,,0,0,0,,{\pos(540,1640)}confiança dos {\c&H3FD2FF&\fscx110\fscy110}pais.{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:00:13.64,0:00:13.87,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}Você{\c&HFFFFFF&\fscx100\fscy100} sabe por que
-Dialogue: 0,0:00:13.87,0:00:14.23,Cap,,0,0,0,,{\pos(540,1640)}Você {\c&H3FD2FF&\fscx110\fscy110}sabe{\c&HFFFFFF&\fscx100\fscy100} por que
-Dialogue: 0,0:00:14.23,0:00:14.55,Cap,,0,0,0,,{\pos(540,1640)}Você sabe {\c&H3FD2FF&\fscx110\fscy110}por que{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:00:14.55,0:00:14.71,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}eles{\c&HFFFFFF&\fscx100\fscy100} confiam tanto
-Dialogue: 0,0:00:14.71,0:00:15.06,Cap,,0,0,0,,{\pos(540,1640)}eles {\c&H3FD2FF&\fscx110\fscy110}confiam{\c&HFFFFFF&\fscx100\fscy100} tanto
-Dialogue: 0,0:00:15.06,0:00:15.36,Cap,,0,0,0,,{\pos(540,1640)}eles confiam {\c&H3FD2FF&\fscx110\fscy110}tanto{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:00:15.36,0:00:15.60,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}na{\c&HFFFFFF&\fscx100\fscy100} gente?
-Dialogue: 0,0:00:15.60,0:00:16.32,Cap,,0,0,0,,{\pos(540,1640)}na {\c&H3FD2FF&\fscx110\fscy110}gente?{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:00:16.32,0:00:16.67,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}Desde{\c&HFFFFFF&\fscx100\fscy100} a primeira
-Dialogue: 0,0:00:16.67,0:00:16.80,Cap,,0,0,0,,{\pos(540,1640)}Desde {\c&H3FD2FF&\fscx110\fscy110}a{\c&HFFFFFF&\fscx100\fscy100} primeira
-Dialogue: 0,0:00:16.80,0:00:17.09,Cap,,0,0,0,,{\pos(540,1640)}Desde a {\c&H3FD2FF&\fscx110\fscy110}primeira{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:00:17.09,0:00:17.98,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}aula,{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:00:17.98,0:00:17.99,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}o{\c&HFFFFFF&\fscx100\fscy100} professor
-Dialogue: 0,0:00:17.99,0:00:18.36,Cap,,0,0,0,,{\pos(540,1640)}o {\c&H3FD2FF&\fscx110\fscy110}professor{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:00:18.36,0:00:18.97,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}acompanha{\c&HFFFFFF&\fscx100\fscy100} o aluno
-Dialogue: 0,0:00:18.97,0:00:19.07,Cap,,0,0,0,,{\pos(540,1640)}acompanha {\c&H3FD2FF&\fscx110\fscy110}o{\c&HFFFFFF&\fscx100\fscy100} aluno
-Dialogue: 0,0:00:19.07,0:00:19.35,Cap,,0,0,0,,{\pos(540,1640)}acompanha o {\c&H3FD2FF&\fscx110\fscy110}aluno{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:00:19.35,0:00:19.59,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}de{\c&HFFFFFF&\fscx100\fscy100} perto,
-Dialogue: 0,0:00:19.59,0:00:20.18,Cap,,0,0,0,,{\pos(540,1640)}de {\c&H3FD2FF&\fscx110\fscy110}perto,{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:00:20.18,0:00:20.64,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}buscando{\c&HFFFFFF&\fscx100\fscy100} entender
-Dialogue: 0,0:00:20.64,0:00:20.97,Cap,,0,0,0,,{\pos(540,1640)}buscando {\c&H3FD2FF&\fscx110\fscy110}entender{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:00:20.97,0:00:21.23,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}suas{\c&HFFFFFF&\fscx100\fscy100} necessidades
-Dialogue: 0,0:00:21.23,0:00:22.17,Cap,,0,0,0,,{\pos(540,1640)}suas {\c&H3FD2FF&\fscx110\fscy110}necessidades{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:00:22.17,0:00:22.62,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}e{\c&HFFFFFF&\fscx100\fscy100} dificuldades.
-Dialogue: 0,0:00:22.62,0:00:23.90,Cap,,0,0,0,,{\pos(540,1640)}e {\c&H3FD2FF&\fscx110\fscy110}dificuldades.{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:00:23.90,0:00:24.07,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}Com{\c&HFFFFFF&\fscx100\fscy100} essa atenção,
-Dialogue: 0,0:00:24.07,0:00:24.32,Cap,,0,0,0,,{\pos(540,1640)}Com {\c&H3FD2FF&\fscx110\fscy110}essa{\c&HFFFFFF&\fscx100\fscy100} atenção,
-Dialogue: 0,0:00:24.32,0:00:25.28,Cap,,0,0,0,,{\pos(540,1640)}Com essa {\c&H3FD2FF&\fscx110\fscy110}atenção,{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:00:25.28,0:00:25.80,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}conseguimos{\c&HFFFFFF&\fscx100\fscy100} adaptar
-Dialogue: 0,0:00:25.80,0:00:26.43,Cap,,0,0,0,,{\pos(540,1640)}conseguimos {\c&H3FD2FF&\fscx110\fscy110}adaptar{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:00:26.43,0:00:26.56,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}o{\c&HFFFFFF&\fscx100\fscy100} ensino
-Dialogue: 0,0:00:26.56,0:00:26.96,Cap,,0,0,0,,{\pos(540,1640)}o {\c&H3FD2FF&\fscx110\fscy110}ensino{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:00:26.96,0:00:27.18,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}e{\c&HFFFFFF&\fscx100\fscy100} respeitar
-Dialogue: 0,0:00:27.18,0:00:27.69,Cap,,0,0,0,,{\pos(540,1640)}e {\c&H3FD2FF&\fscx110\fscy110}respeitar{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:00:27.69,0:00:27.87,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}o{\c&HFFFFFF&\fscx100\fscy100} ritmo
-Dialogue: 0,0:00:27.87,0:00:28.28,Cap,,0,0,0,,{\pos(540,1640)}o {\c&H3FD2FF&\fscx110\fscy110}ritmo{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:00:28.28,0:00:28.42,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}de{\c&HFFFFFF&\fscx100\fscy100} aprendizagem
-Dialogue: 0,0:00:28.42,0:00:29.18,Cap,,0,0,0,,{\pos(540,1640)}de {\c&H3FD2FF&\fscx110\fscy110}aprendizagem{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:00:29.18,0:00:29.72,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}de{\c&HFFFFFF&\fscx100\fscy100} cada um.
-Dialogue: 0,0:00:29.72,0:00:30.17,Cap,,0,0,0,,{\pos(540,1640)}de {\c&H3FD2FF&\fscx110\fscy110}cada{\c&HFFFFFF&\fscx100\fscy100} um.
-Dialogue: 0,0:00:30.17,0:00:30.80,Cap,,0,0,0,,{\pos(540,1640)}de cada {\c&H3FD2FF&\fscx110\fscy110}um.{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:00:30.80,0:00:31.91,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}Assim,{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:00:31.91,0:00:32.18,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}cada{\c&HFFFFFF&\fscx100\fscy100} avanço
-Dialogue: 0,0:00:32.18,0:00:32.63,Cap,,0,0,0,,{\pos(540,1640)}cada {\c&H3FD2FF&\fscx110\fscy110}avanço{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:00:32.63,0:00:32.79,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}é{\c&HFFFFFF&\fscx100\fscy100} valorizado
-Dialogue: 0,0:00:32.79,0:00:33.54,Cap,,0,0,0,,{\pos(540,1640)}é {\c&H3FD2FF&\fscx110\fscy110}valorizado{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:00:33.54,0:00:33.80,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}e{\c&HFFFFFF&\fscx100\fscy100} comemorado junto
-Dialogue: 0,0:00:33.80,0:00:34.56,Cap,,0,0,0,,{\pos(540,1640)}e {\c&H3FD2FF&\fscx110\fscy110}comemorado{\c&HFFFFFF&\fscx100\fscy100} junto
-Dialogue: 0,0:00:34.56,0:00:34.87,Cap,,0,0,0,,{\pos(540,1640)}e comemorado {\c&H3FD2FF&\fscx110\fscy110}junto{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:00:34.87,0:00:35.12,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}com{\c&HFFFFFF&\fscx100\fscy100} a família.
-Dialogue: 0,0:00:35.12,0:00:35.24,Cap,,0,0,0,,{\pos(540,1640)}com {\c&H3FD2FF&\fscx110\fscy110}a{\c&HFFFFFF&\fscx100\fscy100} família.
-Dialogue: 0,0:00:35.24,0:00:36.00,Cap,,0,0,0,,{\pos(540,1640)}com a {\c&H3FD2FF&\fscx110\fscy110}família.{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:00:36.00,0:00:36.18,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}Sou{\c&HFFFFFF&\fscx100\fscy100} mãe
-Dialogue: 0,0:00:36.18,0:00:36.36,Cap,,0,0,0,,{\pos(540,1640)}Sou {\c&H3FD2FF&\fscx110\fscy110}mãe{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:00:36.36,0:00:36.55,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}da{\c&HFFFFFF&\fscx100\fscy100} Alícia,
-Dialogue: 0,0:00:36.55,0:00:37.37,Cap,,0,0,0,,{\pos(540,1640)}da {\c&H3FD2FF&\fscx110\fscy110}Alícia,{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:00:37.37,0:00:37.51,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}que{\c&HFFFFFF&\fscx100\fscy100} faz natação
-Dialogue: 0,0:00:37.51,0:00:37.64,Cap,,0,0,0,,{\pos(540,1640)}que {\c&H3FD2FF&\fscx110\fscy110}faz{\c&HFFFFFF&\fscx100\fscy100} natação
-Dialogue: 0,0:00:37.64,0:00:38.08,Cap,,0,0,0,,{\pos(540,1640)}que faz {\c&H3FD2FF&\fscx110\fscy110}natação{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:00:38.08,0:00:38.87,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}aqui.{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:00:39.32,0:00:39.76,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}A{\c&HFFFFFF&\fscx100\fscy100} Alícia tem
-Dialogue: 0,0:00:39.76,0:00:39.96,Cap,,0,0,0,,{\pos(540,1640)}A {\c&H3FD2FF&\fscx110\fscy110}Alícia{\c&HFFFFFF&\fscx100\fscy100} tem
-Dialogue: 0,0:00:39.96,0:00:40.21,Cap,,0,0,0,,{\pos(540,1640)}A Alícia {\c&H3FD2FF&\fscx110\fscy110}tem{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:00:40.21,0:00:40.52,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}seis{\c&HFFFFFF&\fscx100\fscy100} anos
-Dialogue: 0,0:00:40.52,0:00:40.74,Cap,,0,0,0,,{\pos(540,1640)}seis {\c&H3FD2FF&\fscx110\fscy110}anos{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:00:40.74,0:00:40.94,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}de{\c&HFFFFFF&\fscx100\fscy100} idade.
-Dialogue: 0,0:00:40.94,0:00:42.00,Cap,,0,0,0,,{\pos(540,1640)}de {\c&H3FD2FF&\fscx110\fscy110}idade.{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:00:42.00,0:00:42.10,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}Já{\c&HFFFFFF&\fscx100\fscy100} tem uns
-Dialogue: 0,0:00:42.10,0:00:42.25,Cap,,0,0,0,,{\pos(540,1640)}Já {\c&H3FD2FF&\fscx110\fscy110}tem{\c&HFFFFFF&\fscx100\fscy100} uns
-Dialogue: 0,0:00:42.25,0:00:42.46,Cap,,0,0,0,,{\pos(540,1640)}Já tem {\c&H3FD2FF&\fscx110\fscy110}uns{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:00:42.46,0:00:42.82,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}dois{\c&HFFFFFF&\fscx100\fscy100} anos
-Dialogue: 0,0:00:42.82,0:00:43.17,Cap,,0,0,0,,{\pos(540,1640)}dois {\c&H3FD2FF&\fscx110\fscy110}anos{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:00:43.17,0:00:43.38,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}que{\c&HFFFFFF&\fscx100\fscy100} nós estamos
-Dialogue: 0,0:00:43.38,0:00:43.51,Cap,,0,0,0,,{\pos(540,1640)}que {\c&H3FD2FF&\fscx110\fscy110}nós{\c&HFFFFFF&\fscx100\fscy100} estamos
-Dialogue: 0,0:00:43.51,0:00:43.72,Cap,,0,0,0,,{\pos(540,1640)}que nós {\c&H3FD2FF&\fscx110\fscy110}estamos{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:00:43.72,0:00:44.14,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}aqui{\c&HFFFFFF&\fscx100\fscy100} na Phisiofisica.
-Dialogue: 0,0:00:44.14,0:00:44.42,Cap,,0,0,0,,{\pos(540,1640)}aqui {\c&H3FD2FF&\fscx110\fscy110}na{\c&HFFFFFF&\fscx100\fscy100} Phisiofisica.
-Dialogue: 0,0:00:44.42,0:00:45.82,Cap,,0,0,0,,{\pos(540,1640)}aqui na {\c&H3FD2FF&\fscx110\fscy110}Phisiofisica.{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:00:45.82,0:00:46.11,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}E{\c&HFFFFFF&\fscx100\fscy100} a natação
-Dialogue: 0,0:00:46.11,0:00:46.29,Cap,,0,0,0,,{\pos(540,1640)}E {\c&H3FD2FF&\fscx110\fscy110}a{\c&HFFFFFF&\fscx100\fscy100} natação
-Dialogue: 0,0:00:46.29,0:00:46.66,Cap,,0,0,0,,{\pos(540,1640)}E a {\c&H3FD2FF&\fscx110\fscy110}natação{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:00:46.66,0:00:46.83,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}para{\c&HFFFFFF&\fscx100\fscy100} minha filha,
-Dialogue: 0,0:00:46.83,0:00:47.00,Cap,,0,0,0,,{\pos(540,1640)}para {\c&H3FD2FF&\fscx110\fscy110}minha{\c&HFFFFFF&\fscx100\fscy100} filha,
-Dialogue: 0,0:00:47.00,0:00:47.57,Cap,,0,0,0,,{\pos(540,1640)}para minha {\c&H3FD2FF&\fscx110\fscy110}filha,{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:00:47.57,0:00:47.66,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}sou{\c&HFFFFFF&\fscx100\fscy100} mãe atípica,
-Dialogue: 0,0:00:47.66,0:00:47.85,Cap,,0,0,0,,{\pos(540,1640)}sou {\c&H3FD2FF&\fscx110\fscy110}mãe{\c&HFFFFFF&\fscx100\fscy100} atípica,
-Dialogue: 0,0:00:47.85,0:00:49.06,Cap,,0,0,0,,{\pos(540,1640)}sou mãe {\c&H3FD2FF&\fscx110\fscy110}atípica,{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:00:49.06,0:00:49.22,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}a{\c&HFFFFFF&\fscx100\fscy100} natação
-Dialogue: 0,0:00:49.22,0:00:49.61,Cap,,0,0,0,,{\pos(540,1640)}a {\c&H3FD2FF&\fscx110\fscy110}natação{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:00:49.61,0:00:49.81,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}para{\c&HFFFFFF&\fscx100\fscy100} ela foi
-Dialogue: 0,0:00:49.81,0:00:50.03,Cap,,0,0,0,,{\pos(540,1640)}para {\c&H3FD2FF&\fscx110\fscy110}ela{\c&HFFFFFF&\fscx100\fscy100} foi
-Dialogue: 0,0:00:50.03,0:00:50.24,Cap,,0,0,0,,{\pos(540,1640)}para ela {\c&H3FD2FF&\fscx110\fscy110}foi{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:00:50.24,0:00:51.16,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}fundamental,{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:00:51.72,0:00:51.75,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}foi{\c&HFFFFFF&\fscx100\fscy100} assim,
-Dialogue: 0,0:00:51.75,0:00:52.27,Cap,,0,0,0,,{\pos(540,1640)}foi {\c&H3FD2FF&\fscx110\fscy110}assim,{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:00:52.74,0:00:53.19,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}uma{\c&HFFFFFF&\fscx100\fscy100} virada
-Dialogue: 0,0:00:53.19,0:00:53.54,Cap,,0,0,0,,{\pos(540,1640)}uma {\c&H3FD2FF&\fscx110\fscy110}virada{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:00:53.54,0:00:53.77,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}de{\c&HFFFFFF&\fscx100\fscy100} chave,
-Dialogue: 0,0:00:53.77,0:00:54.32,Cap,,0,0,0,,{\pos(540,1640)}de {\c&H3FD2FF&\fscx110\fscy110}chave,{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:00:54.32,0:00:55.45,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}porque{\c&HFFFFFF&\fscx100\fscy100} a água
-Dialogue: 0,0:00:55.45,0:00:55.53,Cap,,0,0,0,,{\pos(540,1640)}porque {\c&H3FD2FF&\fscx110\fscy110}a{\c&HFFFFFF&\fscx100\fscy100} água
-Dialogue: 0,0:00:55.53,0:00:55.77,Cap,,0,0,0,,{\pos(540,1640)}porque a {\c&H3FD2FF&\fscx110\fscy110}água{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:00:55.77,0:00:56.02,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}traz{\c&HFFFFFF&\fscx100\fscy100} calmaria,
-Dialogue: 0,0:00:56.02,0:00:56.50,Cap,,0,0,0,,{\pos(540,1640)}traz {\c&H3FD2FF&\fscx110\fscy110}calmaria,{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:00:56.50,0:00:57.08,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}traz{\c&HFFFFFF&\fscx100\fscy100} para ela
-Dialogue: 0,0:00:57.08,0:00:58.13,Cap,,0,0,0,,{\pos(540,1640)}traz {\c&H3FD2FF&\fscx110\fscy110}para{\c&HFFFFFF&\fscx100\fscy100} ela
-Dialogue: 0,0:00:58.13,0:00:58.50,Cap,,0,0,0,,{\pos(540,1640)}traz para {\c&H3FD2FF&\fscx110\fscy110}ela{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:00:58.50,0:00:58.94,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}um{\c&HFFFFFF&\fscx100\fscy100} alívio
-Dialogue: 0,0:00:58.94,0:00:59.72,Cap,,0,0,0,,{\pos(540,1640)}um {\c&H3FD2FF&\fscx110\fscy110}alívio{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:00:59.72,0:01:00.14,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}do{\c&HFFFFFF&\fscx100\fscy100} estresse,
-Dialogue: 0,0:01:00.14,0:01:00.63,Cap,,0,0,0,,{\pos(540,1640)}do {\c&H3FD2FF&\fscx110\fscy110}estresse,{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:01:00.63,0:01:00.97,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}do{\c&HFFFFFF&\fscx100\fscy100} dia a dia,
-Dialogue: 0,0:01:00.97,0:01:01.70,Cap,,0,0,0,,{\pos(540,1640)}do {\c&H3FD2FF&\fscx110\fscy110}dia a dia,{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:01:01.70,0:01:02.27,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}da{\c&HFFFFFF&\fscx100\fscy100} rotina dela.
-Dialogue: 0,0:01:02.27,0:01:03.33,Cap,,0,0,0,,{\pos(540,1640)}da {\c&H3FD2FF&\fscx110\fscy110}rotina{\c&HFFFFFF&\fscx100\fscy100} dela.
-Dialogue: 0,0:01:03.33,0:01:04.10,Cap,,0,0,0,,{\pos(540,1640)}da rotina {\c&H3FD2FF&\fscx110\fscy110}dela.{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:01:04.10,0:01:04.55,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}E{\c&HFFFFFF&\fscx100\fscy100} aqui encontrei
-Dialogue: 0,0:01:04.55,0:01:05.15,Cap,,0,0,0,,{\pos(540,1640)}E {\c&H3FD2FF&\fscx110\fscy110}aqui{\c&HFFFFFF&\fscx100\fscy100} encontrei
-Dialogue: 0,0:01:05.15,0:01:05.98,Cap,,0,0,0,,{\pos(540,1640)}E aqui {\c&H3FD2FF&\fscx110\fscy110}encontrei{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:01:05.98,0:01:06.79,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}uma{\c&HFFFFFF&\fscx100\fscy100} família,
-Dialogue: 0,0:01:06.79,0:01:07.39,Cap,,0,0,0,,{\pos(540,1640)}uma {\c&H3FD2FF&\fscx110\fscy110}família,{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:01:07.39,0:01:07.70,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}podemos{\c&HFFFFFF&\fscx100\fscy100} dizer,
-Dialogue: 0,0:01:07.70,0:01:08.25,Cap,,0,0,0,,{\pos(540,1640)}podemos {\c&H3FD2FF&\fscx110\fscy110}dizer,{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:01:08.78,0:01:08.88,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}que{\c&HFFFFFF&\fscx100\fscy100} nós
-Dialogue: 0,0:01:08.88,0:01:09.46,Cap,,0,0,0,,{\pos(540,1640)}que {\c&H3FD2FF&\fscx110\fscy110}nós{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:01:09.46,0:01:09.69,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}que{\c&HFFFFFF&\fscx100\fscy100} somos mães
-Dialogue: 0,0:01:09.69,0:01:09.90,Cap,,0,0,0,,{\pos(540,1640)}que {\c&H3FD2FF&\fscx110\fscy110}somos{\c&HFFFFFF&\fscx100\fscy100} mães
-Dialogue: 0,0:01:09.90,0:01:10.31,Cap,,0,0,0,,{\pos(540,1640)}que somos {\c&H3FD2FF&\fscx110\fscy110}mães{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:01:10.31,0:01:11.32,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}atípicas,{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:01:11.32,0:01:11.60,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}temos{\c&HFFFFFF&\fscx100\fscy100} essa
-Dialogue: 0,0:01:11.60,0:01:11.81,Cap,,0,0,0,,{\pos(540,1640)}temos {\c&H3FD2FF&\fscx110\fscy110}essa{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:01:11.81,0:01:12.50,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}dificuldade{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:01:12.50,0:01:12.82,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}de{\c&HFFFFFF&\fscx100\fscy100} encontrar
-Dialogue: 0,0:01:12.82,0:01:13.31,Cap,,0,0,0,,{\pos(540,1640)}de {\c&H3FD2FF&\fscx110\fscy110}encontrar{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:01:13.31,0:01:13.50,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}um{\c&HFFFFFF&\fscx100\fscy100} lugar ideal
-Dialogue: 0,0:01:13.50,0:01:13.93,Cap,,0,0,0,,{\pos(540,1640)}um {\c&H3FD2FF&\fscx110\fscy110}lugar{\c&HFFFFFF&\fscx100\fscy100} ideal
-Dialogue: 0,0:01:13.93,0:01:15.02,Cap,,0,0,0,,{\pos(540,1640)}um lugar {\c&H3FD2FF&\fscx110\fscy110}ideal{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:01:15.02,0:01:15.57,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}para{\c&HFFFFFF&\fscx100\fscy100} o nosso
-Dialogue: 0,0:01:15.57,0:01:15.74,Cap,,0,0,0,,{\pos(540,1640)}para {\c&H3FD2FF&\fscx110\fscy110}o{\c&HFFFFFF&\fscx100\fscy100} nosso
-Dialogue: 0,0:01:15.74,0:01:15.76,Cap,,0,0,0,,{\pos(540,1640)}para o {\c&H3FD2FF&\fscx110\fscy110}nosso{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:01:15.76,0:01:16.35,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}filho,{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:01:16.35,0:01:16.43,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}que{\c&HFFFFFF&\fscx100\fscy100} ele
-Dialogue: 0,0:01:16.43,0:01:16.56,Cap,,0,0,0,,{\pos(540,1640)}que {\c&H3FD2FF&\fscx110\fscy110}ele{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:01:16.56,0:01:16.64,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}se{\c&HFFFFFF&\fscx100\fscy100} sinta confortável,
-Dialogue: 0,0:01:16.64,0:01:16.89,Cap,,0,0,0,,{\pos(540,1640)}se {\c&H3FD2FF&\fscx110\fscy110}sinta{\c&HFFFFFF&\fscx100\fscy100} confortável,
-Dialogue: 0,0:01:16.89,0:01:17.86,Cap,,0,0,0,,{\pos(540,1640)}se sinta {\c&H3FD2FF&\fscx110\fscy110}confortável,{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:01:17.86,0:01:17.87,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}que{\c&HFFFFFF&\fscx100\fscy100} ele
-Dialogue: 0,0:01:17.87,0:01:18.01,Cap,,0,0,0,,{\pos(540,1640)}que {\c&H3FD2FF&\fscx110\fscy110}ele{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:01:18.01,0:01:18.12,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}se{\c&HFFFFFF&\fscx100\fscy100} sinta
-Dialogue: 0,0:01:18.12,0:01:18.39,Cap,,0,0,0,,{\pos(540,1640)}se {\c&H3FD2FF&\fscx110\fscy110}sinta{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:01:18.39,0:01:18.60,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}em{\c&HFFFFFF&\fscx100\fscy100} casa.
-Dialogue: 0,0:01:18.60,0:01:19.54,Cap,,0,0,0,,{\pos(540,1640)}em {\c&H3FD2FF&\fscx110\fscy110}casa.{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:01:19.54,0:01:19.90,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}Então,{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:01:19.90,0:01:20.31,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}assim,{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:01:20.31,0:01:20.70,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}aqui{\c&HFFFFFF&\fscx100\fscy100} para mim
-Dialogue: 0,0:01:20.70,0:01:20.95,Cap,,0,0,0,,{\pos(540,1640)}aqui {\c&H3FD2FF&\fscx110\fscy110}para{\c&HFFFFFF&\fscx100\fscy100} mim
-Dialogue: 0,0:01:20.95,0:01:21.16,Cap,,0,0,0,,{\pos(540,1640)}aqui para {\c&H3FD2FF&\fscx110\fscy110}mim{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:01:21.16,0:01:21.39,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}foi{\c&HFFFFFF&\fscx100\fscy100} maravilhoso.
-Dialogue: 0,0:01:21.39,0:01:22.36,Cap,,0,0,0,,{\pos(540,1640)}foi {\c&H3FD2FF&\fscx110\fscy110}maravilhoso.{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:01:22.36,0:01:22.47,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}Nós{\c&HFFFFFF&\fscx100\fscy100} fomos super
-Dialogue: 0,0:01:22.47,0:01:22.91,Cap,,0,0,0,,{\pos(540,1640)}Nós {\c&H3FD2FF&\fscx110\fscy110}fomos{\c&HFFFFFF&\fscx100\fscy100} super
-Dialogue: 0,0:01:22.91,0:01:23.41,Cap,,0,0,0,,{\pos(540,1640)}Nós fomos {\c&H3FD2FF&\fscx110\fscy110}super{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:01:23.41,0:01:23.67,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}bem{\c&HFFFFFF&\fscx100\fscy100} atendidos.
-Dialogue: 0,0:01:23.67,0:01:24.40,Cap,,0,0,0,,{\pos(540,1640)}bem {\c&H3FD2FF&\fscx110\fscy110}atendidos.{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:01:24.40,0:01:25.09,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}E{\c&HFFFFFF&\fscx100\fscy100} a Alícia
-Dialogue: 0,0:01:25.09,0:01:25.27,Cap,,0,0,0,,{\pos(540,1640)}E {\c&H3FD2FF&\fscx110\fscy110}a{\c&HFFFFFF&\fscx100\fscy100} Alícia
-Dialogue: 0,0:01:25.27,0:01:25.69,Cap,,0,0,0,,{\pos(540,1640)}E a {\c&H3FD2FF&\fscx110\fscy110}Alícia{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:01:25.69,0:01:26.45,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}ama,{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:01:26.45,0:01:26.61,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}ama{\c&HFFFFFF&\fscx100\fscy100} demais
-Dialogue: 0,0:01:26.61,0:01:27.02,Cap,,0,0,0,,{\pos(540,1640)}ama {\c&H3FD2FF&\fscx110\fscy110}demais{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:01:27.02,0:01:27.16,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}a{\c&HFFFFFF&\fscx100\fscy100} natação,
-Dialogue: 0,0:01:27.16,0:01:28.30,Cap,,0,0,0,,{\pos(540,1640)}a {\c&H3FD2FF&\fscx110\fscy110}natação,{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:01:28.30,0:01:28.78,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}ama{\c&HFFFFFF&\fscx100\fscy100} o ambiente,
-Dialogue: 0,0:01:28.78,0:01:29.63,Cap,,0,0,0,,{\pos(540,1640)}ama {\c&H3FD2FF&\fscx110\fscy110}o{\c&HFFFFFF&\fscx100\fscy100} ambiente,
-Dialogue: 0,0:01:29.63,0:01:30.78,Cap,,0,0,0,,{\pos(540,1640)}ama o {\c&H3FD2FF&\fscx110\fscy110}ambiente,{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:01:30.78,0:01:31.03,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}né,{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:01:31.03,0:01:31.15,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}onde{\c&HFFFFFF&\fscx100\fscy100} nós estamos.
-Dialogue: 0,0:01:31.15,0:01:31.32,Cap,,0,0,0,,{\pos(540,1640)}onde {\c&H3FD2FF&\fscx110\fscy110}nós{\c&HFFFFFF&\fscx100\fscy100} estamos.
-Dialogue: 0,0:01:31.32,0:01:32.22,Cap,,0,0,0,,{\pos(540,1640)}onde nós {\c&H3FD2FF&\fscx110\fscy110}estamos.{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:01:32.22,0:01:32.28,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}Os{\c&HFFFFFF&\fscx100\fscy100} professores são
-Dialogue: 0,0:01:32.28,0:01:32.73,Cap,,0,0,0,,{\pos(540,1640)}Os {\c&H3FD2FF&\fscx110\fscy110}professores{\c&HFFFFFF&\fscx100\fscy100} são
-Dialogue: 0,0:01:32.73,0:01:32.91,Cap,,0,0,0,,{\pos(540,1640)}Os professores {\c&H3FD2FF&\fscx110\fscy110}são{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:01:32.91,0:01:34.20,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}maravilhosos,{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:01:34.20,0:01:34.48,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}foram{\c&HFFFFFF&\fscx100\fscy100} super
-Dialogue: 0,0:01:34.48,0:01:35.06,Cap,,0,0,0,,{\pos(540,1640)}foram {\c&H3FD2FF&\fscx110\fscy110}super{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:01:35.06,0:01:36.52,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}atenciosos.{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:01:36.52,0:01:37.44,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}Eles,{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:01:37.44,0:01:38.09,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}com{\c&HFFFFFF&\fscx100\fscy100} um jeitinho,
-Dialogue: 0,0:01:38.09,0:01:38.25,Cap,,0,0,0,,{\pos(540,1640)}com {\c&H3FD2FF&\fscx110\fscy110}um{\c&HFFFFFF&\fscx100\fscy100} jeitinho,
-Dialogue: 0,0:01:38.25,0:01:38.69,Cap,,0,0,0,,{\pos(540,1640)}com um {\c&H3FD2FF&\fscx110\fscy110}jeitinho,{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:01:38.69,0:01:38.87,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}né,{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:01:38.87,0:01:39.20,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}porque{\c&HFFFFFF&\fscx100\fscy100} a criança
-Dialogue: 0,0:01:39.20,0:01:39.55,Cap,,0,0,0,,{\pos(540,1640)}porque {\c&H3FD2FF&\fscx110\fscy110}a{\c&HFFFFFF&\fscx100\fscy100} criança
-Dialogue: 0,0:01:39.55,0:01:39.88,Cap,,0,0,0,,{\pos(540,1640)}porque a {\c&H3FD2FF&\fscx110\fscy110}criança{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:01:39.88,0:01:40.60,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}autista,{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:01:40.60,0:01:40.80,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}ela{\c&HFFFFFF&\fscx100\fscy100} tem
-Dialogue: 0,0:01:40.80,0:01:41.00,Cap,,0,0,0,,{\pos(540,1640)}ela {\c&H3FD2FF&\fscx110\fscy110}tem{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:01:41.00,0:01:41.15,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}uma{\c&HFFFFFF&\fscx100\fscy100} pequena
-Dialogue: 0,0:01:41.15,0:01:41.48,Cap,,0,0,0,,{\pos(540,1640)}uma {\c&H3FD2FF&\fscx110\fscy110}pequena{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:01:41.48,0:01:42.15,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}dificuldade{\c&HFFFFFF&\fscx100\fscy100} desse
-Dialogue: 0,0:01:42.15,0:01:42.74,Cap,,0,0,0,,{\pos(540,1640)}dificuldade {\c&H3FD2FF&\fscx110\fscy110}desse{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:01:42.74,0:01:43.80,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}contato{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:01:43.80,0:01:44.10,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}com{\c&HFFFFFF&\fscx100\fscy100} o professor,
-Dialogue: 0,0:01:44.10,0:01:44.22,Cap,,0,0,0,,{\pos(540,1640)}com {\c&H3FD2FF&\fscx110\fscy110}o{\c&HFFFFFF&\fscx100\fscy100} professor,
-Dialogue: 0,0:01:44.22,0:01:45.04,Cap,,0,0,0,,{\pos(540,1640)}com o {\c&H3FD2FF&\fscx110\fscy110}professor,{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:01:45.04,0:01:45.48,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}contato{\c&HFFFFFF&\fscx100\fscy100} com outra
-Dialogue: 0,0:01:45.48,0:01:45.77,Cap,,0,0,0,,{\pos(540,1640)}contato {\c&H3FD2FF&\fscx110\fscy110}com{\c&HFFFFFF&\fscx100\fscy100} outra
-Dialogue: 0,0:01:45.77,0:01:46.13,Cap,,0,0,0,,{\pos(540,1640)}contato com {\c&H3FD2FF&\fscx110\fscy110}outra{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:01:46.13,0:01:46.93,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}criança.{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:01:47.66,0:01:47.80,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}E{\c&HFFFFFF&\fscx100\fscy100} pra Alícia
-Dialogue: 0,0:01:47.80,0:01:48.40,Cap,,0,0,0,,{\pos(540,1640)}E {\c&H3FD2FF&\fscx110\fscy110}pra{\c&HFFFFFF&\fscx100\fscy100} Alícia
-Dialogue: 0,0:01:48.40,0:01:48.72,Cap,,0,0,0,,{\pos(540,1640)}E pra {\c&H3FD2FF&\fscx110\fscy110}Alícia{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:01:48.72,0:01:48.89,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}foi{\c&HFFFFFF&\fscx100\fscy100} uma virada
-Dialogue: 0,0:01:48.89,0:01:49.04,Cap,,0,0,0,,{\pos(540,1640)}foi {\c&H3FD2FF&\fscx110\fscy110}uma{\c&HFFFFFF&\fscx100\fscy100} virada
-Dialogue: 0,0:01:49.04,0:01:49.33,Cap,,0,0,0,,{\pos(540,1640)}foi uma {\c&H3FD2FF&\fscx110\fscy110}virada{\c&HFFFFFF&\fscx100\fscy100}
-Dialogue: 0,0:01:49.33,0:01:49.52,Cap,,0,0,0,,{\pos(540,1640)\fscx80\fscy80\t(0,120,\fscx100\fscy100)}{\c&H3FD2FF&\fscx110\fscy110}de{\c&HFFFFFF&\fscx100\fscy100} chave.
-Dialogue: 0,0:01:49.52,0:01:50.19,Cap,,0,0,0,,{\pos(540,1640)}de {\c&H3FD2FF&\fscx110\fscy110}chave.{\c&HFFFFFF&\fscx100\fscy100}
+Dialogue: 0,0:00:00.00,0:00:01.43,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}E aqui encontrei,
+Dialogue: 1,0:00:00.00,0:00:01.43,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}E aqui encontrei,
+Dialogue: 0,0:00:01.43,0:00:02.15,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}assim,
+Dialogue: 1,0:00:01.43,0:00:02.15,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}assim,
+Dialogue: 0,0:00:02.15,0:00:02.98,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}uma família.
+Dialogue: 1,0:00:02.15,0:00:02.98,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}uma família.
+Dialogue: 0,0:00:02.98,0:00:04.38,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}Aqui na Phisiofisica
+Dialogue: 1,0:00:02.98,0:00:04.38,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}Aqui na Phisiofisica
+Dialogue: 0,0:00:04.38,0:00:04.90,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}é um lugar
+Dialogue: 1,0:00:04.38,0:00:04.90,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}é um lugar
+Dialogue: 0,0:00:04.90,0:00:06.04,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}para todo mundo.
+Dialogue: 1,0:00:04.90,0:00:06.04,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}para todo mundo.
+Dialogue: 0,0:00:06.04,0:00:06.59,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}E uma coisa
+Dialogue: 1,0:00:06.04,0:00:06.59,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}E uma coisa
+Dialogue: 0,0:00:06.59,0:00:07.34,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}que temos muito
+Dialogue: 1,0:00:06.59,0:00:07.34,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}que temos muito
+Dialogue: 0,0:00:07.34,0:00:08.14,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}orgulho em dizer
+Dialogue: 1,0:00:07.34,0:00:08.14,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}orgulho em dizer
+Dialogue: 0,0:00:08.14,0:00:09.18,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}é que recebemos
+Dialogue: 1,0:00:08.14,0:00:09.18,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}é que recebemos
+Dialogue: 0,0:00:09.18,0:00:09.98,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}frequentemente
+Dialogue: 1,0:00:09.18,0:00:09.98,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}frequentemente
+Dialogue: 0,0:00:09.98,0:00:11.28,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}crianças atípicas
+Dialogue: 1,0:00:09.98,0:00:11.28,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}crianças atípicas
+Dialogue: 0,0:00:11.28,0:00:12.66,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}e com toda confiança
+Dialogue: 1,0:00:11.28,0:00:12.66,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}e com toda confiança
+Dialogue: 0,0:00:12.66,0:00:13.64,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}dos pais.
+Dialogue: 1,0:00:12.66,0:00:13.64,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}dos pais.
+Dialogue: 0,0:00:13.64,0:00:14.71,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}Você sabe por que eles
+Dialogue: 1,0:00:13.64,0:00:14.71,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}Você sabe por que eles
+Dialogue: 0,0:00:14.71,0:00:16.32,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}confiam tanto na gente?
+Dialogue: 1,0:00:14.71,0:00:16.32,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}confiam tanto na gente?
+Dialogue: 0,0:00:16.32,0:00:17.98,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}Desde a primeira aula,
+Dialogue: 1,0:00:16.32,0:00:17.98,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}Desde a primeira aula,
+Dialogue: 0,0:00:17.98,0:00:18.97,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}o professor acompanha
+Dialogue: 1,0:00:17.98,0:00:18.97,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}o professor acompanha
+Dialogue: 0,0:00:18.97,0:00:20.18,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}o aluno de perto,
+Dialogue: 1,0:00:18.97,0:00:20.18,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}o aluno de perto,
+Dialogue: 0,0:00:20.18,0:00:21.23,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}buscando entender suas
+Dialogue: 1,0:00:20.18,0:00:21.23,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}buscando entender suas
+Dialogue: 0,0:00:21.23,0:00:22.17,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}necessidades
+Dialogue: 1,0:00:21.23,0:00:22.17,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}necessidades
+Dialogue: 0,0:00:22.17,0:00:23.90,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}e dificuldades.
+Dialogue: 1,0:00:22.17,0:00:23.90,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}e dificuldades.
+Dialogue: 0,0:00:23.90,0:00:25.28,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}Com essa atenção,
+Dialogue: 1,0:00:23.90,0:00:25.28,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}Com essa atenção,
+Dialogue: 0,0:00:25.28,0:00:26.43,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}conseguimos adaptar
+Dialogue: 1,0:00:25.28,0:00:26.43,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}conseguimos adaptar
+Dialogue: 0,0:00:26.43,0:00:26.96,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}o ensino
+Dialogue: 1,0:00:26.43,0:00:26.96,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}o ensino
+Dialogue: 0,0:00:26.96,0:00:28.28,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}e respeitar o ritmo
+Dialogue: 1,0:00:26.96,0:00:28.28,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}e respeitar o ritmo
+Dialogue: 0,0:00:28.28,0:00:29.18,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}de aprendizagem
+Dialogue: 1,0:00:28.28,0:00:29.18,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}de aprendizagem
+Dialogue: 0,0:00:29.18,0:00:30.80,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}de cada um.
+Dialogue: 1,0:00:29.18,0:00:30.80,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}de cada um.
+Dialogue: 0,0:00:30.80,0:00:31.91,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}Assim,
+Dialogue: 1,0:00:30.80,0:00:31.91,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}Assim,
+Dialogue: 0,0:00:31.91,0:00:32.63,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}cada avanço
+Dialogue: 1,0:00:31.91,0:00:32.63,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}cada avanço
+Dialogue: 0,0:00:32.63,0:00:33.54,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}é valorizado
+Dialogue: 1,0:00:32.63,0:00:33.54,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}é valorizado
+Dialogue: 0,0:00:33.54,0:00:34.87,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}e comemorado junto
+Dialogue: 1,0:00:33.54,0:00:34.87,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}e comemorado junto
+Dialogue: 0,0:00:34.87,0:00:36.00,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}com a família.
+Dialogue: 1,0:00:34.87,0:00:36.00,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}com a família.
+Dialogue: 0,0:00:36.00,0:00:37.37,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}Sou mãe da Alícia,
+Dialogue: 1,0:00:36.00,0:00:37.37,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}Sou mãe da Alícia,
+Dialogue: 0,0:00:37.37,0:00:38.87,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}que faz natação aqui.
+Dialogue: 1,0:00:37.37,0:00:38.87,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}que faz natação aqui.
+Dialogue: 0,0:00:39.32,0:00:40.52,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}A Alícia tem seis
+Dialogue: 1,0:00:39.32,0:00:40.52,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}A Alícia tem seis
+Dialogue: 0,0:00:40.52,0:00:42.00,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}anos de idade.
+Dialogue: 1,0:00:40.52,0:00:42.00,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}anos de idade.
+Dialogue: 0,0:00:42.00,0:00:42.82,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}Já tem uns dois
+Dialogue: 1,0:00:42.00,0:00:42.82,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}Já tem uns dois
+Dialogue: 0,0:00:42.82,0:00:43.72,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}anos que nós estamos
+Dialogue: 1,0:00:42.82,0:00:43.72,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}anos que nós estamos
+Dialogue: 0,0:00:43.72,0:00:45.82,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}aqui na Phisiofisica.
+Dialogue: 1,0:00:43.72,0:00:45.82,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}aqui na Phisiofisica.
+Dialogue: 0,0:00:45.82,0:00:46.66,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}E a natação
+Dialogue: 1,0:00:45.82,0:00:46.66,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}E a natação
+Dialogue: 0,0:00:46.66,0:00:47.57,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}para minha filha,
+Dialogue: 1,0:00:46.66,0:00:47.57,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}para minha filha,
+Dialogue: 0,0:00:47.57,0:00:49.06,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}sou mãe atípica,
+Dialogue: 1,0:00:47.57,0:00:49.06,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}sou mãe atípica,
+Dialogue: 0,0:00:49.06,0:00:50.03,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}a natação para ela
+Dialogue: 1,0:00:49.06,0:00:50.03,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}a natação para ela
+Dialogue: 0,0:00:50.03,0:00:51.16,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}foi fundamental,
+Dialogue: 1,0:00:50.03,0:00:51.16,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}foi fundamental,
+Dialogue: 0,0:00:51.72,0:00:52.27,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}foi assim,
+Dialogue: 1,0:00:51.72,0:00:52.27,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}foi assim,
+Dialogue: 0,0:00:52.74,0:00:54.32,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}uma virada de chave,
+Dialogue: 1,0:00:52.74,0:00:54.32,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}uma virada de chave,
+Dialogue: 0,0:00:54.32,0:00:56.02,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}porque a água traz
+Dialogue: 1,0:00:54.32,0:00:56.02,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}porque a água traz
+Dialogue: 0,0:00:56.02,0:00:56.50,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}calmaria,
+Dialogue: 1,0:00:56.02,0:00:56.50,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}calmaria,
+Dialogue: 0,0:00:56.50,0:00:58.50,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}traz para ela
+Dialogue: 1,0:00:56.50,0:00:58.50,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}traz para ela
+Dialogue: 0,0:00:58.50,0:01:00.63,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}um alívio do estresse,
+Dialogue: 1,0:00:58.50,0:01:00.63,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}um alívio do estresse,
+Dialogue: 0,0:01:00.63,0:01:01.70,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}do dia a dia,
+Dialogue: 1,0:01:00.63,0:01:01.70,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}do dia a dia,
+Dialogue: 0,0:01:01.70,0:01:04.10,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}da rotina dela.
+Dialogue: 1,0:01:01.70,0:01:04.10,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}da rotina dela.
+Dialogue: 0,0:01:04.10,0:01:05.98,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}E aqui encontrei
+Dialogue: 1,0:01:04.10,0:01:05.98,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}E aqui encontrei
+Dialogue: 0,0:01:05.98,0:01:07.39,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}uma família,
+Dialogue: 1,0:01:05.98,0:01:07.39,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}uma família,
+Dialogue: 0,0:01:07.39,0:01:08.25,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}podemos dizer,
+Dialogue: 1,0:01:07.39,0:01:08.25,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}podemos dizer,
+Dialogue: 0,0:01:08.78,0:01:09.90,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}que nós que somos
+Dialogue: 1,0:01:08.78,0:01:09.90,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}que nós que somos
+Dialogue: 0,0:01:09.90,0:01:11.32,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}mães atípicas,
+Dialogue: 1,0:01:09.90,0:01:11.32,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}mães atípicas,
+Dialogue: 0,0:01:11.32,0:01:12.50,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}temos essa dificuldade
+Dialogue: 1,0:01:11.32,0:01:12.50,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}temos essa dificuldade
+Dialogue: 0,0:01:12.50,0:01:13.93,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}de encontrar um lugar
+Dialogue: 1,0:01:12.50,0:01:13.93,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}de encontrar um lugar
+Dialogue: 0,0:01:13.93,0:01:15.02,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}ideal
+Dialogue: 1,0:01:13.93,0:01:15.02,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}ideal
+Dialogue: 0,0:01:15.02,0:01:16.35,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}para o nosso filho,
+Dialogue: 1,0:01:15.02,0:01:16.35,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}para o nosso filho,
+Dialogue: 0,0:01:16.35,0:01:16.89,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}que ele se sinta
+Dialogue: 1,0:01:16.35,0:01:16.89,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}que ele se sinta
+Dialogue: 0,0:01:16.89,0:01:17.86,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}confortável,
+Dialogue: 1,0:01:16.89,0:01:17.86,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}confortável,
+Dialogue: 0,0:01:17.86,0:01:18.39,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}que ele se sinta
+Dialogue: 1,0:01:17.86,0:01:18.39,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}que ele se sinta
+Dialogue: 0,0:01:18.39,0:01:19.54,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}em casa.
+Dialogue: 1,0:01:18.39,0:01:19.54,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}em casa.
+Dialogue: 0,0:01:19.54,0:01:19.90,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}Então,
+Dialogue: 1,0:01:19.54,0:01:19.90,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}Então,
+Dialogue: 0,0:01:19.90,0:01:20.31,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}assim,
+Dialogue: 1,0:01:19.90,0:01:20.31,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}assim,
+Dialogue: 0,0:01:20.31,0:01:21.39,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}aqui para mim foi
+Dialogue: 1,0:01:20.31,0:01:21.39,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}aqui para mim foi
+Dialogue: 0,0:01:21.39,0:01:22.36,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}maravilhoso.
+Dialogue: 1,0:01:21.39,0:01:22.36,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}maravilhoso.
+Dialogue: 0,0:01:22.36,0:01:23.67,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}Nós fomos super bem
+Dialogue: 1,0:01:22.36,0:01:23.67,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}Nós fomos super bem
+Dialogue: 0,0:01:23.67,0:01:24.40,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}atendidos.
+Dialogue: 1,0:01:23.67,0:01:24.40,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}atendidos.
+Dialogue: 0,0:01:24.40,0:01:26.45,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}E a Alícia ama,
+Dialogue: 1,0:01:24.40,0:01:26.45,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}E a Alícia ama,
+Dialogue: 0,0:01:26.45,0:01:28.30,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}ama demais a natação,
+Dialogue: 1,0:01:26.45,0:01:28.30,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}ama demais a natação,
+Dialogue: 0,0:01:28.30,0:01:30.78,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}ama o ambiente,
+Dialogue: 1,0:01:28.30,0:01:30.78,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}ama o ambiente,
+Dialogue: 0,0:01:30.78,0:01:31.03,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}né,
+Dialogue: 1,0:01:30.78,0:01:31.03,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}né,
+Dialogue: 0,0:01:31.03,0:01:32.22,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}onde nós estamos.
+Dialogue: 1,0:01:31.03,0:01:32.22,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}onde nós estamos.
+Dialogue: 0,0:01:32.22,0:01:32.91,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}Os professores são
+Dialogue: 1,0:01:32.22,0:01:32.91,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}Os professores são
+Dialogue: 0,0:01:32.91,0:01:34.20,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}maravilhosos,
+Dialogue: 1,0:01:32.91,0:01:34.20,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}maravilhosos,
+Dialogue: 0,0:01:34.20,0:01:36.52,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}foram super atenciosos.
+Dialogue: 1,0:01:34.20,0:01:36.52,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}foram super atenciosos.
+Dialogue: 0,0:01:36.52,0:01:37.44,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}Eles,
+Dialogue: 1,0:01:36.52,0:01:37.44,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}Eles,
+Dialogue: 0,0:01:37.44,0:01:38.69,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}com um jeitinho,
+Dialogue: 1,0:01:37.44,0:01:38.69,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}com um jeitinho,
+Dialogue: 0,0:01:38.69,0:01:38.87,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}né,
+Dialogue: 1,0:01:38.69,0:01:38.87,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}né,
+Dialogue: 0,0:01:38.87,0:01:40.60,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}porque a criança autista,
+Dialogue: 1,0:01:38.87,0:01:40.60,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}porque a criança autista,
+Dialogue: 0,0:01:40.60,0:01:41.48,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}ela tem uma pequena
+Dialogue: 1,0:01:40.60,0:01:41.48,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}ela tem uma pequena
+Dialogue: 0,0:01:41.48,0:01:42.74,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}dificuldade desse
+Dialogue: 1,0:01:41.48,0:01:42.74,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}dificuldade desse
+Dialogue: 0,0:01:42.74,0:01:45.04,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}contato com o professor,
+Dialogue: 1,0:01:42.74,0:01:45.04,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}contato com o professor,
+Dialogue: 0,0:01:45.04,0:01:46.13,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}contato com outra
+Dialogue: 1,0:01:45.04,0:01:46.13,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}contato com outra
+Dialogue: 0,0:01:46.13,0:01:46.93,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}criança.
+Dialogue: 1,0:01:46.13,0:01:46.93,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}criança.
+Dialogue: 0,0:01:47.66,0:01:48.89,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}E pra Alícia foi
+Dialogue: 1,0:01:47.66,0:01:48.89,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}E pra Alícia foi
+Dialogue: 0,0:01:48.89,0:01:50.19,Shadow,,0,0,0,,{\pos(544,1165)\blur4\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}uma virada de chave.
+Dialogue: 1,0:01:48.89,0:01:50.19,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}uma virada de chave.
