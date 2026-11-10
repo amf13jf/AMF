@@ -1,0 +1,10 @@
+[0:v]scale=1080:1920:flags=lanczos,setsar=1,fps=30[base];
+[1:v]setpts=PTS-STARTPTS+16.3/TB[mo];
+[2:v]trim=0.3:3.8,setpts=PTS-STARTPTS+52.8/TB,fps=30,scale=1080:1920,setsar=1[b1];
+[3:v]trim=7.0:10.6,setpts=PTS-STARTPTS+84.5/TB,fps=30,scale=1080:1920,setsar=1[b2];
+[4:v]trim=0:3.9,setpts=PTS-STARTPTS+96.55/TB,fps=30,scale=1080:1920,setsar=1[b3];
+[base][mo]overlay=eof_action=pass:enable='between(t,16.3,36.0)'[v1];
+[v1][b1]overlay=eof_action=pass[v2];
+[v2][b2]overlay=eof_action=pass[v3];
+[v3][b3]overlay=eof_action=pass,ass=subs.ass:fontsdir=/root/.fonts,format=yuv420p[v];
+[0:a]highpass=f=70,loudnorm=I=-15:TP=-1.5:LRA=11[a]
