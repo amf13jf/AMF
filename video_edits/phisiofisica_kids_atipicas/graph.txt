@@ -1,10 +1,13 @@
 [0:v]scale=1080:1920:flags=lanczos,setsar=1,fps=30[base];
 [1:v]setpts=PTS-STARTPTS+16.3/TB[mo];
-[2:v]trim=0.3:3.8,setpts=PTS-STARTPTS+52.8/TB,fps=30,scale=1080:1920,setsar=1[b1];
-[3:v]trim=7.0:10.6,setpts=PTS-STARTPTS+84.5/TB,fps=30,scale=1080:1920,setsar=1[b2];
-[4:v]trim=0:3.9,setpts=PTS-STARTPTS+96.55/TB,fps=30,scale=1080:1920,setsar=1[b3];
+[2:v]split=4[n1][n2][n3][n4];
+[n1]trim=0:3.5,setpts=PTS-STARTPTS+52.8/TB,fps=30,scale=1080:1920,setsar=1[b1];
+[n2]trim=15.0:18.6,setpts=PTS-STARTPTS+84.5/TB,fps=30,scale=1080:1920,setsar=1[b2];
+[n3]trim=19.5:23.4,setpts=PTS-STARTPTS+96.55/TB,fps=30,scale=1080:1920,setsar=1[b3];
+[n4]trim=26.5:29.6,setpts=PTS-STARTPTS+110.5/TB,fps=30,scale=1080:1920,setsar=1[b4];
 [base][mo]overlay=eof_action=pass:enable='between(t,16.3,36.0)'[v1];
 [v1][b1]overlay=eof_action=pass[v2];
 [v2][b2]overlay=eof_action=pass[v3];
-[v3][b3]overlay=eof_action=pass,ass=subs.ass:fontsdir=/root/.fonts,format=yuv420p[v];
+[v3][b3]overlay=eof_action=pass[v4];
+[v4][b4]overlay=eof_action=pass,ass=subs.ass:fontsdir=/root/.fonts,format=yuv420p[v];
 [0:a]highpass=f=70,loudnorm=I=-15:TP=-1.5:LRA=11[a]
