@@ -3,7 +3,7 @@ import json, re
 from fontTools.ttLib import TTFont
 
 W, H = 1080, 1920
-EM = 70; FS = round(EM * 1.562); MAX_W = 940; Y = 1160
+EM = 58; FS = round(EM * 1.562); MAX_W = 820; Y = 1160
 tt = TTFont("/root/.fonts/Montserrat-800.ttf"); cmap = tt.getBestCmap(); hm = tt["hmtx"]
 def width(s): return sum(hm[cmap.get(ord(c), cmap[ord("?")])][0] for c in s) * EM / 1000
 
@@ -91,7 +91,7 @@ for i, ws in enumerate(events):
     if 16.25 <= a < 35.95: continue
     if a < 16.25 < b: b = 16.25
     txt = " ".join(w[0] for w in ws); assert width(txt) <= MAX_W, txt
-    L.append(f"Dialogue: 0,{ts(a)},{ts(b)},Shadow,,0,0,0,,{{\\pos({W//2+4},{Y+5})\\blur4{anim}}}{txt}")
+    L.append(f"Dialogue: 0,{ts(a)},{ts(b)},Shadow,,0,0,0,,{{\\pos({W//2+3},{Y+4})\\blur3{anim}}}{txt}")
     L.append(f"Dialogue: 1,{ts(a)},{ts(b)},Main,,0,0,0,,{{\\pos({W//2},{Y}){anim}}}{txt}")
     print(f"{a:6.2f}-{b:6.2f} {txt}")
 open("subs.ass", "w").write("\n".join(L) + "\n")
