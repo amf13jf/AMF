@@ -14,9 +14,9 @@ old_fix = [
     ("Você sabe por que", "Você sabe por que eles confiam tanto na gente?"),
 ]
 new_fix = [
-    ("Meu nome é Fabiana", "Meu nome é Fabiana, sou a mãe da Mali. A Mali é autista, tem deficiência intelectual,"),
+    ("Meu nome é Fabiana", "Meu nome é Fabiana, sou a mãe da Marly. A Marly é autista, tem deficiência intelectual,"),
     ("iniciou aqui", "e iniciou aqui na Phisiofisica e está evoluindo muito, desenvolvendo bastante na parte sensorial,"),
-    ("agradecer", "só tenho que agradecer à Phisiofisica, essa evolução que a Mali está tendo a cada dia."),
+    ("agradecer", "só tenho que agradecer à Phisiofisica, essa evolução que a Marly está tendo a cada dia."),
     ("e também fora", "e também, fora o carinho que a gente tem aqui, o apoio aqui dos profissionais que acompanham,"),
 ]
 
