@@ -1,0 +1,8 @@
+[0:v]setsar=1[base];
+[1:v]trim=0.3:3.8,setpts=PTS-STARTPTS+47.4/TB,fps=30,scale=1080:1920,setsar=1[b1];
+[2:v]trim=7.0:10.6,setpts=PTS-STARTPTS+55.4/TB,fps=30,scale=1080:1920,setsar=1[b2];
+[3:v]trim=0:3.9,setpts=PTS-STARTPTS+64.4/TB,fps=30,scale=1080:1920,setsar=1[b3];
+[base][b1]overlay=eof_action=pass[v1];
+[v1][b2]overlay=eof_action=pass[v2];
+[v2][b3]overlay=eof_action=pass,ass=subs.ass:fontsdir=/root/.fonts,format=yuv420p[v];
+[0:a]alimiter=limit=0.9[a]
