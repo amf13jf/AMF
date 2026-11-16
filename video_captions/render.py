@@ -267,6 +267,8 @@ def chunk_layout(ci):
 def draw_dynamic(canvas, t):
     if any(m["start"] <= t < m["end"] for m in motions()):
         return  # nada de legenda por baixo do motion (nem no fade de saída)
+    if any(n["start"] <= t < n["end"] for n in getattr(script, "NAMETAGS", [])):
+        return  # a plaquinha de nome já diz o que ela está falando
     chunks = script.DYNAMIC_CHUNKS
     for ci, chunk in enumerate(chunks):
         start = chunk[0][2][0][0] - 0.03
@@ -727,6 +729,148 @@ def draw_checklist(layer, m, t):
         paste(layer, row, 0, y - 130)
 
 
+# ---------------------------------------------------------------- maçã
+
+
+APPLE_R = 245  # raio da maçã (px, na tela)
+
+
+def _apple_outline(r, n=240):
+    """Silhueta de maçã: covinha em cima, base levemente achatada."""
+    pts = []
+    for i in range(n):
+        th = 2 * math.pi * i / n  # 0 = topo, sentido horário
+        rr = 1 + 0.07 * math.cos(2 * th) + 0.05 * math.cos(th)
+        rr -= 0.20 * math.exp(-((th if th < math.pi else th - 2 * math.pi) ** 2) / 0.06)
+        rr -= 0.06 * math.exp(-((th - math.pi) ** 2) / 0.12)
+        pts.append((r * rr * math.sin(th), -r * rr * math.cos(th)))
+    return pts
+
+
+def _bite_circles(r, ang, prog):
+    """Mordida: círculo grande na borda + “dentes” (circulinhos) no contorno."""
+    a = math.radians(ang)
+    cx, cy = 1.02 * r * math.sin(a), -1.02 * r * math.cos(a)
+    big = 0.30 * r * prog
+    circles = [(cx, cy, big)]
+    if prog > 0.3:
+        for k in range(-3, 4):  # marcas dos dentes voltadas para dentro da maçã
+            b = a + math.pi + math.radians(k * 24)
+            circles.append((cx + big * math.sin(b), cy - big * math.cos(b), 0.075 * r * prog))
+    return circles
+
+
+@lru_cache(maxsize=64)
+def apple_sprite(angle_q, bites_q):
+    """Maçã girada em `angle_q` graus com as mordidas `bites_q` ((ângulo, progresso), ...)."""
+    r = APPLE_R * SS
+    size = int(r * 3.2)
+    c = size / 2
+    body = Image.new("L", (size, size), 0)
+    ImageDraw.Draw(body).polygon([(c + x, c + y) for x, y in _apple_outline(r)], fill=255)
+    bite = Image.new("L", (size, size), 0)
+    flesh = Image.new("L", (size, size), 0)
+    db, df = ImageDraw.Draw(bite), ImageDraw.Draw(flesh)
+    for ang, prog in bites_q:
+        for x, y, rr in _bite_circles(r, ang, prog):
+            db.ellipse([c + x - rr, c + y - rr, c + x + rr, c + y + rr], fill=255)
+            e = rr + 0.06 * r
+            df.ellipse([c + x - e, c + y - e, c + x + e, c + y + e], fill=255)
+    # cor: vermelho da maçã em degradê + polpa creme na borda da mordida
+    red = Image.new("RGBA", (size, size))
+    rd = ImageDraw.Draw(red)
+    for i in range(size):
+        k = i / size
+        rd.line([(0, i), (size, i)], fill=(int(205 - 70 * k), int(36 - 18 * k), int(52 - 22 * k), 255))
+    img = Image.composite(Image.new("RGBA", (size, size), (250, 238, 206, 255)), red,
+                          ImageChops.multiply(flesh, body))
+    alpha = ImageChops.subtract(body, bite)
+    img.putalpha(alpha)
+    # cabinho e folha (giram junto)
+    d = ImageDraw.Draw(img)
+    top = (c, c - r * 0.80)
+    d.line([top, (c + r * 0.06, c - r * 1.12)], fill=(96, 62, 40, 255), width=int(r * 0.07))
+    leaf = Image.new("RGBA", (size, size), (0, 0, 0, 0))
+    ImageDraw.Draw(leaf).ellipse([c + r * 0.08, c - r * 1.22, c + r * 0.62, c - r * 1.0],
+                                 fill=(112, 150, 74, 255))
+    leaf = leaf.rotate(-28, center=(c + r * 0.08, c - r * 1.1), resample=Image.BICUBIC)
+    img.alpha_composite(leaf)
+    img = img.rotate(-angle_q, center=(c, c), resample=Image.BICUBIC)
+    # luz fixa (não gira): volume nas bordas + brilho no alto à esquerda
+    a = img.getchannel("A")
+    edge = ImageChops.subtract(a, a.filter(ImageFilter.GaussianBlur(r * 0.12)))
+    img = Image.composite(Image.new("RGBA", (size, size), (70, 8, 20, 255)), img,
+                          edge.point(lambda v: int(v * 0.55)))
+    hl = Image.new("L", (size, size), 0)
+    ImageDraw.Draw(hl).ellipse([c - r * 0.62, c - r * 0.62, c - r * 0.22, c - r * 0.12], fill=170)
+    hl = ImageChops.multiply(hl.filter(ImageFilter.GaussianBlur(r * 0.1)), a)
+    img = Image.composite(Image.new("RGBA", (size, size), (255, 255, 255, 255)), img, hl)
+    img.putalpha(a)
+    # sombra
+    out = Image.new("RGBA", (size, size), (0, 0, 0, 0))
+    sh = Image.new("L", (size, size), 0)
+    ImageDraw.Draw(sh).ellipse([c - r * 0.8, c + r * 0.95, c + r * 0.8, c + r * 1.15], fill=90)
+    out.paste(Image.new("RGBA", (size, size), (80, 20, 36, 255)), (0, 0),
+              sh.filter(ImageFilter.GaussianBlur(r * 0.12)))
+    out.alpha_composite(img)
+    return out.resize((size // SS, size // SS), Image.LANCZOS)
+
+
+def draw_apple(layer, m, t):
+    """Maçã girando e ganhando mordidas na hora da fala + texto do gancho."""
+    t0 = m["start"]
+    angle = m.get("spin", 40) * (t - t0) - 20
+    bites = []
+    squash = 1.0
+    for ang, bt in m["bites"]:
+        p = clamp((t - bt) / 0.14)
+        if p > 0:
+            bites.append((ang, round(p, 2)))
+        if 0 <= t - bt < 0.3:
+            squash = min(squash, 1 - 0.05 * math.sin(math.pi * (t - bt) / 0.3))
+    sprite = apple_sprite(round(angle, 1), tuple(bites))
+    pop = ease_out_back((t - t0 - 0.1) / 0.5) * squash
+    draw_object(layer, sprite, t, pop, clamp((t - t0) / 0.25))
+    draw_word_line(layer, m["line"], t, TEXT_LINE_Y, 1.0)
+    draw_word_line(layer, m["line2"], t, TEXT_LINE_Y + 78, 1.0)
+    ws, big = m["big"]
+    draw_glow_word(layer, ws, big, t, TEXT_LINE_Y + 300, 1.0)
+
+
+# ---------------------------------------------------------------- plaquinha de nome
+
+
+def draw_nametags(canvas, t):
+    for tag in getattr(script, "NAMETAGS", []):
+        t0, t1 = tag["start"], tag["end"]
+        if not (t0 <= t < t1):
+            continue
+        k_in = ease_out_cubic((t - t0) / 0.45)
+        k_out = ease_in_out((t - (t1 - 0.3)) / 0.3)
+        name_f, sub_f = font("cap_sans", 66), font("sans_med", 30)
+        sub = tag["sub"].upper()
+        sub_w = sum(sub_f.getlength(ch) + 5 for ch in sub)
+        w = int(max(name_f.getlength(tag["name"]), sub_w) + 110)
+        h = 176
+        x0, y0 = 70, tag.get("y", 1560)
+        box = Image.new("RGBA", (w * SS, h * SS), (0, 0, 0, 0))
+        d = ImageDraw.Draw(box)
+        d.rounded_rectangle([0, 0, w * SS - 1, h * SS - 1], radius=26 * SS, fill=WINE + (238,))
+        d.rounded_rectangle([0, 0, 10 * SS, h * SS - 1], radius=5 * SS, fill=CREAM + (255,))
+        box = box.resize((w, h), Image.LANCZOS)
+        d = ImageDraw.Draw(box)
+        d.text((52, 86), tag["name"], font=name_f, anchor="ls", fill=WHITE + (255,))
+        x = 54
+        for ch in sub:
+            d.text((x, 136), ch, font=sub_f, anchor="ls", fill=CREAM + (220,))
+            x += sub_f.getlength(ch) + 5
+        reveal = int(w * k_in)  # entra como uma cortina da esquerda para a direita
+        if reveal <= 0:
+            continue
+        box = box.crop((0, 0, reveal, h))
+        paste(canvas, with_alpha(box, 1 - k_out), x0, y0 + k_out * 20)
+
+
 def draw_motion(canvas, t):
     for m in motions():
         t0, t1 = m["start"], m["end"]
@@ -739,6 +883,8 @@ def draw_motion(canvas, t):
             draw_counter(layer, m, t)
         elif m["kind"] == "checklist":
             draw_checklist(layer, m, t)
+        elif m["kind"] == "apple":
+            draw_apple(layer, m, t)
         else:
             draw_signals(layer, m, t)
 
@@ -836,6 +982,7 @@ def render_frame(t):
         draw_static(canvas, t)
     else:
         draw_dynamic(canvas, t)
+        draw_nametags(canvas, t)
         draw_motion(canvas, t)
     return canvas
 
