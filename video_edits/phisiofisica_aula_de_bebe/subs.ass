@@ -1,0 +1,106 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1080
+PlayResY: 1920
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Main,Montserrat ExtraBold,91,&H00FFFFFF,&H00FFFFFF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,0,0,5,40,40,0,1
+Style: Shadow,Montserrat ExtraBold,91,&H59000000,&H59000000,&H59000000,&H00000000,0,0,0,0,100,100,0,0,1,0,0,5,40,40,0,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:05.90,0:00:06.51,Shadow,,0,0,0,,{\pos(543,1164)\blur3\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}Samantha,
+Dialogue: 1,0:00:05.90,0:00:06.51,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}Samantha,
+Dialogue: 0,0:00:06.51,0:00:07.38,Shadow,,0,0,0,,{\pos(543,1164)\blur3\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}eu tenho uma dúvida
+Dialogue: 1,0:00:06.51,0:00:07.38,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}eu tenho uma dúvida
+Dialogue: 0,0:00:07.38,0:00:08.06,Shadow,,0,0,0,,{\pos(543,1164)\blur3\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}que pode ser
+Dialogue: 1,0:00:07.38,0:00:08.06,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}que pode ser
+Dialogue: 0,0:00:08.06,0:00:08.65,Shadow,,0,0,0,,{\pos(543,1164)\blur3\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}a dúvida de
+Dialogue: 1,0:00:08.06,0:00:08.65,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}a dúvida de
+Dialogue: 0,0:00:08.65,0:00:09.76,Shadow,,0,0,0,,{\pos(543,1164)\blur3\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}outras mães.
+Dialogue: 1,0:00:08.65,0:00:09.76,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}outras mães.
+Dialogue: 0,0:00:09.76,0:00:10.87,Shadow,,0,0,0,,{\pos(543,1164)\blur3\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}Eu sou gestante
+Dialogue: 1,0:00:09.76,0:00:10.87,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}Eu sou gestante
+Dialogue: 0,0:00:10.87,0:00:11.64,Shadow,,0,0,0,,{\pos(543,1164)\blur3\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}no momento,
+Dialogue: 1,0:00:10.87,0:00:11.64,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}no momento,
+Dialogue: 0,0:00:11.64,0:00:12.75,Shadow,,0,0,0,,{\pos(543,1164)\blur3\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}mas assim
+Dialogue: 1,0:00:11.64,0:00:12.75,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}mas assim
+Dialogue: 0,0:00:12.75,0:00:14.09,Shadow,,0,0,0,,{\pos(543,1164)\blur3\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}que a criança estiver
+Dialogue: 1,0:00:12.75,0:00:14.09,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}que a criança estiver
+Dialogue: 0,0:00:14.09,0:00:14.82,Shadow,,0,0,0,,{\pos(543,1164)\blur3\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}na idade de
+Dialogue: 1,0:00:14.09,0:00:14.82,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}na idade de
+Dialogue: 0,0:00:14.82,0:00:16.00,Shadow,,0,0,0,,{\pos(543,1164)\blur3\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}poder nadar,
+Dialogue: 1,0:00:14.82,0:00:16.00,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}poder nadar,
+Dialogue: 0,0:00:16.00,0:00:16.99,Shadow,,0,0,0,,{\pos(543,1164)\blur3\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}eu quero trazer ela
+Dialogue: 1,0:00:16.00,0:00:16.99,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}eu quero trazer ela
+Dialogue: 0,0:00:16.99,0:00:18.33,Shadow,,0,0,0,,{\pos(543,1164)\blur3\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}para a natação.
+Dialogue: 1,0:00:16.99,0:00:18.33,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}para a natação.
+Dialogue: 0,0:00:18.33,0:00:19.47,Shadow,,0,0,0,,{\pos(543,1164)\blur3\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}Mas 20 minutos não
+Dialogue: 1,0:00:18.33,0:00:19.47,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}Mas 20 minutos não
+Dialogue: 0,0:00:19.47,0:00:20.35,Shadow,,0,0,0,,{\pos(543,1164)\blur3\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}é muito pouco?
+Dialogue: 1,0:00:19.47,0:00:20.35,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}é muito pouco?
+Dialogue: 0,0:00:21.16,0:00:21.78,Shadow,,0,0,0,,{\pos(543,1164)\blur3\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}Então,
+Dialogue: 1,0:00:21.16,0:00:21.78,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}Então,
+Dialogue: 0,0:00:21.78,0:00:22.35,Shadow,,0,0,0,,{\pos(543,1164)\blur3\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}você vai fazer
+Dialogue: 1,0:00:21.78,0:00:22.35,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}você vai fazer
+Dialogue: 0,0:00:22.35,0:00:23.84,Shadow,,0,0,0,,{\pos(543,1164)\blur3\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}uma ótima escolha
+Dialogue: 1,0:00:22.35,0:00:23.84,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}uma ótima escolha
+Dialogue: 0,0:00:23.84,0:00:24.63,Shadow,,0,0,0,,{\pos(543,1164)\blur3\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}colocando seu filho
+Dialogue: 1,0:00:23.84,0:00:24.63,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}colocando seu filho
+Dialogue: 0,0:00:24.63,0:00:25.40,Shadow,,0,0,0,,{\pos(543,1164)\blur3\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}na natação
+Dialogue: 1,0:00:24.63,0:00:25.40,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}na natação
+Dialogue: 0,0:00:25.40,0:00:25.87,Shadow,,0,0,0,,{\pos(543,1164)\blur3\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}a partir dos
+Dialogue: 1,0:00:25.40,0:00:25.87,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}a partir dos
+Dialogue: 0,0:00:25.87,0:00:26.53,Shadow,,0,0,0,,{\pos(543,1164)\blur3\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}6 meses.
+Dialogue: 1,0:00:25.87,0:00:26.53,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}6 meses.
+Dialogue: 0,0:00:27.31,0:00:28.03,Shadow,,0,0,0,,{\pos(543,1164)\blur3\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}O que acontece?
+Dialogue: 1,0:00:27.31,0:00:28.03,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}O que acontece?
+Dialogue: 0,0:00:39.46,0:00:40.06,Shadow,,0,0,0,,{\pos(543,1164)\blur3\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}E também,
+Dialogue: 1,0:00:39.46,0:00:40.06,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}E também,
+Dialogue: 0,0:00:40.06,0:00:40.87,Shadow,,0,0,0,,{\pos(543,1164)\blur3\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}o nosso objetivo
+Dialogue: 1,0:00:40.06,0:00:40.87,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}o nosso objetivo
+Dialogue: 0,0:00:40.87,0:00:43.22,Shadow,,0,0,0,,{\pos(543,1164)\blur3\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}na natação é adaptar
+Dialogue: 1,0:00:40.87,0:00:43.22,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}na natação é adaptar
+Dialogue: 0,0:00:43.22,0:00:44.70,Shadow,,0,0,0,,{\pos(543,1164)\blur3\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}ao meio aquático.
+Dialogue: 1,0:00:43.22,0:00:44.70,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}ao meio aquático.
+Dialogue: 0,0:00:44.70,0:00:45.02,Shadow,,0,0,0,,{\pos(543,1164)\blur3\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}Então a gente não
+Dialogue: 1,0:00:44.70,0:00:45.02,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}Então a gente não
+Dialogue: 0,0:00:45.02,0:00:46.20,Shadow,,0,0,0,,{\pos(543,1164)\blur3\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}quer gerar estresse
+Dialogue: 1,0:00:45.02,0:00:46.20,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}quer gerar estresse
+Dialogue: 0,0:00:46.20,0:00:46.91,Shadow,,0,0,0,,{\pos(543,1164)\blur3\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}na criança,
+Dialogue: 1,0:00:46.20,0:00:46.91,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}na criança,
+Dialogue: 0,0:00:46.91,0:00:48.37,Shadow,,0,0,0,,{\pos(543,1164)\blur3\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}não é uma atividade
+Dialogue: 1,0:00:46.91,0:00:48.37,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}não é uma atividade
+Dialogue: 0,0:00:48.37,0:00:49.54,Shadow,,0,0,0,,{\pos(543,1164)\blur3\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}que vai gerar fadiga,
+Dialogue: 1,0:00:48.37,0:00:49.54,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}que vai gerar fadiga,
+Dialogue: 0,0:00:49.54,0:00:50.65,Shadow,,0,0,0,,{\pos(543,1164)\blur3\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}e sim prazer.
+Dialogue: 1,0:00:49.54,0:00:50.65,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}e sim prazer.
+Dialogue: 0,0:00:50.65,0:00:53.93,Shadow,,0,0,0,,{\pos(543,1164)\blur3\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}Então por isso 20 minutos
+Dialogue: 1,0:00:50.65,0:00:53.93,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}Então por isso 20 minutos
+Dialogue: 0,0:00:53.93,0:00:55.00,Shadow,,0,0,0,,{\pos(543,1164)\blur3\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}é o suficiente,
+Dialogue: 1,0:00:53.93,0:00:55.00,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}é o suficiente,
+Dialogue: 0,0:01:05.80,0:01:06.98,Shadow,,0,0,0,,{\pos(543,1164)\blur3\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}Então esses 20 minutos
+Dialogue: 1,0:01:05.80,0:01:06.98,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}Então esses 20 minutos
+Dialogue: 0,0:01:06.98,0:01:07.74,Shadow,,0,0,0,,{\pos(543,1164)\blur3\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}são ideais
+Dialogue: 1,0:01:06.98,0:01:07.74,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}são ideais
+Dialogue: 0,0:01:07.74,0:01:08.48,Shadow,,0,0,0,,{\pos(543,1164)\blur3\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}para que ela tenha
+Dialogue: 1,0:01:07.74,0:01:08.48,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}para que ela tenha
+Dialogue: 0,0:01:08.48,0:01:09.03,Shadow,,0,0,0,,{\pos(543,1164)\blur3\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}uma prática
+Dialogue: 1,0:01:08.48,0:01:09.03,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}uma prática
+Dialogue: 0,0:01:09.03,0:01:10.30,Shadow,,0,0,0,,{\pos(543,1164)\blur3\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}bem prazerosa.
+Dialogue: 1,0:01:09.03,0:01:10.30,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}bem prazerosa.
+Dialogue: 0,0:01:10.30,0:01:11.07,Shadow,,0,0,0,,{\pos(543,1164)\blur3\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}Que ótimo!
+Dialogue: 1,0:01:10.30,0:01:11.07,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}Que ótimo!
+Dialogue: 0,0:01:11.07,0:01:11.85,Shadow,,0,0,0,,{\pos(543,1164)\blur3\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}Então assim que
+Dialogue: 1,0:01:11.07,0:01:11.85,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}Então assim que
+Dialogue: 0,0:01:11.85,0:01:12.93,Shadow,,0,0,0,,{\pos(543,1164)\blur3\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}ele nascer,
+Dialogue: 1,0:01:11.85,0:01:12.93,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}ele nascer,
+Dialogue: 0,0:01:12.93,0:01:14.40,Shadow,,0,0,0,,{\pos(543,1164)\blur3\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}vai ser matriculado aqui
+Dialogue: 1,0:01:12.93,0:01:14.40,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}vai ser matriculado aqui
+Dialogue: 0,0:01:14.40,0:01:15.48,Shadow,,0,0,0,,{\pos(543,1164)\blur3\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}na Phisiofisica.
+Dialogue: 1,0:01:14.40,0:01:15.48,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}na Phisiofisica.
+Dialogue: 0,0:01:15.48,0:01:17.13,Shadow,,0,0,0,,{\pos(543,1164)\blur3\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}Nós vamos esperar vocês!
+Dialogue: 1,0:01:15.48,0:01:17.13,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}Nós vamos esperar vocês!
