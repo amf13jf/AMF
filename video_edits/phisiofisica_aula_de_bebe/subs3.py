@@ -77,9 +77,9 @@ for i, ws in enumerate(events):
     b = max(ws[-1][2] + 0.25, a + 0.5)
     if nxt - b < 0.4: b = nxt
     b = min(b, nxt)
-    skip = [(0, 5.50), (28.70, 39.30), (55.00, 65.60)]
+    skip = [(0, 5.50)]
     if any(x <= a < y for x, y in skip): continue
-    a = max(a, 5.90)
+    a = max(a, 5.58)
     for x, y in skip:
         if a < x < b: b = x
     txt = " ".join(w[0] for w in ws); assert width(txt) <= MAX_W, txt

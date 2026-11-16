@@ -12,8 +12,8 @@ Style: Shadow,Montserrat ExtraBold,91,&H59000000,&H59000000,&H59000000,&H0000000
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
-Dialogue: 0,0:00:05.90,0:00:06.51,Shadow,,0,0,0,,{\pos(543,1164)\blur3\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}Samantha,
-Dialogue: 1,0:00:05.90,0:00:06.51,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}Samantha,
+Dialogue: 0,0:00:05.58,0:00:06.51,Shadow,,0,0,0,,{\pos(543,1164)\blur3\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}Samantha,
+Dialogue: 1,0:00:05.58,0:00:06.51,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}Samantha,
 Dialogue: 0,0:00:06.51,0:00:07.38,Shadow,,0,0,0,,{\pos(543,1164)\blur3\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}eu tenho uma dúvida
 Dialogue: 1,0:00:06.51,0:00:07.38,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}eu tenho uma dúvida
 Dialogue: 0,0:00:07.38,0:00:08.06,Shadow,,0,0,0,,{\pos(543,1164)\blur3\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}que pode ser
@@ -58,6 +58,26 @@ Dialogue: 0,0:00:25.87,0:00:26.53,Shadow,,0,0,0,,{\pos(543,1164)\blur3\fad(90,90
 Dialogue: 1,0:00:25.87,0:00:26.53,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}6 meses.
 Dialogue: 0,0:00:27.31,0:00:28.03,Shadow,,0,0,0,,{\pos(543,1164)\blur3\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}O que acontece?
 Dialogue: 1,0:00:27.31,0:00:28.03,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}O que acontece?
+Dialogue: 0,0:00:28.76,0:00:29.59,Shadow,,0,0,0,,{\pos(543,1164)\blur3\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}A partir dos
+Dialogue: 1,0:00:28.76,0:00:29.59,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}A partir dos
+Dialogue: 0,0:00:29.59,0:00:30.49,Shadow,,0,0,0,,{\pos(543,1164)\blur3\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}6 meses,
+Dialogue: 1,0:00:29.59,0:00:30.49,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}6 meses,
+Dialogue: 0,0:00:30.49,0:00:31.88,Shadow,,0,0,0,,{\pos(543,1164)\blur3\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}a criança está regulando
+Dialogue: 1,0:00:30.49,0:00:31.88,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}a criança está regulando
+Dialogue: 0,0:00:31.88,0:00:32.19,Shadow,,0,0,0,,{\pos(543,1164)\blur3\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}ainda a
+Dialogue: 1,0:00:31.88,0:00:32.19,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}ainda a
+Dialogue: 0,0:00:32.19,0:00:33.68,Shadow,,0,0,0,,{\pos(543,1164)\blur3\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}temperatura corporal.
+Dialogue: 1,0:00:32.19,0:00:33.68,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}temperatura corporal.
+Dialogue: 0,0:00:33.68,0:00:35.43,Shadow,,0,0,0,,{\pos(543,1164)\blur3\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}Então 20 minutos
+Dialogue: 1,0:00:33.68,0:00:35.43,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}Então 20 minutos
+Dialogue: 0,0:00:35.43,0:00:36.71,Shadow,,0,0,0,,{\pos(543,1164)\blur3\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}é o suficiente por
+Dialogue: 1,0:00:35.43,0:00:36.71,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}é o suficiente por
+Dialogue: 0,0:00:36.71,0:00:37.47,Shadow,,0,0,0,,{\pos(543,1164)\blur3\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}causa da troca
+Dialogue: 1,0:00:36.71,0:00:37.47,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}causa da troca
+Dialogue: 0,0:00:37.47,0:00:38.18,Shadow,,0,0,0,,{\pos(543,1164)\blur3\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}de calor que ela
+Dialogue: 1,0:00:37.47,0:00:38.18,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}de calor que ela
+Dialogue: 0,0:00:38.18,0:00:39.46,Shadow,,0,0,0,,{\pos(543,1164)\blur3\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}tem na água.
+Dialogue: 1,0:00:38.18,0:00:39.46,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}tem na água.
 Dialogue: 0,0:00:39.46,0:00:40.06,Shadow,,0,0,0,,{\pos(543,1164)\blur3\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}E também,
 Dialogue: 1,0:00:39.46,0:00:40.06,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}E também,
 Dialogue: 0,0:00:40.06,0:00:40.87,Shadow,,0,0,0,,{\pos(543,1164)\blur3\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}o nosso objetivo
@@ -80,8 +100,26 @@ Dialogue: 0,0:00:49.54,0:00:50.65,Shadow,,0,0,0,,{\pos(543,1164)\blur3\fad(90,90
 Dialogue: 1,0:00:49.54,0:00:50.65,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}e sim prazer.
 Dialogue: 0,0:00:50.65,0:00:53.93,Shadow,,0,0,0,,{\pos(543,1164)\blur3\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}Então por isso 20 minutos
 Dialogue: 1,0:00:50.65,0:00:53.93,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}Então por isso 20 minutos
-Dialogue: 0,0:00:53.93,0:00:55.00,Shadow,,0,0,0,,{\pos(543,1164)\blur3\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}é o suficiente,
-Dialogue: 1,0:00:53.93,0:00:55.00,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}é o suficiente,
+Dialogue: 0,0:00:53.93,0:00:55.04,Shadow,,0,0,0,,{\pos(543,1164)\blur3\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}é o suficiente,
+Dialogue: 1,0:00:53.93,0:00:55.04,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}é o suficiente,
+Dialogue: 0,0:00:55.04,0:00:55.86,Shadow,,0,0,0,,{\pos(543,1164)\blur3\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}porque a criança também
+Dialogue: 1,0:00:55.04,0:00:55.86,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}porque a criança também
+Dialogue: 0,0:00:55.86,0:00:57.44,Shadow,,0,0,0,,{\pos(543,1164)\blur3\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}perde muito a questão
+Dialogue: 1,0:00:55.86,0:00:57.44,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}perde muito a questão
+Dialogue: 0,0:00:57.44,0:00:58.90,Shadow,,0,0,0,,{\pos(543,1164)\blur3\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}da concentração,
+Dialogue: 1,0:00:57.44,0:00:58.90,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}da concentração,
+Dialogue: 0,0:00:58.90,0:01:00.35,Shadow,,0,0,0,,{\pos(543,1164)\blur3\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}ela recebe muitos
+Dialogue: 1,0:00:58.90,0:01:00.35,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}ela recebe muitos
+Dialogue: 0,0:01:00.35,0:01:01.76,Shadow,,0,0,0,,{\pos(543,1164)\blur3\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}estímulos na água
+Dialogue: 1,0:01:00.35,0:01:01.76,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}estímulos na água
+Dialogue: 0,0:01:01.76,0:01:02.10,Shadow,,0,0,0,,{\pos(543,1164)\blur3\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}e isso faz
+Dialogue: 1,0:01:01.76,0:01:02.10,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}e isso faz
+Dialogue: 0,0:01:02.10,0:01:03.06,Shadow,,0,0,0,,{\pos(543,1164)\blur3\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}com que ela
+Dialogue: 1,0:01:02.10,0:01:03.06,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}com que ela
+Dialogue: 0,0:01:03.06,0:01:04.70,Shadow,,0,0,0,,{\pos(543,1164)\blur3\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}perca rapidamente
+Dialogue: 1,0:01:03.06,0:01:04.70,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}perca rapidamente
+Dialogue: 0,0:01:04.70,0:01:05.80,Shadow,,0,0,0,,{\pos(543,1164)\blur3\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}a concentração.
+Dialogue: 1,0:01:04.70,0:01:05.80,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}a concentração.
 Dialogue: 0,0:01:05.80,0:01:06.98,Shadow,,0,0,0,,{\pos(543,1164)\blur3\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}Então esses 20 minutos
 Dialogue: 1,0:01:05.80,0:01:06.98,Main,,0,0,0,,{\pos(540,1160)\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}Então esses 20 minutos
 Dialogue: 0,0:01:06.98,0:01:07.74,Shadow,,0,0,0,,{\pos(543,1164)\blur3\fad(90,90)\fscx94\fscy94\t(0,140,\fscx100\fscy100)}são ideais
