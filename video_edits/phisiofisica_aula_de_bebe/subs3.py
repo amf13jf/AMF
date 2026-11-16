@@ -12,7 +12,7 @@ def seg_words(s, fixes, offset, lo, hi):
     txt = s["text"].strip()
     for k, v in fixes:
         if k in txt: txt = v
-    txt = txt.replace("20 minutos", "20\u00a0minutos").replace("Samanta", "Samantha")
+    txt = txt.replace("20 minutos", "20\u00a0minutos")
     ws = s["words"]; marks = []; pos = 0
     for w in ws:
         marks.append((pos, w["s"])); pos += len(w["w"]); marks.append((pos, w["e"]))
