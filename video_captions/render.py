@@ -662,15 +662,83 @@ def draw_counter(layer, m, t):
         draw_word_line(layer, m["line2"], t, TEXT_LINE_Y + 278, 1.0)
 
 
+def partial(pts, frac):
+    """Pedaço inicial de uma linha poligonal (para desenhar traços aos poucos)."""
+    if frac >= 1:
+        return pts
+    lens = [math.dist(pts[i], pts[i + 1]) for i in range(len(pts) - 1)]
+    goal, acc, out = sum(lens) * clamp(frac), 0.0, [pts[0]]
+    for i, ln in enumerate(lens):
+        if acc + ln >= goal:
+            k = (goal - acc) / ln if ln else 0
+            out.append((pts[i][0] + (pts[i + 1][0] - pts[i][0]) * k,
+                        pts[i][1] + (pts[i + 1][1] - pts[i][1]) * k))
+            return out
+        acc += ln
+        out.append(pts[i + 1])
+    return out
+
+
+def draw_check(layer, cx, cy, t0, t, r=44):
+    """Círculo vinho que se desenha + check creme."""
+    k = ease_out_back((t - t0) / 0.35)
+    if k <= 0:
+        return
+    pad = r + 12
+    img = Image.new("RGBA", (pad * 2 * SS, pad * 2 * SS), (0, 0, 0, 0))
+    d = ImageDraw.Draw(img)
+    c, rr = pad * SS, r * SS * min(k, 1.15)
+    d.ellipse([c - rr, c - rr, c + rr, c + rr], fill=WINE + (255,))
+    ck = ease_in_out((t - t0 - 0.15) / 0.3)
+    if ck > 0:
+        pts = [(c - 0.45 * rr, c + 0.02 * rr), (c - 0.12 * rr, c + 0.34 * rr),
+               (c + 0.48 * rr, c - 0.30 * rr)]
+        seg = partial(pts, ck)
+        d.line(seg, fill=CREAM + (255,), width=int(8 * SS), joint="curve")
+        for x, y in (seg[0], seg[-1]):
+            d.ellipse([x - 4 * SS, y - 4 * SS, x + 4 * SS, y + 4 * SS], fill=CREAM + (255,))
+    img = img.resize((pad * 2, pad * 2), Image.LANCZOS)
+    paste(layer, img, cx - pad, cy - pad)
+
+
+def draw_checklist(layer, m, t):
+    """Título + palavra grande com brilho + itens que ganham check na hora da fala."""
+    draw_word_line(layer, m["title"], t, 620, 1.0)
+    ws, big = m["big"]
+    draw_glow_word(layer, ws, big, t, 880, 1.0, size=210)
+    for n, item in enumerate(m["items"]):
+        t0 = item[0][0]
+        y = 1210 + n * 240
+        k = ease_out_cubic((t - t0 + 0.05) / 0.35)
+        if k <= 0:
+            continue
+        x0 = 150 + (1 - k) * 80
+        draw_check(layer, x0 + 52, y - 30, t0, t, r=52)
+        row = Image.new("RGBA", (W, 200), (0, 0, 0, 0))
+        d = ImageDraw.Draw(row)
+        x = x0 + 136
+        for _, word in item:
+            key = word.startswith("*")
+            fnt = font("serif_italic", 104) if key else font("sans_reg", 72)
+            txt = word[1:] if key else word
+            d.text((x, 130), txt, font=fnt, anchor="ls",
+                   fill=(WINE if key else INK) + (int(255 * k),))
+            x += fnt.getlength(txt + " ")
+        paste(layer, row, 0, y - 130)
+
+
 def draw_motion(canvas, t):
     for m in motions():
         t0, t1 = m["start"], m["end"]
         if not (t0 <= t < t1):
             continue
         layer = motion_background().copy()
-        draw_dashed_circle(layer, t, ease_in_out((t - t0 - 0.15) / 0.7), 1.0)
+        if m.get("kind", "signals") != "checklist":
+            draw_dashed_circle(layer, t, ease_in_out((t - t0 - 0.15) / 0.7), 1.0)
         if m.get("kind", "signals") == "counter":
             draw_counter(layer, m, t)
+        elif m["kind"] == "checklist":
+            draw_checklist(layer, m, t)
         else:
             draw_signals(layer, m, t)
 
