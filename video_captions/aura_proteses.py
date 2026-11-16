@@ -1,8 +1,8 @@
 """Roteiro do vídeo "Aura - Próteses e reabilitações" (já montado, 31s).
 
 Transcrito com Whisper e revisado à mão. O primeiro take (pergunta da maçã)
-vira um motion em tela cheia: a maçã gira e ganha uma mordida a cada
-palavra-chave. A apresentação da Dra vira uma plaquinha de nome, e o resto
+vira um motion em tela cheia: a maçã da foto enviada gira e ganha uma mordida
+a cada palavra-chave. A apresentação da Dra vira uma plaquinha de nome, e o resto
 segue o padrão da Aura (legenda Outfit Bold, cortes leves e zooms).
 """
 
@@ -58,10 +58,11 @@ DYNAMIC_CHUNKS = [
 MOTIONS = [{
     # "Você tem medo de morder uma maçã com receio do que possa acontecer com seus dentes?"
     "kind": "apple",
+    "photo": True,  # foto enviada (video_captions/assets/maca_mordida.png)
     "start": -0.4,  # já aparece inteiro no primeiro quadro
-    "end": 4.25,
-    "spin": 38,  # graus por segundo
-    "bites": [(75, 0.90), (220, 1.90), (310, 2.80)],  # (posição na maçã, hora da mordida)
+    "end": 4.40,
+    "spin": 22,  # graus por segundo
+    "bites": [(75, 0.90), (150, 1.90), (210, 2.80)],  # (posição na maçã, hora da mordida)
     "line": [(0.00, "Você"), (0.22, "tem"), (0.42, "medo"), (0.68, "de"), (0.84, "*morder"),
              (1.06, "uma"), (1.24, "*maçã")],
     "line2": [(1.64, "com"), (1.84, "receio"), (2.32, "do"), (2.38, "que"), (2.48, "possa"),

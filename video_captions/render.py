@@ -484,8 +484,20 @@ def text_words(items):
             fnt, txt = font("serif_italic", 66), word[1:]
         else:
             fnt, txt = font("sans_reg", 50), word
-        out.append((ws, txt, fnt, fnt.getlength(txt)))
+        out.append((ws, txt, fnt, safe_length(fnt, txt)))
     return out
+
+
+def safe_length(fnt, txt):
+    """Largura somando letra a letra (ignora pares de kerning quebrados da Bodoni)."""
+    return sum(fnt.getlength(ch) for ch in txt)
+
+
+def draw_safe(d, xy, txt, fnt, fill):
+    x, y = xy
+    for ch in txt:
+        d.text((x, y), ch, font=fnt, anchor="ls", fill=fill)
+        x += fnt.getlength(ch)
 
 
 def draw_word_line(canvas, items, t, base, alpha, color=INK):
@@ -499,16 +511,19 @@ def draw_word_line(canvas, items, t, base, alpha, color=INK):
         k = ease_out_cubic((t - ws + 0.05) / 0.3)
         if k > 0:
             col = WINE if fnt is font("serif_italic", 66) else color
-            d.text((x, 110 + (1 - k) * 22), txt, font=fnt, anchor="ls",
-                   fill=col + (int(255 * k * alpha),))
+            draw_safe(d, (x, 110 + (1 - k) * 22), txt, fnt, col + (int(255 * k * alpha),))
         x += adv + space
     paste(canvas, layer, 0, base - 110)
 
 
-def draw_glow_word(canvas, ws, text, t, base, alpha, size=190):
+def draw_glow_word(canvas, ws, text, t, base, alpha, size=190, stagger=0.035, dur=0.35):
     """Palavra grande em Bodoni Bold vinho, letra por letra, com brilho."""
     fnt = font("serif_bold", size)
-    total = fnt.getlength(text)
+    # posições letra a letra sem kerning: a Bodoni enviada tem um par "te" quebrado
+    adv = [0.0]
+    for ch in text:
+        adv.append(adv[-1] + fnt.getlength(ch))
+    total = adv[-1]
     x0 = (W - total) / 2
     lh = int(size * 1.6)
     layer = Image.new("RGBA", (W, lh), (0, 0, 0, 0))
@@ -516,11 +531,11 @@ def draw_glow_word(canvas, ws, text, t, base, alpha, size=190):
     by = int(size * 1.05)
     any_drawn = False
     for i, ch in enumerate(text):
-        k = ease_out_cubic((t - ws - i * 0.035) / 0.35)
+        k = ease_out_cubic((t - ws - i * stagger) / dur)
         if k <= 0:
             continue
         any_drawn = True
-        x = x0 + fnt.getlength(text[:i])
+        x = x0 + adv[i]
         d.text((x, by + (1 - k) * 40), ch, font=fnt, anchor="ls",
                fill=WINE + (int(255 * k * alpha),))
     if not any_drawn:
@@ -626,15 +641,15 @@ def draw_signals(layer, m, t):
 
 def draw_glow_text(canvas, parts, base, alpha):
     """Texto centralizado em vinho com brilho. parts: [(texto, fonte), ...]."""
-    total = sum(f.getlength(txt) for txt, f in parts)
+    total = sum(safe_length(f, txt) for txt, f in parts)
     lh = 420
     by = 300
     layer = Image.new("RGBA", (W, lh), (0, 0, 0, 0))
     d = ImageDraw.Draw(layer)
     x = (W - total) / 2
     for txt, f in parts:
-        d.text((x, by), txt, font=f, anchor="ls", fill=WINE + (int(255 * alpha),))
-        x += f.getlength(txt)
+        draw_safe(d, (x, by), txt, f, WINE + (int(255 * alpha),))
+        x += safe_length(f, txt)
     glow = layer.getchannel("A").filter(ImageFilter.GaussianBlur(26)).point(
         lambda v: int(min(255, v * 1.4)))
     halo = Image.new("RGBA", layer.size, WINE_LIGHT + (0,))
@@ -723,9 +738,8 @@ def draw_checklist(layer, m, t):
             key = word.startswith("*")
             fnt = font("serif_italic", 104) if key else font("sans_reg", 72)
             txt = word[1:] if key else word
-            d.text((x, 130), txt, font=fnt, anchor="ls",
-                   fill=(WINE if key else INK) + (int(255 * k),))
-            x += fnt.getlength(txt + " ")
+            draw_safe(d, (x, 130), txt, fnt, (WINE if key else INK) + (int(255 * k),))
+            x += safe_length(fnt, txt + " ")
         paste(layer, row, 0, y - 130)
 
 
@@ -816,6 +830,82 @@ def apple_sprite(angle_q, bites_q):
     return out.resize((size // SS, size // SS), Image.LANCZOS)
 
 
+APPLE_PHOTO = os.path.join(HERE, "assets", "maca_mordida.png")
+
+
+@lru_cache(maxsize=None)
+def apple_photo_base():
+    """Foto da maçã recortada, ampliada para o tamanho do motion."""
+    img = Image.open(APPLE_PHOTO).convert("RGBA")
+    h = int(APPLE_R * 2.35)
+    w = int(img.width * h / img.height)
+    img = img.resize((w, h), Image.LANCZOS).filter(ImageFilter.UnsharpMask(2, 60, 2))
+    img.putalpha(img.getchannel("A").filter(ImageFilter.MinFilter(3)))  # tira a franja branca
+    # textura da polpa, tirada da mordida que já existe na foto (lado esquerdo)
+    flesh = img.crop((int(w * 0.05), int(h * 0.50), int(w * 0.16), int(h * 0.74))).convert("RGB")
+    return img, flesh
+
+
+@lru_cache(maxsize=64)
+def apple_photo_sprite(angle_q, bites_q):
+    """Foto da maçã + mordidas novas no mesmo estilo da original: um “gomo” liso
+    tirado da borda, com a polpa à mostra (textura copiada da própria foto)."""
+    base, flesh = apple_photo_base()
+    w, h = base.size
+    pad = int(w * 0.3)
+    size = (w + 2 * pad, h + 2 * pad)
+    img = Image.new("RGBA", size, (0, 0, 0, 0))
+    img.alpha_composite(base, (pad, pad))
+    cx, cy = pad + w * 0.52, pad + h * 0.60  # centro do corpo da maçã
+    r = w * 0.47
+    face = Image.new("L", size, 0)   # onde aparece a polpa
+    cut = Image.new("L", size, 0)    # o que sai da silhueta
+    rim = Image.new("L", size, 0)    # contorno escuro entre casca e polpa
+    df, dc, dr = ImageDraw.Draw(face), ImageDraw.Draw(cut), ImageDraw.Draw(rim)
+    def blob(x0, y0, rad, seed):
+        """Círculo com borda levemente irregular (marca natural da mordida)."""
+        pts = []
+        for i in range(90):
+            th = 2 * math.pi * i / 90
+            k = 1 + 0.045 * math.sin(5 * th + seed) + 0.03 * math.sin(11 * th + 2 * seed)
+            pts.append((x0 + rad * k * math.cos(th), y0 + rad * k * math.sin(th)))
+        return pts
+
+    for n, (ang, prog) in enumerate(bites_q):
+        a = math.radians(ang)
+        ux, uy = math.sin(a), -math.cos(a)
+        rad = 0.46 * r * ease_out_cubic(prog)
+        fx, fy = cx + ux * 0.98 * r, cy + uy * 0.98 * r      # área da polpa
+        gx, gy = fx + ux * 0.36 * r, fy + uy * 0.36 * r      # parte que sai da silhueta
+        poly = blob(fx, fy, rad, n * 1.7)
+        df.polygon(poly, fill=255)
+        dr.line(poly + poly[:1], fill=255, width=max(1, int(r * 0.03)))
+        dc.polygon(blob(gx, gy, rad * 1.02, n * 2.3 + 1), fill=255)
+    a_ch = img.getchannel("A")
+    tex = flesh.resize((int(r * 0.7), int(r * 1.1)), Image.BICUBIC)
+    tile = Image.new("RGB", size)
+    for yy in range(0, size[1], tex.height):
+        for xx in range(0, size[0], tex.width):
+            tile.paste(tex if (xx // tex.width + yy // tex.height) % 2 == 0
+                       else tex.transpose(Image.FLIP_LEFT_RIGHT), (xx, yy))
+    face_m = ImageChops.multiply(face.filter(ImageFilter.GaussianBlur(1.2)), a_ch)
+    img = Image.composite(tile.convert("RGBA"), img, face_m)
+    rim_m = ImageChops.multiply(rim.filter(ImageFilter.GaussianBlur(1.5)), a_ch)
+    img = Image.composite(Image.new("RGBA", size, (150, 70, 40, 255)), img,
+                          rim_m.point(lambda v: int(v * 0.6)))
+    img.putalpha(ImageChops.subtract(a_ch, cut.filter(ImageFilter.GaussianBlur(0.8))))
+    img = img.rotate(-angle_q, center=(cx, cy), resample=Image.BICUBIC)
+    out = Image.new("RGBA", size, (0, 0, 0, 0))
+    sh = Image.new("L", size, 0)
+    ImageDraw.Draw(sh).ellipse([cx - r * 0.85, cy + r * 1.0, cx + r * 0.85, cy + r * 1.22], fill=80)
+    out.paste(Image.new("RGBA", size, (80, 20, 36, 255)), (0, 0),
+              sh.filter(ImageFilter.GaussianBlur(r * 0.12)))
+    out.alpha_composite(img)
+    # recentra no centro do corpo da maçã (draw_object centraliza a imagem)
+    dx, dy = int(size[0] / 2 - cx), int(size[1] / 2 - cy)
+    return ImageChops.offset(out, dx, dy)
+
+
 def draw_apple(layer, m, t):
     """Maçã girando e ganhando mordidas na hora da fala + texto do gancho."""
     t0 = m["start"]
@@ -828,13 +918,14 @@ def draw_apple(layer, m, t):
             bites.append((ang, round(p, 2)))
         if 0 <= t - bt < 0.3:
             squash = min(squash, 1 - 0.05 * math.sin(math.pi * (t - bt) / 0.3))
-    sprite = apple_sprite(round(angle, 1), tuple(bites))
+    sprite = (apple_photo_sprite if m.get("photo") else apple_sprite)(round(angle, 1),
+                                                                       tuple(bites))
     pop = ease_out_back((t - t0 - 0.1) / 0.5) * squash
     draw_object(layer, sprite, t, pop, clamp((t - t0) / 0.25))
     draw_word_line(layer, m["line"], t, TEXT_LINE_Y, 1.0)
     draw_word_line(layer, m["line2"], t, TEXT_LINE_Y + 78, 1.0)
     ws, big = m["big"]
-    draw_glow_word(layer, ws, big, t, TEXT_LINE_Y + 300, 1.0)
+    draw_glow_word(layer, ws, big, t, TEXT_LINE_Y + 300, 1.0, stagger=0.015, dur=0.2)
 
 
 # ---------------------------------------------------------------- plaquinha de nome
