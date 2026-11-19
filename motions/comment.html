@@ -1,0 +1,102 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+  @font-face{font-family:Inter;src:local("Inter");}
+  html,body{margin:0;width:1080px;height:1920px;background:transparent;overflow:hidden;font-family:Inter,"DejaVu Sans",sans-serif;}
+  body.green{background:#00FF00;}
+  .stage{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;}
+  .wrap{position:relative;width:940px;}
+  .card{background:#fff;border-radius:44px;box-shadow:0 24px 60px rgba(0,0,0,.22);padding:34px 38px;box-sizing:border-box;}
+  .row{display:flex;align-items:flex-start;gap:26px;}
+  .avatar{flex:none;width:96px;height:96px;border-radius:50%;padding:5px;box-sizing:border-box;
+    background:conic-gradient(from 200deg,#f9ce34,#ee2a7b,#6228d7,#f9ce34);}
+  .avatar>div{width:100%;height:100%;border-radius:50%;border:5px solid #fff;box-sizing:border-box;
+    background:linear-gradient(135deg,#d9c7b4,#8c6f5a);display:flex;align-items:center;justify-content:center;
+    color:#fff;font-weight:700;font-size:34px;letter-spacing:-1px;}
+  .body{flex:1;min-width:0;padding-top:4px;}
+  .user{font-weight:700;font-size:36px;color:#111;}
+  .time{font-weight:400;color:#8e8e8e;font-size:32px;margin-left:12px;}
+  .text{font-size:44px;line-height:1.3;color:#111;margin-top:6px;word-wrap:break-word;white-space:pre-wrap;}
+  .placeholder{color:#a8a8a8;}
+  .caret{display:inline-block;width:4px;height:50px;background:#0095f6;vertical-align:-9px;margin-left:3px;border-radius:2px;}
+  .actions{display:flex;gap:40px;margin-top:18px;font-size:30px;font-weight:600;color:#8e8e8e;}
+  .send{flex:none;align-self:center;font-size:38px;font-weight:700;color:#0095f6;transform-origin:center;}
+  .heart{flex:none;align-self:center;width:56px;height:56px;margin-left:6px;}
+  .likes{font-size:28px;color:#8e8e8e;text-align:center;font-weight:600;margin-top:2px;}
+</style></head>
+<body>
+<div class="stage"><div class="wrap" id="wrap">
+  <div class="card" id="card">
+    <div class="row">
+      <div class="avatar"><div id="ini">EP</div></div>
+      <div class="body">
+        <div id="head" class="user"></div>
+        <div class="text" id="text"></div>
+        <div class="actions" id="actions"><span>Responder</span></div>
+      </div>
+      <div id="right"></div>
+    </div>
+  </div>
+</div></div>
+<script>
+const P = new URLSearchParams(location.search);
+const TEXT = P.get('text') || 'Como tudo começou?';
+const USER = P.get('user') || 'entrepausas';
+if (P.get('bg')==='green') document.body.classList.add('green');
+if (P.get('shadow')==='0') document.getElementById('card').style.boxShadow='none';
+document.getElementById('ini').textContent = (P.get('ini')||'EP');
+
+// deterministic typing schedule (human-like rhythm)
+let seed = 7; const rnd=()=>{seed=(seed*16807)%2147483647;return seed/2147483647;};
+const T_IN=0.6, T_START=1.0;
+const times=[]; let t=T_START;
+for (const ch of TEXT){ times.push(t); let d=0.055+rnd()*0.06; if(ch===' ')d+=0.04; if(',?.!'.includes(ch))d+=0.12; t+=d; }
+const T_TYPED=t, T_PRESS=T_TYPED+0.55, T_POST=T_PRESS+0.25, T_HEART=T_POST+0.7;
+window.DURATION = T_HEART + 2.2;
+
+const ease=x=>1-Math.pow(1-Math.min(Math.max(x,0),1),3);
+const back=x=>{x=Math.min(Math.max(x,0),1);const c=1.70158;return 1+(c+1)*Math.pow(x-1,3)+c*Math.pow(x-1,2);};
+const HEART_O='<svg class="heart" viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.4 3 4.5 6.7 4.5c2.1 0 3.6 1.2 4.3 2.4h2c.7-1.2 2.2-2.4 4.3-2.4 3.7 0 5.8 3.9 4.3 7.3C19.5 16.4 12 21 12 21z" fill="none" stroke="#8e8e8e" stroke-width="1.8"/></svg>';
+const HEART_F=s=>`<svg class="heart" viewBox="0 0 24 24" style="transform:scale(${s})"><path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.4 3 4.5 6.7 4.5c2.1 0 3.6 1.2 4.3 2.4h2c.7-1.2 2.2-2.4 4.3-2.4 3.7 0 5.8 3.9 4.3 7.3C19.5 16.4 12 21 12 21z" fill="#ff3040"/></svg>`;
+
+window.render = function(time){
+  const wrap=document.getElementById('wrap'), card=document.getElementById('card');
+  const head=document.getElementById('head'), text=document.getElementById('text');
+  const right=document.getElementById('right'), actions=document.getElementById('actions');
+  // entrance
+  const a=back(time/T_IN), fade=ease(time/0.35);
+  let ty=(1-a)*120, sc=0.9+0.1*a, op=fade;
+  // exit
+  const tEnd=window.DURATION-0.45; if(time>tEnd){const e=ease((time-tEnd)/0.45); ty-=e*60; op*=1-e;}
+  wrap.style.transform=`translateY(${ty}px) scale(${sc})`; wrap.style.opacity=op;
+
+  const posted = time>=T_POST;
+  if(!posted){
+    const n=times.filter(x=>x<=time).length;
+    const caretOn = n<TEXT.length && n>0 ? true : Math.floor(time*2.2)%2===0;
+    head.innerHTML=''; head.style.display='none';
+    actions.style.display='none';
+    if(n===0) text.innerHTML='<span class="placeholder">Adicione um comentário...</span>';
+    else text.textContent=TEXT.slice(0,n);
+    if(n>0 && caretOn) text.insertAdjacentHTML('beforeend','<span class="caret"></span>');
+    if(n===0 && caretOn) text.insertAdjacentHTML('afterbegin','<span class="caret" style="margin:0 3px 0 0"></span>');
+    const ready=n>=TEXT.length;
+    let s=1; if(time>=T_PRESS){s=1-0.18*Math.sin(Math.min((time-T_PRESS)/0.25,1)*Math.PI);}
+    right.innerHTML=`<div class="send" style="opacity:${n>0?1:.35};transform:scale(${s})">Publicar</div>`;
+    card.style.transform='';
+  } else {
+    const k=ease((time-T_POST)/0.35);
+    head.style.display='block';
+    head.innerHTML=`${USER}<span class="time">agora</span>`;
+    head.style.opacity=k; actions.style.display='flex'; actions.style.opacity=k;
+    text.textContent=TEXT;
+    card.style.transform=`scale(${1+0.03*Math.sin(Math.min((time-T_POST)/0.35,1)*Math.PI)})`;
+    let h;
+    if(time<T_HEART) h=`<div>${HEART_O}<div class="likes">&nbsp;</div></div>`;
+    else { const hp=(time-T_HEART)/0.45; const s= hp<1? 0.4+back(hp)*0.6 + 0.25*Math.sin(Math.min(hp,1)*Math.PI):1;
+      h=`<div>${HEART_F(s)}<div class="likes">1</div></div>`; }
+    right.innerHTML=h;
+  }
+};
+render(0);
+</script></body></html>
