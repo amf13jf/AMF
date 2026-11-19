@@ -25,14 +25,14 @@ const only = process.argv[2];
         await page.screenshot({ path: path.join(dir, String(i).padStart(4, '0') + '.png'), omitBackground: true });
       }
     };
-    const fdir = path.join(__dirname, 'frames', name), gdir = fdir + '_green';
+    const fdir = path.join(__dirname, 'frames', name), gdir = fdir + '_white';
     await grab(fdir, '');
-    await grab(gdir, '&bg=green&shadow=0');
+    await grab(gdir, '&bg=white');
     const inp = ['-y', '-framerate', String(FPS), '-i', path.join(fdir, '%04d.png')];
     // transparent overlay (ProRes 4444 with alpha)
     execFileSync('ffmpeg', [...inp, '-c:v', 'prores_ks', '-profile:v', '4444', '-pix_fmt', 'yuva444p10le', path.join(out, name + '_transparente.mov')], { stdio: 'ignore' });
-    // green screen MP4 (for CapCut / apps without alpha support)
-    execFileSync('ffmpeg', ['-y', '-framerate', String(FPS), '-i', path.join(gdir, '%04d.png'), '-pix_fmt', 'yuv420p', '-c:v', 'libx264', '-crf', '18', '-movflags', '+faststart', path.join(out, name + '_greenscreen.mp4')], { stdio: 'ignore' });
+    // white background MP4
+    execFileSync('ffmpeg', ['-y', '-framerate', String(FPS), '-i', path.join(gdir, '%04d.png'), '-pix_fmt', 'yuv420p', '-c:v', 'libx264', '-crf', '18', '-movflags', '+faststart', path.join(out, name + '_fundobranco.mp4')], { stdio: 'ignore' });
     fs.rmSync(fdir,{recursive:true,force:true}); fs.rmSync(gdir,{recursive:true,force:true});
     console.log(name, n, 'frames', dur.toFixed(2) + 's');
   }

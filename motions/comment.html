@@ -3,7 +3,7 @@
 <style>
   @font-face{font-family:Inter;src:local("Inter");}
   html,body{margin:0;width:1080px;height:1920px;background:transparent;overflow:hidden;font-family:Inter,"DejaVu Sans",sans-serif;}
-  body.green{background:#00FF00;}
+  body.white{background:#FFFFFF;} body.white .card{border:2px solid #efefef;}
   .stage{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;}
   .wrap{position:relative;width:940px;}
   .card{background:#fff;border-radius:44px;box-shadow:0 24px 60px rgba(0,0,0,.22);padding:34px 38px;box-sizing:border-box;}
@@ -41,8 +41,8 @@
 <script>
 const P = new URLSearchParams(location.search);
 const TEXT = P.get('text') || 'Como tudo começou?';
-const USER = P.get('user') || 'entrepausas';
-if (P.get('bg')==='green') document.body.classList.add('green');
+const USER = P.get('user') || 'entrepausas.spa';
+if (P.get('bg')==='white') document.body.classList.add('white');
 if (P.get('shadow')==='0') document.getElementById('card').style.boxShadow='none';
 document.getElementById('ini').textContent = (P.get('ini')||'EP');
 
