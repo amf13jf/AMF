@@ -7,6 +7,7 @@ const items = [
   ['02-desafios-de-empreender', 'Os desafios de empreender?'],
   ['03-construcao-entre-pausas', 'A construção do Entre Pausas?'],
   ['04-conquistas-e-significado', 'As conquistas e o significado de tudo isso?'],
+  ['05-conselho-para-quem-esta-comecando', 'Um conselho para quem está começando a empreender?'],
 ];
 const only = process.argv[2];
 (async () => {
