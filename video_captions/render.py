@@ -696,8 +696,8 @@ def partial(pts, frac):
     return out
 
 
-def draw_check(layer, cx, cy, t0, t, r=44):
-    """Círculo vinho que se desenha + check creme."""
+def draw_check(layer, cx, cy, t0, t, r=44, cross=False):
+    """Círculo vinho que se desenha + check creme (ou um X cinza, para o “não”)."""
     k = ease_out_back((t - t0) / 0.35)
     if k <= 0:
         return
@@ -705,9 +705,16 @@ def draw_check(layer, cx, cy, t0, t, r=44):
     img = Image.new("RGBA", (pad * 2 * SS, pad * 2 * SS), (0, 0, 0, 0))
     d = ImageDraw.Draw(img)
     c, rr = pad * SS, r * SS * min(k, 1.15)
-    d.ellipse([c - rr, c - rr, c + rr, c + rr], fill=WINE + (255,))
+    d.ellipse([c - rr, c - rr, c + rr, c + rr], fill=((120, 110, 112) if cross else WINE) + (255,))
     ck = ease_in_out((t - t0 - 0.15) / 0.3)
-    if ck > 0:
+    if ck > 0 and cross:
+        q = 0.36 * rr
+        for (x1, y1, x2, y2), kk in (((c - q, c - q, c + q, c + q), clamp(ck * 2)),
+                                     ((c + q, c - q, c - q, c + q), clamp(ck * 2 - 1))):
+            if kk > 0:
+                d.line([(x1, y1), (x1 + (x2 - x1) * kk, y1 + (y2 - y1) * kk)],
+                       fill=CREAM + (255,), width=int(8 * SS))
+    elif ck > 0:
         pts = [(c - 0.45 * rr, c + 0.02 * rr), (c - 0.12 * rr, c + 0.34 * rr),
                (c + 0.48 * rr, c - 0.30 * rr)]
         seg = partial(pts, ck)
@@ -720,17 +727,23 @@ def draw_check(layer, cx, cy, t0, t, r=44):
 
 def draw_checklist(layer, m, t):
     """Título + palavra grande com brilho + itens que ganham check na hora da fala."""
-    draw_word_line(layer, m["title"], t, 620, 1.0)
-    ws, big = m["big"]
-    draw_glow_word(layer, ws, big, t, 880, 1.0, size=210)
+    if m.get("big"):
+        draw_word_line(layer, m["title"], t, 620, 1.0)
+        ws, big = m["big"]
+        draw_glow_word(layer, ws, big, t, 880, 1.0, size=210)
+        top = 1210
+    else:  # sem palavra grande: título maior e itens mais para cima
+        draw_word_line(layer, m["title"], t, 720, 1.0)
+        top = 1010
+    marks = m.get("marks", ["check"] * len(m["items"]))
     for n, item in enumerate(m["items"]):
         t0 = item[0][0]
-        y = 1210 + n * 240
+        y = top + n * 240
         k = ease_out_cubic((t - t0 + 0.05) / 0.35)
         if k <= 0:
             continue
         x0 = 150 + (1 - k) * 80
-        draw_check(layer, x0 + 52, y - 30, t0, t, r=52)
+        draw_check(layer, x0 + 52, y - 30, t0, t, r=52, cross=marks[n] == "cross")
         row = Image.new("RGBA", (W, 200), (0, 0, 0, 0))
         d = ImageDraw.Draw(row)
         x = x0 + 136
@@ -962,11 +975,86 @@ def draw_nametags(canvas, t):
         paste(canvas, with_alpha(box, 1 - k_out), x0, y0 + k_out * 20)
 
 
+def wrap_words(words, fnt, max_w):
+    lines, cur = [], []
+    for item in words:
+        trial = " ".join(x[1] for x in cur + [item])
+        if cur and fnt.getlength(trial) > max_w:
+            lines.append(cur)
+            cur = [item]
+        else:
+            cur.append(item)
+    if cur:
+        lines.append(cur)
+    return lines
+
+
+def draw_chat(canvas, m, t):
+    """Janela de chat por cima do vídeo: a mensagem vai sendo digitada junto com a fala."""
+    t0, t1 = m["start"], m["end"]
+    k_in = ease_out_back((t - t0) / 0.45, 1.2)
+    k_out = ease_in_out((t - (t1 - 0.3)) / 0.3)  # sai inteira antes do corte
+    alpha = clamp((t - t0) / 0.2) * (1 - k_out)
+    if alpha <= 0:
+        return
+    fnt = font("sans_reg", 46)
+    bw = 720
+    lh = 60
+    shown = [(wt, wd) for wt, wd in m["message"] if t >= wt - 0.03]
+    n_lines = len(wrap_words(shown, fnt, bw - 80)) if shown else 1
+    cw, ch = 1000, 250 + lh * n_lines  # o cartão cresce junto com a mensagem
+    card = Image.new("RGBA", (cw * SS, ch * SS), (0, 0, 0, 0))
+    d = ImageDraw.Draw(card)
+    d.rounded_rectangle([0, 0, cw * SS - 1, ch * SS - 1], radius=50 * SS, fill=(255, 255, 255, 240))
+    # cabeçalho
+    d.ellipse([40 * SS, 34 * SS, 110 * SS, 104 * SS], fill=WINE + (255,))
+    sx, sy, sr = 75 * SS, 69 * SS, 22 * SS  # estrelinha de 4 pontas
+    d.polygon([(sx, sy - sr), (sx + sr * 0.28, sy - sr * 0.28), (sx + sr, sy),
+               (sx + sr * 0.28, sy + sr * 0.28), (sx, sy + sr), (sx - sr * 0.28, sy + sr * 0.28),
+               (sx - sr, sy), (sx - sr * 0.28, sy - sr * 0.28)], fill=CREAM + (255,))
+    d.text((132 * SS, 70 * SS), m.get("title", "Chat"), font=font("cap_sans", 40 * SS),
+           anchor="ls", fill=INK + (255,))
+    d.text((132 * SS, 104 * SS), "online", font=font("sans_reg", 28 * SS), anchor="ls",
+           fill=(130, 120, 122, 255))
+    d.line([(40 * SS, 132 * SS), ((cw - 40) * SS, 132 * SS)], fill=(225, 215, 215, 255), width=2 * SS)
+    # balão (cresce junto com o texto)
+    if shown:
+        slines = wrap_words(shown, fnt, bw - 80)
+        bh = 40 + lh * len(slines)
+        width = max(fnt.getlength(" ".join(x[1] for x in ln)) for ln in slines) + 80
+        x1, y1 = (cw - 40) * SS, 170 * SS
+        d.rounded_rectangle([x1 - width * SS, y1, x1, y1 + bh * SS], radius=34 * SS,
+                            fill=WINE + (255,))
+        big = font("sans_reg", 46 * SS)
+        for i, ln in enumerate(slines):
+            d.text((x1 - width * SS + 40 * SS, y1 + (64 + i * lh) * SS),
+                   " ".join(x[1] for x in ln), font=big, anchor="ls", fill=WHITE + (255,))
+        if (t * 2) % 1 < 0.6 and len(shown) < len(m["message"]):  # cursor piscando
+            last = " ".join(x[1] for x in slines[-1])
+            cx = x1 - width * SS + 40 * SS + big.getlength(last + " ")
+            cy = y1 + (64 + (len(slines) - 1) * lh) * SS
+            d.line([(cx, cy - 40 * SS), (cx, cy + 6 * SS)], fill=CREAM + (255,), width=4 * SS)
+    card = card.resize((cw, ch), Image.LANCZOS)
+    sc = 0.9 + 0.1 * k_in
+    card = scaled(card, sc)
+    sh = Image.new("RGBA", (card.width + 80, card.height + 80), (0, 0, 0, 0))
+    ImageDraw.Draw(sh).rounded_rectangle([40, 52, 40 + card.width, 52 + card.height], radius=50,
+                                         fill=(0, 0, 0, 90))
+    sh = sh.filter(ImageFilter.GaussianBlur(22))
+    x = (W - card.width) / 2
+    y = m.get("y", 1300) + (1 - k_in) * 60 + k_out * 80
+    paste(canvas, with_alpha(sh, alpha), x - 40, y - 40)
+    paste(canvas, with_alpha(card, alpha), x, y)
+
+
 def draw_motion(canvas, t):
     for m in motions():
         t0, t1 = m["start"], m["end"]
         if not (t0 <= t < t1):
             continue
+        if m.get("kind") == "chat":  # por cima do vídeo, sem fundo
+            draw_chat(canvas, m, t)
+            return
         layer = motion_background().copy()
         if m.get("kind", "signals") != "checklist":
             draw_dashed_circle(layer, t, ease_in_out((t - t0 - 0.15) / 0.7), 1.0)
@@ -987,6 +1075,18 @@ def draw_motion(canvas, t):
             cx, cy = CIRCLE_C
             ImageDraw.Draw(mask).ellipse([cx - r, cy - r, cx + r, cy + r], fill=255)
             layer.putalpha(ImageChops.multiply(layer.getchannel("A"), mask))
+        wipe = m.get("exit_wipe")
+        if wipe:
+            # sai fechando em círculo por cima da cena seguinte (o corte já aconteceu)
+            k = ease_in_out((t - (t1 - wipe)) / wipe)
+            if k > 0:
+                mask = Image.new("L", (W, H), 0)
+                r = (1 - k) * math.hypot(W, H)
+                cx, cy = CIRCLE_C
+                ImageDraw.Draw(mask).ellipse([cx - r, cy - r, cx + r, cy + r], fill=255)
+                layer.putalpha(ImageChops.multiply(layer.getchannel("A"), mask))
+            canvas.alpha_composite(layer)
+            return
         a_out = 1 - ease_in_out((t - (t1 - 0.3)) / 0.3)
         canvas.alpha_composite(with_alpha(layer, a_out))
         return
@@ -1093,7 +1193,9 @@ def cut_filter(duration):
         pos = c1
     keep.append((pos, duration))
     n = len(keep)
-    parts = ["[0:v][1:v]overlay=0:0:format=auto,format=yuv420p,"
+    size = getattr(script, "OUTPUT_SIZE", None)
+    scale = f"scale={size[0]}:{size[1]}:flags=lanczos,setsar=1," if size else ""
+    parts = ["[0:v][1:v]overlay=0:0:format=auto,format=yuv420p," + scale +
              f"split={n}" + "".join(f"[vs{i}]" for i in range(n)),
              f"[0:a]asplit={n}" + "".join(f"[as{i}]" for i in range(n))]
     for i, (k0, k1) in enumerate(keep):
