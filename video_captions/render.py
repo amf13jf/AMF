@@ -1014,8 +1014,8 @@ def draw_chat(canvas, m, t):
                (sx - sr, sy), (sx - sr * 0.28, sy - sr * 0.28)], fill=CREAM + (255,))
     d.text((132 * SS, 70 * SS), m.get("title", "Chat"), font=font("cap_sans", 40 * SS),
            anchor="ls", fill=INK + (255,))
-    d.text((132 * SS, 104 * SS), "online", font=font("sans_reg", 28 * SS), anchor="ls",
-           fill=(130, 120, 122, 255))
+    d.text((132 * SS, 104 * SS), m.get("subtitle", "online"), font=font("sans_reg", 28 * SS),
+           anchor="ls", fill=(130, 120, 122, 255))
     d.line([(40 * SS, 132 * SS), ((cw - 40) * SS, 132 * SS)], fill=(225, 215, 215, 255), width=2 * SS)
     # balão (cresce junto com o texto)
     if shown:
@@ -1047,13 +1047,100 @@ def draw_chat(canvas, m, t):
     paste(canvas, with_alpha(card, alpha), x, y)
 
 
+def draw_question(canvas, m, t):
+    """Cartão vinho “MITO OU VERDADE?” com a pergunta sendo escrita."""
+    t0, t1 = m["start"], m["end"]
+    k_in = ease_out_cubic((t - t0) / 0.4)
+    k_out = ease_in_out((t - (t1 - 0.22)) / 0.22)
+    alpha = clamp((t - t0) / 0.25) * (1 - k_out)
+    if alpha <= 0:
+        return
+    fnt = font("cap_sans", 64)
+    cw = 1000
+    lines = wrap_words(m["words"], fnt, cw - 120)
+    ch = 170 + 78 * len(lines)
+    card = Image.new("RGBA", (cw * SS, ch * SS), (0, 0, 0, 0))
+    d = ImageDraw.Draw(card)
+    d.rounded_rectangle([0, 0, cw * SS - 1, ch * SS - 1], radius=48 * SS, fill=WINE + (240,))
+    card = card.resize((cw, ch), Image.LANCZOS)
+    d = ImageDraw.Draw(card)
+    lab = font("sans_med", 28)
+    x = 60
+    for c in "MITO OU VERDADE?":
+        d.text((x, 78), c, font=lab, anchor="ls", fill=CREAM + (230,))
+        x += lab.getlength(c) + 6
+    d.text((cw - 60, 78), m["count"], font=lab, anchor="rs", fill=CREAM + (200,))
+    d.line([(60, 100), (cw - 60, 100)], fill=CREAM + (70,), width=2)
+    for i, ln in enumerate(lines):
+        xx = 60
+        for wt, wd in ln:
+            k = ease_out_cubic((t - wt + 0.04) / 0.2)
+            if k > 0:
+                d.text((xx, 178 + i * 78 + (1 - k) * 14), wd, font=fnt, anchor="ls",
+                       fill=WHITE + (int(255 * k),))
+            xx += fnt.getlength(wd + " ")
+    sh = Image.new("RGBA", (cw + 80, ch + 80), (0, 0, 0, 0))
+    ImageDraw.Draw(sh).rounded_rectangle([40, 54, 40 + cw, 54 + ch], radius=48, fill=(30, 0, 8, 100))
+    sh = sh.filter(ImageFilter.GaussianBlur(22))
+    x0 = (W - cw) / 2
+    y0 = m.get("y", 1330) + (1 - k_in) * 70 - k_out * 30
+    paste(canvas, with_alpha(sh, alpha), x0 - 40, y0 - 40)
+    paste(canvas, with_alpha(scaled(card, 0.96 + 0.04 * k_in), alpha), x0, y0)
+
+
+def draw_verdict(canvas, m, t):
+    """Carimbo MITO (✗ cinza) ou VERDADE (✓ vinho) que “bate” na tela."""
+    t0, t1 = m["start"], m["end"]
+    k = ease_out_back((t - t0) / 0.28, 2.2)
+    k_out = ease_in_out((t - (t1 - 0.25)) / 0.25)
+    alpha = clamp((t - t0) / 0.12) * (1 - k_out)
+    if alpha <= 0:
+        return
+    true = m["verdict"] == "verdade"
+    color = WINE if true else (72, 64, 68)
+    word = "VERDADE" if true else "MITO"
+    fnt = font("cap_sans", 150)
+    tw = fnt.getlength(word)
+    r = 70
+    w, h = int(tw + 2 * r + 150), 250
+    img = Image.new("RGBA", (w * SS, h * SS), (0, 0, 0, 0))
+    d = ImageDraw.Draw(img)
+    d.rounded_rectangle([0, 0, w * SS - 1, h * SS - 1], radius=125 * SS, fill=WHITE + (245,),
+                        outline=color + (255,), width=10 * SS)
+    cx, cy = (60 + r) * SS, h / 2 * SS
+    d.ellipse([cx - r * SS, cy - r * SS, cx + r * SS, cy + r * SS], fill=color + (255,))
+    if true:
+        pts = [(cx - 0.45 * r * SS, cy + 0.02 * r * SS), (cx - 0.12 * r * SS, cy + 0.34 * r * SS),
+               (cx + 0.48 * r * SS, cy - 0.30 * r * SS)]
+        d.line(pts, fill=WHITE + (255,), width=14 * SS, joint="curve")
+    else:
+        q = 0.36 * r * SS
+        d.line([(cx - q, cy - q), (cx + q, cy + q)], fill=WHITE + (255,), width=14 * SS)
+        d.line([(cx + q, cy - q), (cx - q, cy + q)], fill=WHITE + (255,), width=14 * SS)
+    img = img.resize((w, h), Image.LANCZOS)
+    ImageDraw.Draw(img).text((60 + 2 * r + 40, h / 2 + 52), word, font=fnt, anchor="ls",
+                             fill=color + (255,))
+    shake = math.sin((t - t0) * 70) * 6 * clamp(1 - (t - t0) / 0.35) if t - t0 < 0.35 else 0
+    img = img.rotate(-6 + shake * 0.3, resample=Image.BICUBIC, expand=True)
+    img = scaled(img, (1.9 - 0.9 * min(k, 1.06)) * (1 - 0.08 * k_out))
+    sh = Image.new("RGBA", (img.width + 100, img.height + 100), (0, 0, 0, 0))
+    sh.paste(Image.new("RGBA", img.size, (0, 0, 0, 110)), (50, 64), img.getchannel("A"))
+    sh = sh.filter(ImageFilter.GaussianBlur(20))
+    x, y = (W - img.width) / 2 + shake, m.get("y", 1450) - img.height / 2
+    paste(canvas, with_alpha(sh, alpha), x - 50, y - 50)
+    paste(canvas, with_alpha(img, alpha), x, y)
+
+
+OVERLAY_KINDS = {"chat": draw_chat, "question": draw_question, "verdict": draw_verdict}
+
+
 def draw_motion(canvas, t):
     for m in motions():
         t0, t1 = m["start"], m["end"]
         if not (t0 <= t < t1):
             continue
-        if m.get("kind") == "chat":  # por cima do vídeo, sem fundo
-            draw_chat(canvas, m, t)
+        if m.get("kind") in OVERLAY_KINDS:  # por cima do vídeo, sem fundo
+            OVERLAY_KINDS[m["kind"]](canvas, m, t)
             return
         layer = motion_background().copy()
         if m.get("kind", "signals") != "checklist":
